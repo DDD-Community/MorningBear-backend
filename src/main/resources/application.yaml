@@ -1,0 +1,16 @@
+
+login:
+  apis:
+    kauth: https://kauth.kakao.com
+    kapi: https://kapi.kakao.com
+    nauth: https://nid.naver.com
+    napi: https://openapi.naver.com
+  appconfigs:
+    - type: kakao
+      restKey: 6e0ca7622b0942a8b6cdd7a21579546b
+      jsKey: e09f051b266e433cd117edb6aaf588c3
+      secrets: gwtd7Py9puRoHt6fXJAGaG8GJCJcNj6H
+    - type: naver
+      restKey: 7rZMvLkTIXowUlkv7h_y
+      jsKey: 7rZMvLkTIXowUlkv7h_y
+      secrets: lt5UnpY0Uq
