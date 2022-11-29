@@ -1,5 +1,7 @@
 package com.ddd.morningbear.common.handler
 
+import com.ddd.morningbear.common.constants.CommCode
+import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLTokenInvalidException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.common.exception.GraphQLThirdPartyServerException
@@ -14,30 +16,51 @@ import org.springframework.stereotype.Component
 class GraphqlExceptionHandler: DataFetcherExceptionResolverAdapter() {
 
     override fun resolveToSingleError(ex: Throwable, env: DataFetchingEnvironment): GraphQLError? {
+        // Not Found
         if(ex is GraphQLNotFoundException){
             return GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.NOT_FOUND)
-                .message(ex.message)
-                .path(env.executionStepInfo.path)
-                .location(env.field.sourceLocation)
+                .extensions(mapOf(
+                    "code" to CommCode.Result.K002.code,
+                    "message" to if(ex.message.isNullOrBlank()) CommCode.Result.K002.message else ex.message
+                ))
+                .message("")
                 .build()
         }
 
+        // Not Authorized
         if(ex is GraphQLTokenInvalidException){
             return GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.UNAUTHORIZED)
-                .message(ex.message)
-                .path(env.executionStepInfo.path)
-                .location(env.field.sourceLocation)
+                .extensions(mapOf(
+                    "code" to CommCode.Result.K001.code,
+                    "message" to if(ex.message.isNullOrBlank()) CommCode.Result.K001.message else ex.message
+                ))
+                .message("")
                 .build()
         }
 
+        // Server Internal Error
         if(ex is GraphQLThirdPartyServerException){
             return GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.INTERNAL_ERROR)
-                .message(ex.message)
-                .path(env.executionStepInfo.path)
-                .location(env.field.sourceLocation)
+                .extensions(mapOf(
+                    "code" to CommCode.Result.K005.code,
+                    "message" to if(ex.message.isNullOrBlank()) CommCode.Result.K005.message else ex.message
+                ))
+                .message("")
+                .build()
+        }
+
+        // Bad Request
+        if(ex is GraphQLBadRequestException){
+            return GraphqlErrorBuilder.newError()
+                .errorType(ErrorType.BAD_REQUEST)
+                .extensions(mapOf(
+                    "code" to CommCode.Result.K000.code,
+                    "message" to if(ex.message.isNullOrBlank()) CommCode.Result.K000.message else ex.message
+                ))
+                .message("")
                 .build()
         }
 
