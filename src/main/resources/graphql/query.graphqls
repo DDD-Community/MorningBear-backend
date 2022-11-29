@@ -1,0 +1,7 @@
+
+type Query {
+    """ 로그인 기본정보 조회 """
+    findLoginInfo: [LoginBaseInfo]
+    """ 내정보 조회 """
+    findMyInfo: MyProfileInfo
+}

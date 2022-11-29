@@ -1,0 +1,8 @@
+
+type MyProfileInfo {
+    accountId: String
+    nickName: String
+    photoLink: String
+    memo: String
+    wakeUpAt: String
+}
