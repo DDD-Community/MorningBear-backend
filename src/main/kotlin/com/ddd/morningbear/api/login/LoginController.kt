@@ -1,6 +1,7 @@
 package com.ddd.morningbear.api.login
 
 import com.ddd.morningbear.api.login.dto.LoginInput
+import com.ddd.morningbear.common.annotation.SkipTokenCheck
 import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.dto.BaseResponse
 import com.ddd.morningbear.common.utils.AppPropsUtils
@@ -28,6 +29,7 @@ class LoginController(
      * @author yoonho
      * @since 2022.11.29
      */
+    @SkipTokenCheck
     @GetMapping("/login")
     fun login(): ModelAndView {
         var mv = ModelAndView("login")
@@ -45,6 +47,7 @@ class LoginController(
      * @author yoonho
      * @since 2022.11.29
      */
+    @SkipTokenCheck
     @GetMapping("/login/token")
     @ResponseBody
     fun token(input: LoginInput): BaseResponse {
