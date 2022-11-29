@@ -30,11 +30,11 @@ class AuthService(
      * 카카오 토큰조회
      *
      * @param accessToken [String]
-     * @return KakaoTokenInfo [KakaoTokenInfo]
+     * @return id [String]
      * @author yoonho
      * @since 2022.11.29
      */
-    fun kakaoAuth(accessToken: String?): KakaoTokenInfo? {
+    fun kakaoAuth(accessToken: String?): String? {
         try{
             val uriComponents = UriComponentsBuilder
                 .fromHttpUrl(AppPropsUtils.findUrl("kapi") + "/v1/user/access_token_info")
@@ -52,7 +52,7 @@ class AuthService(
                 .block()
             logger.info(" >>> [kakaoAuth] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            return responseEntity?.body
+            return responseEntity?.body?.id.toString()
         }catch (e: Throwable){
             throw e
         }
@@ -66,7 +66,7 @@ class AuthService(
      * @author yoonho
      * @since 2022.11.29
      */
-    fun naverAuth(accessToken: String?): NaverTokenInfo? {
+    fun naverAuth(accessToken: String?): String? {
         try{
             val uriComponents = UriComponentsBuilder
                 .fromHttpUrl(AppPropsUtils.findUrl("napi") + "/v1/nid/me")
@@ -84,7 +84,7 @@ class AuthService(
                 .block()
             logger.info(" >>> [naverAuth] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            return responseEntity?.body
+            return responseEntity?.body?.response?.id
         }catch (e: Throwable){
             throw e
         }
