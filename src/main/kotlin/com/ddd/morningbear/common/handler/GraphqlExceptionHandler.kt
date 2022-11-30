@@ -1,10 +1,7 @@
 package com.ddd.morningbear.common.handler
 
 import com.ddd.morningbear.common.constants.CommCode
-import com.ddd.morningbear.common.exception.GraphQLBadRequestException
-import com.ddd.morningbear.common.exception.GraphQLTokenInvalidException
-import com.ddd.morningbear.common.exception.GraphQLNotFoundException
-import com.ddd.morningbear.common.exception.GraphQLThirdPartyServerException
+import com.ddd.morningbear.common.exception.*
 import graphql.GraphQLError
 import graphql.GraphqlErrorBuilder
 import graphql.schema.DataFetchingEnvironment
@@ -40,8 +37,20 @@ class GraphqlExceptionHandler: DataFetcherExceptionResolverAdapter() {
                 .build()
         }
 
-        // Server Internal Error
+        // Third-party Server Internal Error
         if(ex is GraphQLThirdPartyServerException){
+            return GraphqlErrorBuilder.newError()
+                .errorType(ErrorType.INTERNAL_ERROR)
+                .extensions(mapOf(
+                    "code" to CommCode.Result.K005.code,
+                    "message" to if(ex.message.isNullOrBlank()) CommCode.Result.K005.message else ex.message
+                ))
+                .message("")
+                .build()
+        }
+
+        // Internal Server Internal Error
+        if(ex is GraphQLInternalServerException){
             return GraphqlErrorBuilder.newError()
                 .errorType(ErrorType.INTERNAL_ERROR)
                 .extensions(mapOf(

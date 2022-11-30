@@ -1,6 +1,7 @@
 
 type LoginBaseInfo {
     redirectUri: String
-    appKey: String
+    jsKey: String
+    nativeKey: String
     state: String
 }

@@ -16,6 +16,14 @@ object AppPropsUtils {
         this.appProps = appProps
     }
 
+    fun findNativeKeyByType(type: String): String? {
+        var appconfig = appProps.appconfigs.filter { x -> x["type"].equals(type) }.firstOrNull()
+        if(!appconfig.isNullOrEmpty()){
+            return appconfig.get("nativeKey")
+        }
+        return null
+    }
+
     fun findJsKeyByType(type: String): String? {
         var appconfig = appProps.appconfigs.filter { x -> x["type"].equals(type) }.firstOrNull()
         if(!appconfig.isNullOrEmpty()){

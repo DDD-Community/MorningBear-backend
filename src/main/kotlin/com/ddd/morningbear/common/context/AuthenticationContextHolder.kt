@@ -10,9 +10,7 @@ object AuthenticationContextHolder {
                 .toString() + "_CONTEXT_HOLDER"
         )
 
-    fun setAuthenticationContext(context: AuthenticationContext) {
-        ALLIANCE_CONTEXT_HOLDER.set(context)
-    }
-
+    fun setAuthenticationContext(context: AuthenticationContext) = ALLIANCE_CONTEXT_HOLDER.set(context)
     fun getAuthenticationContext(): AuthenticationContext = ALLIANCE_CONTEXT_HOLDER.get()
+    fun removeAuthenticationContext() = ALLIANCE_CONTEXT_HOLDER.remove()
 }

@@ -1,13 +1,13 @@
 server:
   port: 8080
 spring:
+  config:
+    activate:
+      on-profile: test
   graphql:
     schema:
       locations: classpath:graphql/**/
       file-extensions: .graphqls,.gqls
-    graphiql:
-      enabled: true
-      path: /graphiql
   jpa:
     show-sql: true
     hibernate:
@@ -21,6 +21,7 @@ spring:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
+
 login:
   apis:
     kauth: https://kauth.kakao.com

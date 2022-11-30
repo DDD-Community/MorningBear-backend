@@ -20,7 +20,7 @@ class MpUserInfo(
     @Column(name = "MEMO", nullable = true)
     val memo: String?,
     @Column(name = "WAKE_UP_AT", nullable = true)
-    val wakeUpAt: LocalDateTime? = null,
+    val wakeUpAt: String?,
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime? = null,
     @Column(name = "CREATED_AT", nullable = false)

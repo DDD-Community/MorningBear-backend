@@ -6,9 +6,9 @@ import com.ddd.morningbear.common.context.AuthenticationContext
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.common.exception.*
 import com.ddd.morningbear.common.utils.TokenUtils
-import org.aspectj.lang.JoinPoint
+import org.aspectj.lang.ProceedingJoinPoint
+import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
-import org.aspectj.lang.annotation.Before
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
@@ -22,8 +22,14 @@ class AopConfig(
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Before("execution(* com.ddd.morningbear.api.*.*Controller.*(..)) && !@annotation(com.ddd.morningbear.common.annotation.SkipTokenCheck)")
-    fun tokenCheck(joinPoint: JoinPoint) {
+    @Around("execution(* com.ddd.morningbear.api.*.*Controller.*(..)) && !@annotation(com.ddd.morningbear.common.annotation.SkipTokenCheck)")
+    fun tokenCheck(joinPoint: ProceedingJoinPoint): Any {
+        // cucumber 인증용도
+        if(AuthenticationContextHolder.getAuthenticationContext() != null){
+            return joinPoint.proceed()
+        }
+        //
+
         var request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
         var authorization = request.getHeader("Authorization")
 
@@ -58,6 +64,14 @@ class AopConfig(
         var context = AuthenticationContext
         context.setAccountId(accountId!!)
         AuthenticationContextHolder.setAuthenticationContext(context)
+
+        // 타겟객체 실행
+        var result = joinPoint.proceed()
         //
+
+        // Context 삭제
+        AuthenticationContextHolder.removeAuthenticationContext()
+
+        return result
     }
 }
