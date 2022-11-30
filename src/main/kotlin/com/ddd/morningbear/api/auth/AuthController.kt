@@ -14,8 +14,18 @@ class AuthController {
     @QueryMapping
     fun findLoginInfo(): List<AuthResult> {
         return  listOf(
-            AuthResult(redirectUri = "/login/token", appKey = AppPropsUtils.findJsKeyByType(CommCode.Social.KAKAO.code)!!, state = CommCode.Social.KAKAO.code),
-            AuthResult(redirectUri = "/login/token", appKey = AppPropsUtils.findJsKeyByType(CommCode.Social.NAVER.code)!!, state = CommCode.Social.NAVER.code),
+            AuthResult(
+                redirectUri = "/login/token",
+                jsKey = AppPropsUtils.findJsKeyByType(CommCode.Social.KAKAO.code)!!,
+                nativeKey = AppPropsUtils.findNativeKeyByType(CommCode.Social.KAKAO.code)!!,
+                state = CommCode.Social.KAKAO.code
+            ),
+            AuthResult(
+                redirectUri = "/login/token",
+                jsKey = AppPropsUtils.findJsKeyByType(CommCode.Social.NAVER.code)!!,
+                nativeKey = AppPropsUtils.findNativeKeyByType(CommCode.Social.NAVER.code)!!,
+                state = CommCode.Social.NAVER.code
+            )
         )
     }
 }

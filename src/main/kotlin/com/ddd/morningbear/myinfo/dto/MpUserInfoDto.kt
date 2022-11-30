@@ -8,7 +8,7 @@ data class MpUserInfoDto (
     val nickName: String,
     var photoLink: String?,
     var memo: String?,
-    var wakeUpAt: LocalDateTime?,
+    var wakeUpAt: String?,
     var updatedAt: LocalDateTime? = null,
     var createdAt: LocalDateTime? = null
 ): Serializable

@@ -4,9 +4,9 @@ import graphql.GraphQLException
 
 /**
  * @author yoonho
- * @since 2022.11.29
+ * @since 2022.12.02
  */
-class GraphQLThirdPartyServerException : GraphQLException {
-    constructor(msg: String?): super(msg)
+class GraphQLInternalServerException : GraphQLException {
+    constructor(message: String?) : super(message)
     constructor(): super()
 }

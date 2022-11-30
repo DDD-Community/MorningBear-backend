@@ -1,0 +1,10 @@
+
+mutation saveMyInfo($input: MyProfileInput) {
+    saveMyInfo(input: $input){
+        accountId
+        nickName
+        photoLink
+        memo
+        wakeUpAt
+    }
+}

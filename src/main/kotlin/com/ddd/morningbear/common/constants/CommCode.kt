@@ -12,9 +12,9 @@ class CommCode {
     }
 
     enum class Result(val code: String, val message: String) {
-        K000("K000", "Not authorized, Bad Request"),
-        K001("K001", "Not authorized, Token invalid"),
-        K002("K002", "Not authorized, Not found target data"),
-        K005("K005", "Invalid authorization grant, grant invalid, grant expired, or grant revoked")
+        K000("K000", "잘못된 요청입니다."),
+        K001("K001", "토큰정보가 올바르지 않습니다."),
+        K002("K002", "대상 데이터를 조회할 수 없습니다."),
+        K005("K005", "일시적으로 서버를 이용할 수 없습니다. 잠시후에 다시 시도해주세요.")
     }
 }

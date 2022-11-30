@@ -1,0 +1,10 @@
+
+query  {
+    findMyInfo {
+        accountId
+        nickName
+        photoLink
+        memo
+        wakeUpAt
+    }
+}
