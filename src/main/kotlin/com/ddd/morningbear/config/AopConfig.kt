@@ -25,7 +25,7 @@ class AopConfig(
     @Around("execution(* com.ddd.morningbear.api.*.*Controller.*(..)) && !@annotation(com.ddd.morningbear.common.annotation.SkipTokenCheck)")
     fun tokenCheck(joinPoint: ProceedingJoinPoint): Any {
         // cucumber 인증용도
-        if(AuthenticationContextHolder.getAuthenticationContext() != null){
+        if(AuthenticationContextHolder.isExistAuthenticationContext()){
             return joinPoint.proceed()
         }
         //
@@ -40,7 +40,7 @@ class AopConfig(
             throw GraphQLBadRequestException("헤더 포맷이 올바르지 않습니다")
         }
 
-        var accountId: String? = null
+        lateinit var accountId: String
         try{
             var accessToken = authorization.substring(7)
             when {
@@ -62,7 +62,7 @@ class AopConfig(
 
         // Context 저장
         var context = AuthenticationContext
-        context.setAccountId(accountId!!)
+        context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
 
         // 타겟객체 실행

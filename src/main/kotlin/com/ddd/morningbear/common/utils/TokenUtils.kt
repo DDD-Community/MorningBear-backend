@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 object TokenUtils {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    fun encodeToken(token: String?, type: String): String? {
+    fun encodeToken(token: String?, type: String): String {
         var prefix = when(type) {
             CommCode.Social.KAKAO.code -> "k::"
             CommCode.Social.NAVER.code -> "n::"
@@ -18,7 +18,7 @@ object TokenUtils {
         return prefix + token
     }
 
-    fun encodeToken(tokenInfo: TokenInfo?, type: String): TokenInfo? {
+    fun encodeToken(tokenInfo: TokenInfo, type: String): TokenInfo {
         var prefix = when(type) {
             CommCode.Social.KAKAO.code -> "k::"
             CommCode.Social.NAVER.code -> "n::"
