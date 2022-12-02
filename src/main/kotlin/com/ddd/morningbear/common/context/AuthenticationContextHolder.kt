@@ -10,6 +10,12 @@ object AuthenticationContextHolder {
                 .toString() + "_CONTEXT_HOLDER"
         )
 
+    fun isExistAuthenticationContext(): Boolean {
+        if(ALLIANCE_CONTEXT_HOLDER.get() == null){
+            return false;
+        }
+        return true;
+    }
     fun setAuthenticationContext(context: AuthenticationContext) = ALLIANCE_CONTEXT_HOLDER.set(context)
     fun getAuthenticationContext(): AuthenticationContext = ALLIANCE_CONTEXT_HOLDER.get()
     fun removeAuthenticationContext() = ALLIANCE_CONTEXT_HOLDER.remove()

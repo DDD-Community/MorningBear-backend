@@ -53,7 +53,7 @@ class LoginController(
     fun token(input: LoginInput): BaseResponse {
         val socialName = input.state
 
-        var tokenInfo: Any? = null
+        lateinit var tokenInfo: Any
         when(socialName) {
             CommCode.Social.KAKAO.code -> tokenInfo = loginService.kakaoToken(input.code, socialName)
             CommCode.Social.NAVER.code -> tokenInfo = loginService.naverToken(input.code, socialName)

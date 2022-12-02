@@ -18,6 +18,8 @@ class MyInfoController(
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+
+    // TODO: 뱃지리스트, 카테고리리스트 조회 및 저장
     @QueryMapping
     fun findMyInfo(): MpUserInfoDto {
         val accountId = getAuthenticationContextAccountId()

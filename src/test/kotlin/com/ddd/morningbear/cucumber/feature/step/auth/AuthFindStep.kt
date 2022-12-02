@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.test.tester.GraphQlTester
 
-class AuthStep {
+class AuthFindStep {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired

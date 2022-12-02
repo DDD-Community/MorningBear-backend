@@ -39,7 +39,7 @@ class LoginService (
      * @author yoonho
      * @since 2022.11.29
      */
-    fun kakaoToken(code: String?, type: String): TokenInfo? {
+    fun kakaoToken(code: String?, type: String): TokenInfo {
         try{
             var appconfig = AppPropsUtils.findClientInfoByType(type)
 
@@ -65,7 +65,7 @@ class LoginService (
                 .block()
             logger.info(" >>> [kakaoToken] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            return TokenUtils.encodeToken(responseEntity?.body, type)
+            return TokenUtils.encodeToken(responseEntity?.body!!, type)
         }catch(e: Throwable){
             throw e
         }
@@ -80,7 +80,7 @@ class LoginService (
      * @author yoonho
      * @since 2022.11.29
      */
-    fun naverToken(code: String?, type: String): TokenInfo? {
+    fun naverToken(code: String?, type: String): TokenInfo {
         try{
             var appconfig = AppPropsUtils.findClientInfoByType(type)
 
@@ -107,7 +107,7 @@ class LoginService (
                 .block()
             logger.info(" >>> [naverToken] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            return TokenUtils.encodeToken(responseEntity?.body, type)
+            return TokenUtils.encodeToken(responseEntity?.body!!, type)
         }catch(e: Throwable){
             throw e
         }
