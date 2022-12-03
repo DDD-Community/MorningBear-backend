@@ -13,8 +13,8 @@ class MpUserInfo(
     @Id
     @Column(name = "ACCOUNT_ID", nullable = false)
     val accountId: String,
-    @Column(name = "NICKNAME", nullable = false)
-    val nickName: String,
+    @Column(name = "NICKNAME", nullable = true)
+    val nickName: String?,
     @Column(name = "PROFILE_PHOTO_LINK", nullable = true)
     val photoLink: String?,
     @Column(name = "MEMO", nullable = true)
@@ -24,7 +24,7 @@ class MpUserInfo(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime? = null,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now(),
+    val createdAt: LocalDateTime? = LocalDateTime.now()
 ) {
     fun toDto() = MpUserInfoDto(
         accountId = this.accountId,

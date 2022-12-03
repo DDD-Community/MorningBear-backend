@@ -1,0 +1,7 @@
+
+mutation saveMyCategory($input: [String]) {
+    saveMyCategory(input: $input) {
+        categoryId
+        categoryDesc
+    }
+}

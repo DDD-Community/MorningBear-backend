@@ -1,0 +1,10 @@
+
+type Category {
+    categoryId: String
+    categoryDesc: String
+}
+
+input CategoryInput {
+    categoryId: String
+    categoryDesc: String
+}

@@ -1,0 +1,12 @@
+
+type Badge {
+    badgeId: String
+    badgeDesc: String
+    badgeTier: Int
+}
+
+input BadgeInput {
+    badgeId: String
+    badgeDesc: String
+    badgeTier: Int
+}

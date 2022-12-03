@@ -8,5 +8,5 @@ data class MdBadgeInfoDto(
     val badgeDesc: String,
     val badgeTier: Int?,
     val updatedAt: LocalDateTime? = null,
-    val createdAt: LocalDateTime? = null,
+    val createdAt: LocalDateTime? = null
 ): Serializable

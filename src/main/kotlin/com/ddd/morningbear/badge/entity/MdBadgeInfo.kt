@@ -22,7 +22,7 @@ class MdBadgeInfo(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime? = LocalDateTime.now()
 ) {
     fun toDto() = MdBadgeInfoDto(
         badgeId = this.badgeId,

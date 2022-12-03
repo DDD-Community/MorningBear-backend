@@ -1,0 +1,8 @@
+
+mutation saveMyBadge($input: [String]) {
+    saveMyBadge(input: $input) {
+        badgeId
+        badgeDesc
+        badgeTier
+    }
+}
