@@ -4,4 +4,13 @@ type Query {
     findLoginInfo: [LoginBaseInfo]
     """ 내정보 조회 """
     findMyInfo: MyProfileInfo
+    """ 전체 카테고리 조회 """
+    findAllCategory: [Category]
+    """ 전체 뱃지 조회 """
+    findAllBadge: [Badge]
+
+    """ (개발자용) 내 카테고리 매핑정보 조회 """
+    findMyCategoryMapping: [Category]
+    """ (개발자용) 내 뱃지 매핑정보 조회 """
+    findMyBadgeMapping: [Badge]
 }

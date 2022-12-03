@@ -18,8 +18,6 @@ class MyInfoController(
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-
-    // TODO: 뱃지리스트, 카테고리리스트 조회 및 저장
     @QueryMapping
     fun findMyInfo(): MpUserInfoDto {
         val accountId = getAuthenticationContextAccountId()
@@ -29,6 +27,12 @@ class MyInfoController(
     @MutationMapping
     fun saveMyInfo(@Argument input: MyInfoInput): MpUserInfoDto {
         val accountId = getAuthenticationContextAccountId()
-        return myInfoService.saveMyInfo(input)
+        return myInfoService.saveMyInfo(accountId, input)
+    }
+
+    @MutationMapping
+    fun deleteMyInfo(): Boolean {
+        val accountId = getAuthenticationContextAccountId()
+        return myInfoService.deleteMyInfo(accountId)
     }
 }

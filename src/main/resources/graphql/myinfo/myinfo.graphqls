@@ -5,10 +5,11 @@ type MyProfileInfo {
     photoLink: String
     memo: String
     wakeUpAt: String
+    badgeList: [Badge]
+    categoryList: [Category]
 }
 
 input MyProfileInput {
-    accountId: String
     nickName: String
     photoLink: String
     memo: String

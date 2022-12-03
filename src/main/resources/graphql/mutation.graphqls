@@ -2,4 +2,14 @@
 type Mutation {
     """ 내정보 저장 """
     saveMyInfo(input: MyProfileInput): MyProfileInfo
+    """ 내 카테고리 저장 """
+    saveMyCategory(input: [String]): [Category]
+    """ (개발자용) 카테고리 메타정보 저장 """
+    saveCategory(input: [CategoryInput]): [Category]
+    """ 내 뱃지 저장 """
+    saveMyBadge(input: [String]): [Badge]
+    """ (개발자용) 뱃지 메타정보 저장 """
+    saveBadge(input: [BadgeInput]): [Badge]
+    """ 탈퇴하기 """
+    deleteMyInfo: Boolean
 }
