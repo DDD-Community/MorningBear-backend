@@ -1,0 +1,18 @@
+
+type Like {
+    """ 응원하기 코드 """
+    likeCode: String
+    """ 응원하기 받은 사용자ID """
+    takenAccountId: String
+    """ 응원하기 대상 사용자ID """
+    givenAccountId: String
+    """ 업데이트 일자 """
+    updatedAt: String
+}
+
+input LikeInput {
+    """ 응원하기 코드 """
+    likeCode: String
+    """ 응원하기 대상 사용자ID """
+    takenAccountId: String
+}

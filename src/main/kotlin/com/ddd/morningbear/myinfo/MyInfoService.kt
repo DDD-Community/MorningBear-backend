@@ -44,6 +44,7 @@ class MyInfoService(
         // 카테고리리스트 조회
         myInfo.categoryList = categoryService.findMyCategory(accountId)
 
+        logger.info(" >>> [findMyInfo] myInfo: {}", myInfo)
         return myInfo
     }
 
@@ -56,6 +57,7 @@ class MyInfoService(
      * @author yoonho
      * @since 2022.12.04
      */
+    @Transactional(rollbackFor = [Exception::class])
     fun saveMyInfo(accountId: String, input: MyInfoInput): MpUserInfoDto {
         if(accountId.isNullOrBlank()){
             throw GraphQLBadRequestException("로그인정보가 존재하지 않습니다.")
@@ -101,10 +103,6 @@ class MyInfoService(
         try{
             // 회원테이블 메타정보 삭제
             mpUserInfoRepository.deleteById(accountId)
-            // 뱃지 매핑테이블 연관정보삭제
-            badgeService.deleteMyBadge(accountId)
-            // 카테고리 매핑테이블 연관정보삭제
-            categoryService.deleteMyCategory(accountId)
         }catch(e: Exception){
             throw GraphQLBadRequestException()
         }

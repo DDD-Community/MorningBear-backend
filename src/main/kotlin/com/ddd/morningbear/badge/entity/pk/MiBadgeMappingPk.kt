@@ -10,7 +10,6 @@ import javax.persistence.Embeddable
  */
 @Embeddable
 class MiBadgeMappingPk(
-    @Column(name = "ACCOUNT_ID")
     val accountId: String,
     @Column(name = "BADGE_ID")
     val badgeId: String,

@@ -1,11 +1,9 @@
 package com.ddd.morningbear.category.entity
 
 import com.ddd.morningbear.category.dto.MdCategoryInfoDto
+import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 /**
  * @author yoonho
@@ -22,7 +20,10 @@ class MdCategoryInfo(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now()
+    val createdAt: LocalDateTime? = LocalDateTime.now(),
+
+    @OneToMany(mappedBy = "categoryInfo", cascade = [CascadeType.REMOVE])
+    val photoInfo: List<FiPhotoInfo>? = null,
 ) {
     fun toDto() = MdCategoryInfoDto(
         categoryId = this.categoryId,

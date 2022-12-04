@@ -1,12 +1,18 @@
 
 type Badge {
+    """ 뱃지 ID """
     badgeId: String
+    """ 뱃지 명칭 """
     badgeDesc: String
+    """ 뱃지 티어 """
     badgeTier: Int
 }
 
 input BadgeInput {
+    """ 뱃지 ID """
     badgeId: String
+    """ 뱃지 명칭 """
     badgeDesc: String
+    """ 뱃지 티어 """
     badgeTier: Int
 }

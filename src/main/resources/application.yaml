@@ -8,27 +8,34 @@ spring:
     graphiql:
       enabled: true
       path: /graphiql
+#  jpa:
+#    database: mysql
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    generate-ddl: true
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://146.56.113.143:3306/dev?characterEncodeing=UTF-8&characterSetResults=UTF-8&useSSL=false&createDatabaseIfNotExist=true&useUnicode=true
+#    username: root
+#    password: root
   jpa:
-    database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    generate-ddl: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://146.56.113.143:3306/dev?characterEncodeing=UTF-8&characterSetResults=UTF-8&useSSL=false&createDatabaseIfNotExist=true&useUnicode=true
-    username: root
-    password: root
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2
-#  datasource:
-#    url: jdbc:h2:mem:testdb
-#    driver-class-name: org.h2.Driver
-#    username: sa
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+
 login:
   apis:
     kauth: https://kauth.kakao.com

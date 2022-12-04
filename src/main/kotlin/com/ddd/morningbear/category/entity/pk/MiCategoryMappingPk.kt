@@ -10,7 +10,6 @@ import javax.persistence.Embeddable
  */
 @Embeddable
 class MiCategoryMappingPk(
-    @Column(name = "ACCOUNT_ID")
     val accountId: String,
     @Column(name = "CATEGORY_ID")
     val categoryId: String,

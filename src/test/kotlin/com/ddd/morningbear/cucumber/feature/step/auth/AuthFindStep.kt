@@ -1,7 +1,6 @@
 package com.ddd.morningbear.cucumber.feature.step.auth
 
 import com.ddd.morningbear.common.constants.CommCode
-import com.ddd.morningbear.common.utils.AppPropsUtils
 import io.cucumber.java.ko.그러면
 import io.cucumber.java.ko.만약
 import io.cucumber.java.ko.먼저

@@ -2,6 +2,7 @@ package com.ddd.morningbear.badge.entity
 
 import com.ddd.morningbear.badge.dto.MiBadgeMappingDto
 import com.ddd.morningbear.badge.entity.pk.MiBadgeMappingPk
+import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -17,7 +18,12 @@ class MiBadgeMapping(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now()
+    val createdAt: LocalDateTime? = LocalDateTime.now(),
+
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID", insertable = false, updatable = false)
+    @MapsId("accountId")
+    val userInfo: MpUserInfo
 ) {
     fun toDto() = MiBadgeMappingDto(
         accountId = miBadgeMappingPk.accountId,

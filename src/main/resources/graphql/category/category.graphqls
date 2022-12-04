@@ -1,10 +1,14 @@
 
 type Category {
+    """ 카테고리 ID """
     categoryId: String
+    """ 카테고리 명칭 """
     categoryDesc: String
 }
 
 input CategoryInput {
+    """ 카테고리 ID """
     categoryId: String
+    """ 카테고리 명칭 """
     categoryDesc: String
 }
