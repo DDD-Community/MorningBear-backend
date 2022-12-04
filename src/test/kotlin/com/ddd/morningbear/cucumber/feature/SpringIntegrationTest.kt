@@ -8,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.graphql.test.tester.GraphQlTester
 import org.springframework.test.context.ActiveProfiles
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @SpringBootTest
 @CucumberContextConfiguration
 @AutoConfigureMockMvc

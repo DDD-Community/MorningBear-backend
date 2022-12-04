@@ -1,0 +1,7 @@
+
+mutation saveBlock($input: String) {
+    saveBlock(input: $input) {
+        accountId
+        blockAccountId
+    }
+}

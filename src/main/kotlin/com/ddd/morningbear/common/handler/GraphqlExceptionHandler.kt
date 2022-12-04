@@ -9,6 +9,10 @@ import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter
 import org.springframework.graphql.execution.ErrorType
 import org.springframework.stereotype.Component
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Component
 class GraphqlExceptionHandler: DataFetcherExceptionResolverAdapter() {
 

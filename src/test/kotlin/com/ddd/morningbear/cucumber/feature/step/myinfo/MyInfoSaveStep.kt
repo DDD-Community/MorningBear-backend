@@ -15,6 +15,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.test.tester.GraphQlTester
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 class MyInfoSaveStep {
     private val logger = LoggerFactory.getLogger(this::class.java)
 

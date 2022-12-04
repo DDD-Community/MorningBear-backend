@@ -5,6 +5,10 @@ import com.ddd.morningbear.category.dto.MdCategoryInfoDto
 import java.io.Serializable
 import java.time.LocalDateTime
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 data class MpUserInfoDto (
     val accountId: String,
     val nickName: String?,

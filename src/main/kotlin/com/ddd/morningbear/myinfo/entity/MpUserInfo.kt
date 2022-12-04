@@ -7,6 +7,10 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Entity
 @Table(name = "MP_USER_INFO")
 class MpUserInfo(

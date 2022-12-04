@@ -7,6 +7,10 @@ import org.junit.platform.suite.api.SelectClasspathResource
 import org.junit.platform.suite.api.Suite
 import org.junit.platform.suite.api.ConfigurationParameters
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("cucumber/feature")

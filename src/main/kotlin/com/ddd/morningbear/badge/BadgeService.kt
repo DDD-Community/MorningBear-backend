@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.stream.Collectors
 
+/**
+ * @author yoonho
+ * @since 2022.11.19
+ */
 @Service
 class BadgeService(
     private val miBadgeMappingRepository: MiBadgeMappingRepository,
@@ -22,15 +26,47 @@ class BadgeService(
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    /**
+     * 전체 뱃지 조회
+     *
+     * @return List [MdBadgeInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun findAllBadge(): List<MdBadgeInfoDto> = mdBadgeInfoRepository.findAll().map { it.toDto() }
 
+    /**
+     * 내 뱃지 조회(매핑테이블) - 개발자용
+     *
+     * @param accountId [String]
+     * @return List [MiBadgeMappingDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun findMyBadgeMapping(accountId: String): List<MiBadgeMappingDto> = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId).map { it.toDto() }
 
+    /**
+     * 내 뱃지 조회
+     *
+     * @param accountId [String]
+     * @return List [MdBadgeInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun findMyBadge(accountId: String): List<MdBadgeInfoDto> {
         var badgeIdList = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId).map { it.miBadgeMappingPk.badgeId }.stream().collect(Collectors.toList())
         return mdBadgeInfoRepository.findAllById(badgeIdList).map { it.toDto() }
     }
 
+    /**
+     * 내 뱃지 저장
+     *
+     * @param accountId [String]
+     * @param input [List][String]
+     * @return List [MdBadgeInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun saveMyBadge(accountId: String, input: List<String>): List<MdBadgeInfoDto> {
         var badgeList = mdBadgeInfoRepository.findAllById(input)
         if(input.size != badgeList.size){
@@ -52,6 +88,14 @@ class BadgeService(
         return this.findMyBadge(accountId)
     }
 
+    /**
+     * 뱃지 메타정보 저장 - 개발자용
+     *
+     * @param input [List][BadgeInput]
+     * @return List [MdBadgeInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun saveBadge(input: List<BadgeInput>): List<MdBadgeInfoDto> {
         input.stream().forEach {
             x -> mdBadgeInfoRepository.save(
@@ -67,6 +111,13 @@ class BadgeService(
         return this.findAllBadge()
     }
 
+    /**
+     * 내 뱃지 매핑정보 삭제
+     *
+     * @param accountId [String]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun deleteMyBadge(accountId: String) {
         val badgeList = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId)
         badgeList.stream().forEach {

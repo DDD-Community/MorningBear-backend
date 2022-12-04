@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Service
 class MyInfoService(
     private val mpUserInfoRepository: MpUserInfoRepository,
@@ -22,6 +26,14 @@ class MyInfoService(
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    /**
+     * 내정보 조회
+     *
+     * @param accountId [String]
+     * @return result [MpUserInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun findMyInfo(accountId: String): MpUserInfoDto {
         var myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
             throw GraphQLNotFoundException("내 정보 조회에 실패하였습니다.")
@@ -35,6 +47,15 @@ class MyInfoService(
         return myInfo
     }
 
+    /**
+     * 내정보 저장
+     *
+     * @param accountId [String]
+     * @param input [MyInfoInput]
+     * @return result [MpUserInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     fun saveMyInfo(accountId: String, input: MyInfoInput): MpUserInfoDto {
         if(accountId.isNullOrBlank()){
             throw GraphQLBadRequestException("로그인정보가 존재하지 않습니다.")
@@ -68,11 +89,21 @@ class MyInfoService(
         }
     }
 
+    /**
+     * 탈퇴하기
+     *
+     * @param accountId [String]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     @Transactional(rollbackFor = [Exception::class])
     fun deleteMyInfo(accountId: String): Boolean {
         try{
+            // 회원테이블 메타정보 삭제
             mpUserInfoRepository.deleteById(accountId)
+            // 뱃지 매핑테이블 연관정보삭제
             badgeService.deleteMyBadge(accountId)
+            // 카테고리 매핑테이블 연관정보삭제
             categoryService.deleteMyCategory(accountId)
         }catch(e: Exception){
             throw GraphQLBadRequestException()

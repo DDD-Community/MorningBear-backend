@@ -7,9 +7,20 @@ import com.ddd.morningbear.common.utils.AppPropsUtils
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @RestController
 class AuthController {
 
+    /**
+     * 로그인 기본정보 조회
+     *
+     * @return List [AuthResult]
+     * @author yoonho
+     * @since 2022.12.04
+     */
     @SkipTokenCheck
     @QueryMapping
     fun findLoginInfo(): List<AuthResult> {

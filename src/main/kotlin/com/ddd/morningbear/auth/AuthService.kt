@@ -14,6 +14,10 @@ import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Mono
 import javax.annotation.PostConstruct
 
+/**
+ * @author yoonho
+ * @since 2022.11.19
+ */
 @Service
 class AuthService(
     private val webClientBuilder: WebClient.Builder

@@ -13,4 +13,6 @@ type Query {
     findMyCategoryMapping: [Category]
     """ (개발자용) 내 뱃지 매핑정보 조회 """
     findMyBadgeMapping: [Badge]
+    """ (개발자용) 내가 차단한 사용자목록 조회 """
+    findBlock: [Block]
 }

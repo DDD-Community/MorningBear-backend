@@ -2,6 +2,10 @@ package com.ddd.morningbear.common.context
 
 import org.springframework.core.NamedInheritableThreadLocal
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 object AuthenticationContextHolder {
     /** 인증 정보를 보관하는 ThreadLocal 변수.  */
     private val ALLIANCE_CONTEXT_HOLDER: NamedInheritableThreadLocal<AuthenticationContext> =

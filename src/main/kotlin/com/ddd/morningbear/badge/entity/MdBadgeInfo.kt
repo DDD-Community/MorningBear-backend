@@ -8,6 +8,10 @@ import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.Size
 
+/**
+ * @author yoonho
+ * @since 2022.11.19
+ */
 @Entity
 @Table(name = "MD_BADGE_INFO")
 class MdBadgeInfo(

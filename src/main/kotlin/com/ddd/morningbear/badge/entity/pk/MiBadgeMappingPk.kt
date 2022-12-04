@@ -4,7 +4,10 @@ import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
-
+/**
+ * @author yoonho
+ * @since 2022.11.19
+ */
 @Embeddable
 class MiBadgeMappingPk(
     @Column(name = "ACCOUNT_ID")

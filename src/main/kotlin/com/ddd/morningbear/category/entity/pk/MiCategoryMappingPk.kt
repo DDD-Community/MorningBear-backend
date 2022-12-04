@@ -4,6 +4,10 @@ import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Embeddable
 class MiCategoryMappingPk(
     @Column(name = "ACCOUNT_ID")

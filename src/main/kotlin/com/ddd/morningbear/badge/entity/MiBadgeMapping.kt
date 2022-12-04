@@ -5,6 +5,10 @@ import com.ddd.morningbear.badge.entity.pk.MiBadgeMappingPk
 import java.time.LocalDateTime
 import javax.persistence.*
 
+/**
+ * @author yoonho
+ * @since 2022.11.19
+ */
 @Entity
 @Table(name = "MI_BADGE_MAPPING")
 class MiBadgeMapping(

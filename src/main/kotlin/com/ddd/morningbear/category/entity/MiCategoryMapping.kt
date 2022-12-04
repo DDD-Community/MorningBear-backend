@@ -8,6 +8,10 @@ import javax.persistence.EmbeddedId
 import javax.persistence.Entity
 import javax.persistence.Table
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Entity
 @Table(name = "MI_CATEGORY_MAPPING")
 class MiCategoryMapping(

@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 @Aspect
 @Component
 class AopConfig(

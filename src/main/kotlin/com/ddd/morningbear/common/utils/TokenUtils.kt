@@ -4,6 +4,10 @@ import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.login.dto.TokenInfo
 import org.slf4j.LoggerFactory
 
+/**
+ * @author yoonho
+ * @since 2022.12.04
+ */
 object TokenUtils {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
