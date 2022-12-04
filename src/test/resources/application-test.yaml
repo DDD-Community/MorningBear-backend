@@ -8,34 +8,44 @@ spring:
     schema:
       locations: classpath:graphql/**/
       file-extensions: .graphqls,.gqls
+    graphiql:
+      enabled: true
+      path: /graphiql
   jpa:
+    database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     generate-ddl: true
-  h2:
-    console:
-      enabled: true
-      path: /h2
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-
-login:
-  apis:
-    kauth: https://kauth.kakao.com
-    kapi: https://kapi.kakao.com
-    nauth: https://nid.naver.com
-    napi: https://openapi.naver.com
-  appconfigs:
-    - type: kakao
-      restKey: 6e0ca7622b0942a8b6cdd7a21579546b
-      jsKey: e09f051b266e433cd117edb6aaf588c3
-      nativeKey: ef16d82d4bc4c7ed9c6dae9ac0931cc4
-      secrets: gwtd7Py9puRoHt6fXJAGaG8GJCJcNj6H
-    - type: naver
-      restKey: 7rZMvLkTIXowUlkv7h_y
-      jsKey: 7rZMvLkTIXowUlkv7h_y
-      nativeKey: 7rZMvLkTIXowUlkv7h_y
-      secrets: lt5UnpY0Uq
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://146.56.113.143:3306/dev?characterEncodeing=UTF-8&characterSetResults=UTF-8&useSSL=false&createDatabaseIfNotExist=true&useUnicode=true
+    username: root
+    password: root
+  #  h2:
+  #    console:
+  #      enabled: true
+  #      path: /h2
+  #  datasource:
+  #    url: jdbc:h2:mem:testdb
+  #    driver-class-name: org.h2.Driver
+  #    username: sa
+  login:
+    apis:
+      kauth: https://kauth.kakao.com
+      kapi: https://kapi.kakao.com
+      nauth: https://nid.naver.com
+      napi: https://openapi.naver.com
+    appconfigs:
+      - type: kakao
+        restKey: 6e0ca7622b0942a8b6cdd7a21579546b
+        jsKey: e09f051b266e433cd117edb6aaf588c3
+        nativeKey: ef16d82d4bc4c7ed9c6dae9ac0931cc4
+        secrets: gwtd7Py9puRoHt6fXJAGaG8GJCJcNj6H
+      - type: naver
+        restKey: 7rZMvLkTIXowUlkv7h_y
+        jsKey: 7rZMvLkTIXowUlkv7h_y
+        nativeKey: 7rZMvLkTIXowUlkv7h_y
+        secrets: lt5UnpY0Uq

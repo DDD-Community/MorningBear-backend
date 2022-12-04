@@ -31,7 +31,7 @@ class CategoryFindAllStep {
         var accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), Constants.state)
 
         var context = AuthenticationContext
-        context.setAccountId(accountId!!)
+        context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
     }
 
@@ -46,8 +46,10 @@ class CategoryFindAllStep {
             .execute()
     }
 
-    @그러면("카테고리 조회API 호출결과를 확인한다")
-    fun 카테고리_조회API_호출결과를_확인한다() {
-
+    @그러면("카테고리 조회API 호출결과 {string}{string} 를 확인한다")
+    fun 카테고리_조회API_호출결과_를_확인한다(categoryId: String, categoryDesc: String) {
+        var idx = categoryId.substring(categoryId.length-1).toInt()
+        result.path("findAllCategory[" + (idx - 1) + "].categoryId").entity(String::class.java).isEqualTo(categoryId)
+        result.path("findAllCategory[" + (idx - 1) + "].categoryDesc").entity(String::class.java).isEqualTo(categoryDesc)
     }
 }

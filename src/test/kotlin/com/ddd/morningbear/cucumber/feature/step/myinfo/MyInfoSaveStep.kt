@@ -35,7 +35,7 @@ class MyInfoSaveStep {
         accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), Constants.state)
 
         var context = AuthenticationContext
-        context.setAccountId(accountId!!)
+        context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
     }
 
@@ -60,7 +60,7 @@ class MyInfoSaveStep {
 
     @그러면("내정보 저장API 호출결과를 확인한다")
     fun 내정보_저장API_호출결과를_확인한다() {
-        result.path("saveMyInfo.accountId").entity(String::class.java).isEqualTo(accountId!!)
+        result.path("saveMyInfo.accountId").entity(String::class.java).isEqualTo(accountId)
         result.path("saveMyInfo.nickName").entity(String::class.java).isEqualTo(input["nickName"]!!)
         result.path("saveMyInfo.memo").entity(String::class.java).isEqualTo(input["memo"]!!)
         result.path("saveMyInfo.photoLink").entity(String::class.java).isEqualTo(input["photoLink"]!!)

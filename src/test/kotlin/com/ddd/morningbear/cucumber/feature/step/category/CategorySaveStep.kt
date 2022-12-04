@@ -32,7 +32,7 @@ class CategorySaveStep {
         var accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), Constants.state)
 
         var context = AuthenticationContext
-        context.setAccountId(accountId!!)
+        context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
     }
 
@@ -51,6 +51,8 @@ class CategorySaveStep {
 
     @그러면("내 카테고리정보 저장API 호출결과를 확인한다")
     fun 내_카테고리정보_저장API_호출결과를_확인한다() {
-
+        var idx = input[0].substring(input[0].length-1).toInt()
+        result.path("saveMyCategory[" + (idx - 1) + "].categoryId").entity(String::class.java).isEqualTo(input[0])
+        result.path("saveMyCategory[" + (idx - 1) + "].categoryDesc").entity(String::class.java).isEqualTo(input[0])
     }
 }

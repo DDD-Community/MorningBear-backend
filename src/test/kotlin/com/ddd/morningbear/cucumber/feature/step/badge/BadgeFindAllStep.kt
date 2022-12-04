@@ -31,7 +31,7 @@ class BadgeFindAllStep {
         var accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), Constants.state)
 
         var context = AuthenticationContext
-        context.setAccountId(accountId!!)
+        context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
     }
 
@@ -46,8 +46,11 @@ class BadgeFindAllStep {
             .execute()
     }
 
-    @그러면("뱃지 조회API 호출결과를 확인한다")
-    fun 뱃지_조회API_호출결과를_확인한다() {
-
+    @그러면("뱃지 조회API 호출결과 {string}{string}{int} 를 확인한다")
+    fun 뱃지_조회API_호출결과_를_확인한다(badgeId: String, badgeDesc: String, badgeTier: Int) {
+        var idx = badgeId.substring(badgeId.length-1).toInt()
+        result.path("findAllBadge[" + (idx - 1) + "].badgeId").entity(String::class.java).isEqualTo(badgeId)
+        result.path("findAllBadge[" + (idx - 1) + "].badgeDesc").entity(String::class.java).isEqualTo(badgeDesc)
+        result.path("findAllBadge[" + (idx - 1) + "].badgeTier").entity(Int::class.java).isEqualTo(badgeTier)
     }
 }

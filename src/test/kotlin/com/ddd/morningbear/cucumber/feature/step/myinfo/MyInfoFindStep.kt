@@ -50,8 +50,8 @@ class MyInfoFindStep {
     fun 호출결과를_확인한다(accountId: String, nickName: String, photoLink: String, memo: String, wakeUpAt: String) {
         result.path("findMyInfo.accountId").entity(String::class.java).isEqualTo(accountId)
         result.path("findMyInfo.nickName").entity(String::class.java).isEqualTo(nickName)
-        result.path("findMyInfo.memo").entity(String::class.java).isEqualTo(photoLink)
-        result.path("findMyInfo.photoLink").entity(String::class.java).isEqualTo(memo)
+        result.path("findMyInfo.memo").entity(String::class.java).isEqualTo(memo)
+        result.path("findMyInfo.photoLink").entity(String::class.java).isEqualTo(photoLink)
         result.path("findMyInfo.wakeUpAt").entity(String::class.java).isEqualTo(wakeUpAt)
     }
 }
