@@ -9,6 +9,8 @@ import com.ddd.morningbear.category.entity.pk.MiCategoryMappingPk
 import com.ddd.morningbear.category.repository.MdCategoryInfoRepository
 import com.ddd.morningbear.category.repository.MiCategoryMappingRepository
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
+import com.ddd.morningbear.common.exception.GraphQLNotFoundException
+import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,7 +24,8 @@ import java.util.stream.Collectors
 @Service
 class CategoryService(
     private val mdCategoryInfoRepository: MdCategoryInfoRepository,
-    private val miCategoryMappingRepository: MiCategoryMappingRepository
+    private val miCategoryMappingRepository: MiCategoryMappingRepository,
+    private val mpUserInfoRepository: MpUserInfoRepository
 ) {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -81,6 +84,7 @@ class CategoryService(
                             accountId = accountId,
                             categoryId = x.categoryId
                         ),
+                        userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자정보를 조회할 수 없습니다.") },
                         updatedAt = LocalDateTime.now()
                     )
                 )
@@ -109,19 +113,5 @@ class CategoryService(
         }
 
         return this.findAllCategory()
-    }
-
-    /**
-     * 내 카테고리 매핑정보 삭제
-     *
-     * @param accountId [String]
-     * @author yoonho
-     * @since 2022.12.04
-     */
-    fun deleteMyCategory(accountId: String) {
-        val categoryList = miCategoryMappingRepository.findAllByMiCategoryMappingPkAccountId(accountId)
-        categoryList.stream().forEach {
-                x -> miCategoryMappingRepository.deleteAllByMiCategoryMappingPk(x.miCategoryMappingPk)
-        }
     }
 }

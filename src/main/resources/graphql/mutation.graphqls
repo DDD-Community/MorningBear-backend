@@ -10,6 +10,14 @@ type Mutation {
     deleteMyInfo: Boolean
     """ 사용자 차단하기 """
     saveBlock(input: String): [Block]
+    """ 내 피드 저장 """
+    saveMyFeed: Feed
+    """ 응원하기 """
+    saveLike(input: LikeInput): Boolean
+    """ 응원 취소하기 """
+    deleteLike(input: LikeInput): Boolean
+    """ 내 사진 저장 """
+    saveMyPhoto(input: PhotoInput): Photo
 
     """ (개발자용) 뱃지 메타정보 저장 """
     saveBadge(input: [BadgeInput]): [Badge]

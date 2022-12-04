@@ -1,11 +1,11 @@
 package com.ddd.morningbear.myinfo.entity
 
+import com.ddd.morningbear.badge.entity.MiBadgeMapping
+import com.ddd.morningbear.category.entity.MiCategoryMapping
+import com.ddd.morningbear.feed.entity.FiFeedInfo
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 /**
  * @author yoonho
@@ -28,13 +28,23 @@ class MpUserInfo(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime? = null,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now()
+    val createdAt: LocalDateTime? = LocalDateTime.now(),
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @JoinColumn(name = "ACCOUNT_ID")
+    val fiFeedInfo: FiFeedInfo? = null,
+
+    @OneToMany(mappedBy = "userInfo", cascade = [CascadeType.REMOVE])
+    val categoryInfo: List<MiCategoryMapping>? = null,
+
+    @OneToMany(mappedBy = "userInfo", cascade = [CascadeType.REMOVE])
+    val badgeInfo: List<MiBadgeMapping>? = null
 ) {
     fun toDto() = MpUserInfoDto(
         accountId = this.accountId,
         nickName = this.nickName,
         photoLink = this.photoLink,
         memo = this.memo,
-        wakeUpAt = this.wakeUpAt
+        wakeUpAt = this.wakeUpAt,
     )
 }

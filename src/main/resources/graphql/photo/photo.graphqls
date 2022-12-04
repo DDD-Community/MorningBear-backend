@@ -1,0 +1,48 @@
+
+type Photo {
+    """ 사진ID """
+    photoId: String
+    """ 사진 링크 """
+    photoLink: String
+    """ 사진 설명 """
+    photoDesc: String
+    """ 사용자ID """
+    accountId: String
+    """ 카테고리ID """
+    categoryId: String
+    """ 시작시간(format: HHmm) """
+    startAt: String
+    """ 종료시간(format: HHmm) """
+    endAt: String
+    """ 업데이트 일자 """
+    updatedAt: String
+}
+
+input PhotoInput {
+    """ 사진ID """
+    photoId: String
+    """ 사진 링크 """
+    photoLink: String
+    """ 사진 설명 """
+    photoDesc: String
+    """ 카테고리ID """
+    categoryId: String
+    """ 시작시간(format: HHmm) """
+    startAt: String
+    """ 종료시간(format: HHmm) """
+    endAt: String
+}
+
+input PhotoUserInput {
+    """ 사용자ID """
+    accountId: String
+    """ 사진ID """
+    photoId: String
+}
+
+input PhotoCategoryInput {
+    """ 사용자ID """
+    accountId: String
+    """ 카테고리ID """
+    categoryId: String
+}

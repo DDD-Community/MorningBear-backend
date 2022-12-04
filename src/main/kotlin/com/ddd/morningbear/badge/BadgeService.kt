@@ -9,6 +9,8 @@ import com.ddd.morningbear.badge.entity.pk.MiBadgeMappingPk
 import com.ddd.morningbear.badge.repository.MdBadgeInfoRepository
 import com.ddd.morningbear.badge.repository.MiBadgeMappingRepository
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
+import com.ddd.morningbear.common.exception.GraphQLNotFoundException
+import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -21,7 +23,8 @@ import java.util.stream.Collectors
 @Service
 class BadgeService(
     private val miBadgeMappingRepository: MiBadgeMappingRepository,
-    private val mdBadgeInfoRepository: MdBadgeInfoRepository
+    private val mdBadgeInfoRepository: MdBadgeInfoRepository,
+    private val mpUserInfoRepository: MpUserInfoRepository
 ) {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -80,6 +83,7 @@ class BadgeService(
                         accountId = accountId,
                         badgeId = x.badgeId
                     ),
+                    userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자정보를 조회할 수 없습니다.") },
                     updatedAt = LocalDateTime.now()
                 )
             )
@@ -109,19 +113,5 @@ class BadgeService(
         }
 
         return this.findAllBadge()
-    }
-
-    /**
-     * 내 뱃지 매핑정보 삭제
-     *
-     * @param accountId [String]
-     * @author yoonho
-     * @since 2022.12.04
-     */
-    fun deleteMyBadge(accountId: String) {
-        val badgeList = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId)
-        badgeList.stream().forEach {
-                x -> miBadgeMappingRepository.deleteAllByMiBadgeMappingPk(x.miBadgeMappingPk)
-        }
     }
 }

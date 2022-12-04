@@ -2,11 +2,9 @@ package com.ddd.morningbear.category.entity
 
 import com.ddd.morningbear.category.dto.MiCategoryMappingDto
 import com.ddd.morningbear.category.entity.pk.MiCategoryMappingPk
+import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.EmbeddedId
-import javax.persistence.Entity
-import javax.persistence.Table
+import javax.persistence.*
 
 /**
  * @author yoonho
@@ -20,7 +18,12 @@ class MiCategoryMapping(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now()
+    val createdAt: LocalDateTime? = LocalDateTime.now(),
+
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID", insertable = false, updatable = false)
+    @MapsId("accountId")
+    val userInfo: MpUserInfo
 ) {
     fun toDto() = MiCategoryMappingDto(
         accountId = miCategoryMappingPk.accountId,

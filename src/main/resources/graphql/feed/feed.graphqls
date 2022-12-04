@@ -1,0 +1,11 @@
+
+type Feed {
+    """ 사용자ID(피드ID와 동일) """
+    accountId: String
+    """ 내가 받은 응원하기 리스트 """
+    takenLike: [Like]
+    """ 내가 응원한 리스트 """
+    givenLike: [Like]
+    """ 내 사진 리스트 """
+    photoInfo: [Photo]
+}

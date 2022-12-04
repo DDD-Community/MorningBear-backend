@@ -1,17 +1,28 @@
 
 type MyProfileInfo {
+    """ 사용자ID """
     accountId: String
+    """ 닉네임 """
     nickName: String
+    """ 프로필사진 링크 """
     photoLink: String
+    """ 자기소개글 """
     memo: String
+    """ 기상시간(format: HHmm) """
     wakeUpAt: String
+    """ 획득 뱃지 리스트 """
     badgeList: [Badge]
+    """ 설정한 카테고리 리스트 """
     categoryList: [Category]
 }
 
 input MyProfileInput {
+    """ 닉네임 """
     nickName: String
+    """ 프로필사진 링크 """
     photoLink: String
+    """ 자기소개글 """
     memo: String
+    """ 기상시간(format: HHmm) """
     wakeUpAt: String
 }

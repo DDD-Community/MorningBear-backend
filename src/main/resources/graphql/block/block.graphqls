@@ -1,5 +1,7 @@
 
 type Block {
+    """ 사용자ID """
     accountId: String
+    """ 신고&차단하기 대상 사용자ID """
     blockAccountId: String
 }
