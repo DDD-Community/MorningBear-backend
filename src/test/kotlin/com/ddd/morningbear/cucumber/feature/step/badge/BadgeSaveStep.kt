@@ -32,7 +32,7 @@ class BadgeSaveStep {
         var accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), Constants.state)
 
         var context = AuthenticationContext
-        context.setAccountId(accountId!!)
+        context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
     }
 
@@ -51,6 +51,9 @@ class BadgeSaveStep {
 
     @그러면("내 뱃지정보 저장API 호출결과를 확인한다")
     fun 내_뱃지정보_저장API_호출결과를_확인한다() {
-
+        var idx = input[0].substring(input[0].length-1).toInt()
+        result.path("saveMyBadge[" + (idx - 1) + "].badgeId").entity(String::class.java).isEqualTo(input[0])
+        result.path("saveMyBadge[" + (idx - 1) + "].badgeDesc").entity(String::class.java).isEqualTo(input[0])
+        result.path("saveMyBadge[" + (idx - 1) + "].badgeTier").entity(Int::class.java).isEqualTo(1)
     }
 }

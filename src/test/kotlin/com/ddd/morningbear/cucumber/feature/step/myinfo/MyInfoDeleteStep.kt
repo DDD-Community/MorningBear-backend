@@ -52,6 +52,6 @@ class MyInfoDeleteStep {
 
     @그러면("호출결과 {string} 를 확인한다")
     fun 호출결과_를_확인한다(response: String) {
-        result.path("deleteMyInfo").entity(String::class.java).isEqualTo(response!!)
+        result.path("deleteMyInfo").entity(String::class.java).isEqualTo(response)
     }
 }

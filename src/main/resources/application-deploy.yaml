@@ -1,6 +1,9 @@
 server:
   port: 8080
 spring:
+  config:
+    activate:
+      on-profile: deploy
   graphql:
     schema:
       locations: classpath:graphql/**/
@@ -18,7 +21,7 @@ spring:
     generate-ddl: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://146.56.113.143:3306/dev?characterEncodeing=UTF-8&characterSetResults=UTF-8&useSSL=false&createDatabaseIfNotExist=true&useUnicode=true
+    url: jdbc:mysql://146.56.113.143:3306/deploy?characterEncodeing=UTF-8&characterSetResults=UTF-8&useSSL=false&createDatabaseIfNotExist=true&useUnicode=true
     username: root
     password: root
 #  h2:

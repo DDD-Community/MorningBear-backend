@@ -6,11 +6,12 @@
   시나리오 개요: 카테고리정보 조회
     먼저 카테고리 정보를 조회하기 위한 "<docs>" 가 있다
     만약 카테고리 조회API를 요청하면
-    그러면 카테고리 조회API 호출결과를 확인한다
+    그러면 카테고리 조회API 호출결과 "<categoryId>""<categoryDesc>" 를 확인한다
 
     예:
-    | docs                            |
-    | /category/category-findAll      |
+    | docs                            | categoryId        | categoryDesc    |
+    | /category/category-findAll      | TEST_CATEGORY1    | TEST_CATEGORY1  |
+    | /category/category-findAll      | TEST_CATEGORY2    | TEST_CATEGORY2  |
 
   @category-save
   시나리오 개요: 내 카테고리정보 저장
@@ -21,3 +22,4 @@
     예:
     | docs                              | categoryId              |
     | /category/category-save           | TEST_CATEGORY1          |
+    | /category/category-save           | TEST_CATEGORY2          |
