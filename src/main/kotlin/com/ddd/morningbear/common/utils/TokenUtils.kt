@@ -15,7 +15,7 @@ object TokenUtils {
         var prefix = when(type) {
             CommCode.Social.KAKAO.code -> "k::"
             CommCode.Social.NAVER.code -> "n::"
-            CommCode.Social.NAVER.code -> "n::"
+            CommCode.Social.APPLE.code -> "a::"
             else -> ""
         }
 
@@ -26,12 +26,12 @@ object TokenUtils {
         var prefix = when(type) {
             CommCode.Social.KAKAO.code -> "k::"
             CommCode.Social.NAVER.code -> "n::"
-            CommCode.Social.NAVER.code -> "n::"
+            CommCode.Social.APPLE.code -> "a::"
             else -> ""
         }
 
-        tokenInfo?.accessToken = prefix + tokenInfo?.accessToken
-        tokenInfo?.refreshToken = prefix + tokenInfo?.refreshToken
+        tokenInfo.accessToken = prefix + tokenInfo.accessToken
+        tokenInfo.refreshToken = prefix + tokenInfo.refreshToken
 
         return tokenInfo
     }
@@ -40,7 +40,7 @@ object TokenUtils {
         var prefix = when(type) {
             CommCode.Social.KAKAO.code -> "k::"
             CommCode.Social.NAVER.code -> "n::"
-            CommCode.Social.NAVER.code -> "n::"
+            CommCode.Social.APPLE.code -> "a::"
             else -> ""
         }
 
@@ -51,7 +51,7 @@ object TokenUtils {
         var prefix = when(type) {
             CommCode.Social.KAKAO.code -> "k::"
             CommCode.Social.NAVER.code -> "n::"
-            CommCode.Social.NAVER.code -> "n::"
+            CommCode.Social.APPLE.code -> "a::"
             else -> ""
         }
 

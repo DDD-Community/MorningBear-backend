@@ -2,6 +2,7 @@ package com.ddd.morningbear.category.entity
 
 import com.ddd.morningbear.category.dto.MiCategoryMappingDto
 import com.ddd.morningbear.category.entity.pk.MiCategoryMappingPk
+import com.ddd.morningbear.feed.entity.FiFeedInfo
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -23,7 +24,12 @@ class MiCategoryMapping(
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID", insertable = false, updatable = false)
     @MapsId("accountId")
-    val userInfo: MpUserInfo
+    val userInfo: MpUserInfo,
+
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID", insertable = false, updatable = false)
+    @MapsId("accountId")
+    val feedInfo: FiFeedInfo
 ) {
     fun toDto() = MiCategoryMappingDto(
         accountId = miCategoryMappingPk.accountId,

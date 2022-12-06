@@ -8,4 +8,6 @@ type Feed {
     givenLike: [Like]
     """ 내 사진 리스트 """
     photoInfo: [Photo]
+    """ 내 카테고리 리스트 """
+    categoryInfo: [Category]
 }

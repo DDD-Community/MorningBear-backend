@@ -2,6 +2,7 @@ package com.ddd.morningbear.feed.repository
 
 import com.ddd.morningbear.feed.entity.FiFeedInfo
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.*
 
 /**
  * @author yoonho

@@ -32,6 +32,17 @@ object AppPropsUtils {
         return null
     }
 
+    fun isExistRestKey(appKey: String, type: String): Boolean {
+        var appconfig = appProps.appconfigs.filter { x -> x["type"].equals(type) }.firstOrNull()
+        if(!appconfig.isNullOrEmpty()){
+            if(appconfig.get("restKey").equals(appKey)){
+                return true;
+            }
+        }
+
+        return false
+    }
+
     fun findUrl(key: String): String? {
         return appProps.apis.get(key)
     }

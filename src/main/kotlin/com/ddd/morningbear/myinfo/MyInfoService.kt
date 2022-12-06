@@ -6,6 +6,9 @@ import com.ddd.morningbear.category.CategoryService
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLInternalServerException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
+import com.ddd.morningbear.feed.FeedService
+import com.ddd.morningbear.feed.entity.FiFeedInfo
+import com.ddd.morningbear.feed.repository.FiFeedInfoRepository
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
@@ -21,8 +24,10 @@ import java.time.LocalDateTime
 @Service
 class MyInfoService(
     private val mpUserInfoRepository: MpUserInfoRepository,
+    private val fiFeedInfoRepository: FiFeedInfoRepository,
     private val categoryService: CategoryService,
-    private val badgeService: BadgeService
+    private val badgeService: BadgeService,
+    private val feedService: FeedService
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -44,7 +49,6 @@ class MyInfoService(
         // 카테고리리스트 조회
         myInfo.categoryList = categoryService.findMyCategory(accountId)
 
-        logger.info(" >>> [findMyInfo] myInfo: {}", myInfo)
         return myInfo
     }
 
@@ -64,30 +68,49 @@ class MyInfoService(
         }
 
         try{
-            // Patch방식으로 이미 저장된 사용자정보에서 input으로 전달받은 데이터만 update
-            if(mpUserInfoRepository.existsById(accountId)) {
-                val myInfo = mpUserInfoRepository.findById(accountId).orElseGet(null).toDto()
 
+            if(mpUserInfoRepository.existsById(accountId)) {
+                /* 회원정보 업데이트 */
+                val myInfo = mpUserInfoRepository.findById(accountId).orElseGet(null).toDto()
+                // Patch방식으로 이미 저장된 사용자정보에서 input으로 전달받은 데이터만 update
                 if(input.nickName.isNullOrBlank()) input.nickName = myInfo.nickName
                 if(input.photoLink.isNullOrBlank()) input.photoLink = myInfo.photoLink
                 if(input.memo.isNullOrBlank()) input.memo = myInfo.memo
                 if(input.wakeUpAt.isNullOrBlank()) input.wakeUpAt = myInfo.wakeUpAt
+
+                mpUserInfoRepository.save(
+                    MpUserInfo(
+                        accountId = accountId,
+                        nickName = input.nickName,
+                        photoLink = input.photoLink,
+                        memo = input.memo,
+                        wakeUpAt = input.wakeUpAt,
+                        updatedAt = LocalDateTime.now()
+                    )
+                ).toDto()
+            }else{
+                /* 신규회원 저장 */
+                mpUserInfoRepository.save(
+                    MpUserInfo(
+                        accountId = accountId,
+                        nickName = input.nickName,
+                        photoLink = input.photoLink,
+                        memo = input.memo,
+                        wakeUpAt = input.wakeUpAt,
+                        updatedAt = LocalDateTime.now()
+                    )
+                ).toDto()
+
+                feedService.saveMyFeed(accountId)
             }
 
-            mpUserInfoRepository.save(
-                MpUserInfo(
-                    accountId = accountId,
-                    nickName = input.nickName,
-                    photoLink = input.photoLink,
-                    memo = input.memo,
-                    wakeUpAt = input.wakeUpAt,
-                    updatedAt = LocalDateTime.now()
-                )
-            ).toDto()
-
             return this.findMyInfo(accountId)
+        }catch (ne: GraphQLNotFoundException){
+            throw ne
+        }catch (be: GraphQLBadRequestException){
+            throw be
         }catch(e: Exception){
-            throw GraphQLInternalServerException()
+            throw GraphQLBadRequestException()
         }
     }
 
@@ -101,8 +124,14 @@ class MyInfoService(
     @Transactional(rollbackFor = [Exception::class])
     fun deleteMyInfo(accountId: String): Boolean {
         try{
+            if(!mpUserInfoRepository.existsById(accountId)) {
+                throw GraphQLBadRequestException("이미 탈퇴했거나 존재하지 않는 회원입니다.")
+            }
+
             // 회원테이블 메타정보 삭제
             mpUserInfoRepository.deleteById(accountId)
+        }catch(be: GraphQLBadRequestException) {
+            throw be
         }catch(e: Exception){
             throw GraphQLBadRequestException()
         }

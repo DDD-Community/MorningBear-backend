@@ -1,5 +1,8 @@
 package com.ddd.morningbear.feed
 
+import com.ddd.morningbear.category.CategoryService
+import com.ddd.morningbear.category.repository.MdCategoryInfoRepository
+import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.feed.dto.FiFeedInfoDto
 import com.ddd.morningbear.feed.entity.FiFeedInfo
@@ -16,7 +19,8 @@ import java.time.LocalDateTime
 @Service
 class FeedService(
     private val fiFeedInfoRepository: FiFeedInfoRepository,
-    private val mpUserInfoRepository: MpUserInfoRepository
+    private val mdCategoryInfoRepository: MdCategoryInfoRepository,
+    private val categoryService: CategoryService
 ) {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -29,8 +33,15 @@ class FeedService(
      * @author yoonho
      * @since 2022.12.05
      */
-    fun findMyFeed(accountId: String): FiFeedInfoDto {
-        return fiFeedInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("내 피드 조회에 실패하였습니다.") }.toDto()
+    fun findFeed(accountId: String): FiFeedInfoDto {
+        var feedInfo = fiFeedInfoRepository.findById(accountId).orElseThrow {
+            throw GraphQLNotFoundException("내 피드 조회에 실패하였습니다.")
+        }.toDto()
+
+        // 카테고리리스트 조회
+        feedInfo.categoryInfo = categoryService.findMyCategory(accountId)
+
+        return feedInfo
     }
 
     /**
@@ -42,11 +53,15 @@ class FeedService(
      * @since 2022.12.05
      */
     fun saveMyFeed(accountId: String): FiFeedInfoDto {
-        return fiFeedInfoRepository.save(
-            FiFeedInfo(
-                accountId = accountId,
-                updatedAt = LocalDateTime.now()
-            )
-        ).toDto()
+        try{
+            return fiFeedInfoRepository.save(
+                FiFeedInfo(
+                    accountId = accountId,
+                    updatedAt = LocalDateTime.now()
+                )
+            ).toDto()
+        }catch (e: Exception) {
+            throw GraphQLBadRequestException()
+        }
     }
 }

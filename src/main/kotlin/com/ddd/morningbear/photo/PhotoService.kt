@@ -83,9 +83,14 @@ class PhotoService(
     @Transactional(rollbackFor = [Exception::class])
     fun saveMyPhoto(accountId: String, input: PhotoInput): FiPhotoInfoDto {
         try{
-            var photoId = UUID.randomUUID().toString()
+            lateinit var photoId: String
             if(!input.photoId.isNullOrBlank()){
                 photoId = input.photoId!!
+                if(!fiPhotoInfoRepository.existsById(photoId)){
+                    throw GraphQLNotFoundException("사진ID에 해당하는 사진정보를 찾을 수 없습니다.")
+                }
+            }else{
+                photoId = UUID.randomUUID().toString()
             }
 
             if(fiPhotoInfoRepository.existsById(photoId)){
@@ -111,6 +116,8 @@ class PhotoService(
                     categoryInfo = mdCategoryInfoRepository.findById(input.categoryId!!).orElseThrow { throw GraphQLNotFoundException("카테고리 조회에 실패하였습니다.") }
                 )
             ).toDto()
+        }catch (ne: GraphQLNotFoundException){
+            throw ne
         }catch (e: Exception) {
             throw GraphQLBadRequestException()
         }

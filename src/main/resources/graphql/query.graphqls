@@ -10,6 +10,8 @@ type Query {
     findAllBadge: [Badge]
     """ 내 피드 조회 """
     findMyFeed: Feed
+    """ 사용자 피드 조회 """
+    findUserFeed(input: String): Feed
     """ 내가 응원받은 리스트 조회 """
     findTakenLike: [Like]
     """ 내가 응원한 리스트 조회 """

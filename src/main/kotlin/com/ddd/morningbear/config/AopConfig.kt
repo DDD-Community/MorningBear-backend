@@ -5,6 +5,7 @@ import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.context.AuthenticationContext
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.common.exception.*
+import com.ddd.morningbear.common.utils.AppPropsUtils
 import com.ddd.morningbear.common.utils.TokenUtils
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -40,6 +41,39 @@ class AopConfig(
         if(authorization.isNullOrBlank()){
             throw GraphQLBadRequestException("필수 헤더정보를 입력해주세요")
         }
+
+        // 비로그인 처리
+        if(authorization.uppercase().startsWith("AK")){
+            var appKey = authorization.substring(3)
+            var accountId = request.getHeader("accountId")
+
+            var socialType = when {
+                accountId.uppercase().startsWith("K::") -> CommCode.Social.KAKAO.code
+                accountId.uppercase().startsWith("N::") -> CommCode.Social.NAVER.code
+                accountId.uppercase().startsWith("A::") -> CommCode.Social.APPLE.code
+                else -> ""
+            }
+
+            if(AppPropsUtils.isExistRestKey(appKey, socialType)){
+                // Context 저장
+                var context = AuthenticationContext
+                context.setAccountId(accountId)
+                AuthenticationContextHolder.setAuthenticationContext(context)
+
+                // 타겟객체 실행
+                var result = joinPoint.proceed()
+                //
+
+                // Context 삭제
+                AuthenticationContextHolder.removeAuthenticationContext()
+
+                return result
+            }else{
+                throw GraphQLBadRequestException("앱키 정보가 올바르지 않습니다")
+            }
+        }
+        //
+
         if(!authorization.uppercase().startsWith("BEARER") || authorization.length < 7){
             throw GraphQLBadRequestException("헤더 포맷이 올바르지 않습니다")
         }

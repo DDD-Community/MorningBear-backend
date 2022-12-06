@@ -1,5 +1,6 @@
 package com.ddd.morningbear.feed.entity
 
+import com.ddd.morningbear.category.entity.MiCategoryMapping
 import com.ddd.morningbear.feed.dto.FiFeedInfoDto
 import com.ddd.morningbear.like.entity.FiLikeInfo
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
@@ -29,11 +30,16 @@ class FiFeedInfo(
 
     @OneToMany(mappedBy = "feedInfo", cascade = [CascadeType.REMOVE])
     val photoInfo: List<FiPhotoInfo>? = null,
+
+    @OneToMany(mappedBy = "feedInfo", cascade = [CascadeType.REMOVE])
+    val categoryInfo: List<MiCategoryMapping>? = null,
 ) {
     fun toDto() = FiFeedInfoDto(
         accountId = this.accountId,
         takenLike = this.takenInfo?.map { it.toDto() },
+        takenLikeCnt = this.takenInfo?.size,
         givenLike = this.givenInfo?.map { it.toDto() },
+        givenLikeCnt = this.givenInfo?.size,
         photoInfo = this.photoInfo?.map { it.toDto() }
     )
 }
