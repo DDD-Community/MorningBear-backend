@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface MpUserInfoRepository: JpaRepository<MpUserInfo, String>, MpUserInfoRepositoryDsl
 
 interface MpUserInfoRepositoryDsl {
-
+    fun findUserInfoByNickName(nickName: String): List<MpUserInfo>
 }

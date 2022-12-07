@@ -12,6 +12,7 @@ import com.ddd.morningbear.feed.repository.FiFeedInfoRepository
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
+import com.ddd.morningbear.myinfo.repository.MpUserInfoRepositoryImp
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,7 +25,7 @@ import java.time.LocalDateTime
 @Service
 class MyInfoService(
     private val mpUserInfoRepository: MpUserInfoRepository,
-    private val fiFeedInfoRepository: FiFeedInfoRepository,
+    private val mpUserInfoRepositoryImp: MpUserInfoRepositoryImp,
     private val categoryService: CategoryService,
     private val badgeService: BadgeService,
     private val feedService: FeedService
@@ -53,6 +54,16 @@ class MyInfoService(
     }
 
     /**
+     * 사용자 검색
+     *
+     * @param keyword [String]
+     * @return List [MpUserInfoDto]
+     * @author yoonho
+     * @since 2022.12.07
+     */
+    fun findUserInfo(keyword: String): List<MpUserInfoDto> = mpUserInfoRepositoryImp.findUserInfoByNickName(keyword).map { it.toDto() }
+
+    /**
      * 내정보 저장
      *
      * @param accountId [String]
@@ -68,7 +79,6 @@ class MyInfoService(
         }
 
         try{
-
             if(mpUserInfoRepository.existsById(accountId)) {
                 /* 회원정보 업데이트 */
                 val myInfo = mpUserInfoRepository.findById(accountId).orElseGet(null).toDto()

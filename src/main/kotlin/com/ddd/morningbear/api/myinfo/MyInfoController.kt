@@ -23,6 +23,16 @@ class MyInfoController(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     /**
+     * TODO:
+     *  - 다른 사용자 검색기능
+     *  - MP_USER_INFO랑 FI_FEED_INFO 테이블 합치기(나눌 필요 없을듯) -> 노션도 수정
+     *  - 사용자 리포트 기능 (기능 나열 먼저할 것)
+     *  - 애플로그인 (API호출할수 있게만 짜놓을 것) -> 어차피 목요일날 영빈이한테 물어봐야 됨
+     *  - Cipher알고리즘써서 accountId, accessToken 인코딩, 디코딩
+     *  - input 파라미터 명칭 및 포함데이터 수정 (필요한 데이터만 포함하도록)
+     */
+
+    /**
      * 내정보 조회
      *
      * @return result [MpUserInfoDto]
@@ -33,6 +43,19 @@ class MyInfoController(
     fun findMyInfo(): MpUserInfoDto {
         val accountId = getAuthenticationContextAccountId()
         return myInfoService.findMyInfo(accountId)
+    }
+
+    /**
+     * 사용자 검색
+     *
+     * @param input [String]
+     * @return List [MpUserInfoDto]
+     * @author yoonho
+     * @since 2022.12.07
+     */
+    @QueryMapping
+    fun findUserInfo(@Argument input: String): List<MpUserInfoDto> {
+        return myInfoService.findUserInfo(input)
     }
 
     /**

@@ -3,7 +3,7 @@ type Query {
     """ 로그인 기본정보 조회 """
     findLoginInfo: [LoginBaseInfo]
     """ 내정보 조회 """
-    findMyInfo: MyProfileInfo
+    findMyInfo: User
     """ 전체 카테고리 조회 """
     findAllCategory: [Category]
     """ 전체 뱃지 조회 """
@@ -24,6 +24,8 @@ type Query {
     findUserPhoto(input: PhotoUserInput): Photo
     """ 다른사용자 사진조회(카테고리별) (ALL:전체 카테고리) """
     findUserPhotoByCategory(input: PhotoCategoryInput): [Photo]
+    """ 사용자 검색하기 """
+    findUserInfo(input: String): [User]
 
     """ (개발자용) 내 카테고리 매핑정보 조회 """
     findMyCategoryMapping: [Category]

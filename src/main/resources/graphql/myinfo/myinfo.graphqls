@@ -1,5 +1,5 @@
 
-type MyProfileInfo {
+type User {
     """ 사용자ID """
     accountId: String
     """ 닉네임 """
@@ -16,7 +16,7 @@ type MyProfileInfo {
     categoryList: [Category]
 }
 
-input MyProfileInput {
+input UserInput {
     """ 닉네임 """
     nickName: String
     """ 프로필사진 링크 """
