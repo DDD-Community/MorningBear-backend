@@ -1,5 +1,5 @@
 
-type LoginBaseInfo {
+type Login {
     redirectUri: String
     jsKey: String
     nativeKey: String

@@ -1,24 +1,24 @@
 
 type Mutation {
     """ 내정보 저장 """
-    saveMyInfo(input: UserInput): User
+    saveMyInfo(userInput: UserInput): User
     """ 내 카테고리 저장 """
-    saveMyCategory(input: [String]): [Category]
+    saveMyCategory(categoryIdList: [String]): [Category]
     """ 내 뱃지 저장 """
-    saveMyBadge(input: [String]): [Badge]
+    saveMyBadge(badgeIdList: [String]): [Badge]
     """ 탈퇴하기 """
     deleteMyInfo: Boolean
     """ 사용자 차단하기 """
-    saveBlock(input: String): [Block]
+    saveBlock(blockAccountId: String): [Block]
     """ 응원하기 """
-    saveLike(input: LikeInput): Boolean
+    saveLike(likeInput: LikeInput): Boolean
     """ 응원 취소하기 """
-    deleteLike(input: LikeInput): Boolean
+    deleteLike(likeInput: LikeInput): Boolean
     """ 내 사진 저장 """
-    saveMyPhoto(input: PhotoInput): Photo
+    saveMyPhoto(photoInput: PhotoInput): Photo
 
     """ (개발자용) 뱃지 메타정보 저장 """
-    saveBadge(input: [BadgeInput]): [Badge]
+    saveBadge(badgeInputList: [BadgeInput]): [Badge]
     """ (개발자용) 카테고리 메타정보 저장 """
-    saveCategory(input: [CategoryInput]): [Category]
+    saveCategory(categoryInputList: [CategoryInput]): [Category]
 }

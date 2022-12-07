@@ -30,9 +30,9 @@ class PhotoController(
      * @since 2022.12.06
      */
     @QueryMapping
-    fun findMyPhoto(@Argument input: String): FiPhotoInfoDto {
+    fun findMyPhoto(@Argument photoId: String): FiPhotoInfoDto {
         val accountId = getAuthenticationContextAccountId()
-        return photoService.findPhoto(accountId, input)
+        return photoService.findPhoto(accountId, photoId)
     }
 
     /**
@@ -44,8 +44,8 @@ class PhotoController(
      * @since 2022.12.06
      */
     @QueryMapping
-    fun findUserPhoto(@Argument input: PhotoInput): FiPhotoInfoDto {
-        return photoService.findPhoto(input.accountId, input.photoId)
+    fun findUserPhoto(@Argument photoUserInput: PhotoInput): FiPhotoInfoDto {
+        return photoService.findPhoto(photoUserInput.accountId, photoUserInput.photoId)
     }
 
     /**
@@ -57,9 +57,9 @@ class PhotoController(
      * @since 2022.12.06
      */
     @QueryMapping
-    fun findMyPhotoByCategory(@Argument input: String): List<FiPhotoInfoDto> {
+    fun findMyPhotoByCategory(@Argument photoId: String): List<FiPhotoInfoDto> {
         val accountId = getAuthenticationContextAccountId()
-        return photoService.findPhotoByCategory(accountId, input)
+        return photoService.findPhotoByCategory(accountId, photoId)
     }
 
     /**
@@ -71,8 +71,8 @@ class PhotoController(
      * @since 2022.12.06
      */
     @QueryMapping
-    fun findUserPhotoByCategory(@Argument input: PhotoInput): List<FiPhotoInfoDto> {
-        return photoService.findPhotoByCategory(input.accountId, input.categoryId)
+    fun findUserPhotoByCategory(@Argument photoCategoryInput: PhotoInput): List<FiPhotoInfoDto> {
+        return photoService.findPhotoByCategory(photoCategoryInput.accountId, photoCategoryInput.categoryId)
     }
 
     /**
@@ -84,8 +84,8 @@ class PhotoController(
      * @since 2022.12.06
      */
     @MutationMapping
-    fun saveMyPhoto(@Argument input: PhotoInput): FiPhotoInfoDto {
+    fun saveMyPhoto(@Argument photoInput: PhotoInput): FiPhotoInfoDto {
         val accountId = getAuthenticationContextAccountId()
-        return photoService.saveMyPhoto(accountId, input)
+        return photoService.saveMyPhoto(accountId, photoInput)
     }
 }

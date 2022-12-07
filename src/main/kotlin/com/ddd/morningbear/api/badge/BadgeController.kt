@@ -56,9 +56,9 @@ class BadgeController(
      * @since 2022.12.04
      */
     @MutationMapping
-    fun saveMyBadge(@Argument input: List<String>): List<MdBadgeInfoDto> {
+    fun saveMyBadge(@Argument badgeIdList: List<String>): List<MdBadgeInfoDto> {
         val accountId = getAuthenticationContextAccountId()
-        return badgeService.saveMyBadge(accountId, input)
+        return badgeService.saveMyBadge(accountId, badgeIdList)
     }
 
     /**
@@ -70,7 +70,7 @@ class BadgeController(
      * @since 2022.12.04
      */
     @MutationMapping
-    fun saveBadge(@Argument input: List<BadgeInput>): List<MdBadgeInfoDto> {
-        return badgeService.saveBadge(input)
+    fun saveBadge(@Argument badgeInputList: List<BadgeInput>): List<MdBadgeInfoDto> {
+        return badgeService.saveBadge(badgeInputList)
     }
 }

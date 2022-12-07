@@ -46,8 +46,8 @@ class MyInfoController(
     }
 
     @QueryMapping
-    fun findUserInfo(@Argument input: String): MpUserInfoDto {
-        return myInfoService.findUserInfo(input)
+    fun findUserInfo(@Argument accountId: String): MpUserInfoDto {
+        return myInfoService.findUserInfo(accountId)
     }
 
     /**
@@ -59,8 +59,8 @@ class MyInfoController(
      * @since 2022.12.07
      */
     @QueryMapping
-    fun searchUserInfo(@Argument input: String): List<MpUserInfoDto> {
-        return myInfoService.searchUserInfo(input)
+    fun searchUserInfo(@Argument keyword: String): List<MpUserInfoDto> {
+        return myInfoService.searchUserInfo(keyword)
     }
 
     /**
@@ -72,9 +72,9 @@ class MyInfoController(
      * @since 2022.12.04
      */
     @MutationMapping
-    fun saveMyInfo(@Argument input: MyInfoInput): MpUserInfoDto {
+    fun saveMyInfo(@Argument userInput: MyInfoInput): MpUserInfoDto {
         val accountId = getAuthenticationContextAccountId()
-        return myInfoService.saveMyInfo(accountId, input)
+        return myInfoService.saveMyInfo(accountId, userInput)
     }
 
     /**

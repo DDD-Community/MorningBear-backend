@@ -19,32 +19,6 @@ class LikeController(
 ): BaseController() {
 
     /**
-     * 내가 좋아요한 피드 목록
-     *
-     * @return List [FiLikeInfoDto]
-     * @author yoonho
-     * @since 2022.12.05
-     */
-    @QueryMapping
-    fun findTakenLike(): List<FiLikeInfoDto> {
-        val accountId = getAuthenticationContextAccountId()
-        return likeService.findTakenLike(accountId)
-    }
-
-    /**
-     * 내가 받은 좋아요 목록
-     *
-     * @return List [FiLikeInfoDto]
-     * @author yoonho
-     * @since 2022.12.05
-     */
-    @QueryMapping
-    fun findGivenLike(): List<FiLikeInfoDto> {
-        val accountId = getAuthenticationContextAccountId()
-        return likeService.findGivenLike(accountId)
-    }
-
-    /**
      * 좋아요 등록
      *
      * @param input [LikeInput]
@@ -53,9 +27,9 @@ class LikeController(
      * @since 2022.12.05
      */
     @MutationMapping
-    fun saveLike(@Argument input: LikeInput): Boolean {
+    fun saveLike(@Argument likeInput: LikeInput): Boolean {
         val accountId = getAuthenticationContextAccountId()
-        return likeService.saveLike(accountId, input)
+        return likeService.saveLike(accountId, likeInput)
     }
 
     /**
@@ -67,8 +41,8 @@ class LikeController(
      * @since 2022.12.05
      */
     @MutationMapping
-    fun deleteLike(@Argument input: LikeInput): Boolean {
+    fun deleteLike(@Argument likeInput: LikeInput): Boolean {
         val accountId = getAuthenticationContextAccountId()
-        return likeService.deleteLike(accountId, input)
+        return likeService.deleteLike(accountId, likeInput)
     }
 }

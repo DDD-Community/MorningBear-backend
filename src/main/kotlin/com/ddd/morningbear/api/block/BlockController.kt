@@ -42,8 +42,8 @@ class BlockController(
      * @since 2022.12.04
      */
     @MutationMapping
-    fun saveBlock(@Argument input: String): List<MiBlockMappingDto> {
+    fun saveBlock(@Argument blockAccountId: String): List<MiBlockMappingDto> {
         val accountId = getAuthenticationContextAccountId()
-        return blockService.saveBlock(accountId, input)
+        return blockService.saveBlock(accountId, blockAccountId)
     }
 }

@@ -56,9 +56,9 @@ class CategoryController(
      * @since 2022.12.04
      */
     @MutationMapping
-    fun saveMyCategory(@Argument input: List<String>): List<MdCategoryInfoDto> {
+    fun saveMyCategory(@Argument categoryIdList: List<String>): List<MdCategoryInfoDto> {
         val accountId = getAuthenticationContextAccountId()
-        return categoryService.saveMyCategory(accountId, input)
+        return categoryService.saveMyCategory(accountId, categoryIdList)
     }
 
     /**
@@ -70,7 +70,7 @@ class CategoryController(
      * @since 2022.12.04
      */
     @MutationMapping
-    fun saveCategory(@Argument input: List<CategoryInput>): List<MdCategoryInfoDto> {
-        return categoryService.saveCategory(input)
+    fun saveCategory(@Argument categoryInputList: List<CategoryInput>): List<MdCategoryInfoDto> {
+        return categoryService.saveCategory(categoryInputList)
     }
 }

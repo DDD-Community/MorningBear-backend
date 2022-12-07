@@ -26,30 +26,6 @@ class LikeService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     /**
-     * 내가 받은 좋아요 목록
-     *
-     * @param accountId [String]
-     * @return List [FiLikeInfoDto]
-     * @author yoonho
-     * @since 2022.12.05
-     */
-    fun findTakenLike(accountId: String): List<FiLikeInfoDto> = fiLikeInfoRepository.findAllByFiLikeInfoPkTakenAccountId(accountId).orElseThrow {
-        throw GraphQLNotFoundException("내가 받은 좋아요목록을 찾을 수 없습니다.")
-    }.map { it.toDto() }
-
-    /**
-     * 내가 좋아요한 피드 목록
-     *
-     * @param accountId [String]
-     * @return List [FiLikeInfoDto]
-     * @author yoonho
-     * @since 2022.12.05
-     */
-    fun findGivenLike(accountId: String): List<FiLikeInfoDto> = fiLikeInfoRepository.findAllByFiLikeInfoPkGivenAccountId(accountId).orElseThrow {
-        throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.")
-    }.map { it.toDto() }
-
-    /**
      * 좋아요 등록
      *
      * @param givenAccountId [String]
