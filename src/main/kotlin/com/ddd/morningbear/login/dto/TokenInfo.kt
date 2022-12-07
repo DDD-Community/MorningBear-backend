@@ -17,6 +17,8 @@ data class TokenInfo(
     var refreshExpiresIn: Int?,
     @JsonProperty("token_type")
     var tokenType: String?,
+    @JsonProperty("id_token")
+    var idToken: String?,
 
     var error: String?,
     @JsonProperty("error_description")

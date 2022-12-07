@@ -29,6 +29,7 @@ login:
     kapi: https://kapi.kakao.com
     nauth: https://nid.naver.com
     napi: https://openapi.naver.com
+    apple: https://appleid.apple.com
   appconfigs:
     - type: kakao
       restKey: 6e0ca7622b0942a8b6cdd7a21579546b
@@ -40,3 +41,8 @@ login:
       jsKey: 7rZMvLkTIXowUlkv7h_y
       nativeKey: 7rZMvLkTIXowUlkv7h_y
       secrets: lt5UnpY0Uq
+    - type: apple
+      restKey:
+      jsKey:
+      nativeKey:
+      secrets:

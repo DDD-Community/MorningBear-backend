@@ -41,3 +41,8 @@ login:
       jsKey: 7rZMvLkTIXowUlkv7h_y
       nativeKey: 7rZMvLkTIXowUlkv7h_y
       secrets: lt5UnpY0Uq
+    - type: apple
+      restKey:
+      jsKey:
+      nativeKey:
+      secrets:
