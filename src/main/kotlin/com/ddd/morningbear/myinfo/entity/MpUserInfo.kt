@@ -2,8 +2,9 @@ package com.ddd.morningbear.myinfo.entity
 
 import com.ddd.morningbear.badge.entity.MiBadgeMapping
 import com.ddd.morningbear.category.entity.MiCategoryMapping
-import com.ddd.morningbear.feed.entity.FiFeedInfo
+import com.ddd.morningbear.like.entity.FiLikeInfo
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
+import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -30,9 +31,14 @@ class MpUserInfo(
     @Column(name = "CREATED_AT", nullable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now(),
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn(name = "ACCOUNT_ID")
-    val fiFeedInfo: FiFeedInfo? = null,
+    @OneToMany(mappedBy = "takenInfo", cascade = [CascadeType.REMOVE])
+    val takenInfo: List<FiLikeInfo>? = null,
+
+    @OneToMany(mappedBy = "givenInfo", cascade = [CascadeType.REMOVE])
+    val givenInfo: List<FiLikeInfo>? = null,
+
+    @OneToMany(mappedBy = "userInfo", cascade = [CascadeType.REMOVE])
+    val photoInfo: List<FiPhotoInfo>? = null,
 
     @OneToMany(mappedBy = "userInfo", cascade = [CascadeType.REMOVE])
     val categoryInfo: List<MiCategoryMapping>? = null,
@@ -46,5 +52,10 @@ class MpUserInfo(
         photoLink = this.photoLink,
         memo = this.memo,
         wakeUpAt = this.wakeUpAt,
+        takenLike = this.takenInfo?.map { it.toDto() },
+        takenLikeCnt = this.takenInfo?.size,
+        givenLike = this.givenInfo?.map { it.toDto() },
+        givenLikeCnt = this.givenInfo?.size,
+        photoInfo = this.photoInfo?.map { it.toDto() }
     )
 }

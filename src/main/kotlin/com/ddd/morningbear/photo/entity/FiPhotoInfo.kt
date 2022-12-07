@@ -1,8 +1,8 @@
 package com.ddd.morningbear.photo.entity
 
 import com.ddd.morningbear.category.entity.MdCategoryInfo
+import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
-import com.ddd.morningbear.feed.entity.FiFeedInfo
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
@@ -25,7 +25,7 @@ class FiPhotoInfo(
 
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
-    val feedInfo: FiFeedInfo,
+    val userInfo: MpUserInfo,
 
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
@@ -44,7 +44,7 @@ class FiPhotoInfo(
         photoId = this.photoId,
         photoLink = this.photoLink,
         photoDesc = this.photoDesc,
-        accountId = this.feedInfo.accountId,
+        accountId = this.userInfo.accountId,
         categoryId = this.categoryInfo.categoryId,
         startAt = this.startAt,
         endAt = this.endAt,

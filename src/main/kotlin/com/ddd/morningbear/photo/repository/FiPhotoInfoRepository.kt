@@ -9,8 +9,7 @@ import java.util.*
  * @since 2022.12.06
  */
 interface FiPhotoInfoRepository: JpaRepository<FiPhotoInfo, String> {
-
-    fun findByPhotoIdAndFeedInfoAccountId(photoId: String, accountId: String): Optional<FiPhotoInfo>
-    fun findAllByFeedInfoAccountId(accountId: String): Optional<List<FiPhotoInfo>>
-    fun findAllByCategoryInfoCategoryIdAndFeedInfoAccountId(categoryId: String, accountId: String): Optional<List<FiPhotoInfo>>
+    fun findByPhotoIdAndUserInfoAccountId(photoId: String, accountId: String): Optional<FiPhotoInfo>
+    fun findAllByUserInfoAccountId(accountId: String): Optional<List<FiPhotoInfo>>
+    fun findAllByCategoryInfoCategoryIdAndUserInfoAccountId(categoryId: String, accountId: String): Optional<List<FiPhotoInfo>>
 }

@@ -10,11 +10,9 @@ import com.ddd.morningbear.category.repository.MdCategoryInfoRepository
 import com.ddd.morningbear.category.repository.MiCategoryMappingRepository
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
-import com.ddd.morningbear.feed.repository.FiFeedInfoRepository
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.util.stream.Collectors
 
@@ -27,7 +25,6 @@ class CategoryService(
     private val mdCategoryInfoRepository: MdCategoryInfoRepository,
     private val miCategoryMappingRepository: MiCategoryMappingRepository,
     private val mpUserInfoRepository: MpUserInfoRepository,
-    private val fiFeedInfoRepository: FiFeedInfoRepository
 ) {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -87,7 +84,6 @@ class CategoryService(
                             categoryId = x.categoryId
                         ),
                         userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자 정보를 조회할 수 없습니다.") },
-                        feedInfo = fiFeedInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("피드 정보를 조회할 수 없습니다.") },
                         updatedAt = LocalDateTime.now()
                     )
                 )

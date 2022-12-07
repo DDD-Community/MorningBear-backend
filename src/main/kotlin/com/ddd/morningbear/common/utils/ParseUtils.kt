@@ -1,6 +1,8 @@
 package com.ddd.morningbear.common.utils
 
 import com.ddd.morningbear.common.constants.CommCode
+import com.ddd.morningbear.common.exception.GraphQLBadRequestException
+import com.ddd.morningbear.common.exception.GraphQLTokenInvalidException
 import com.ddd.morningbear.login.dto.TokenInfo
 import org.apache.tomcat.util.codec.binary.Base64
 import org.slf4j.LoggerFactory
@@ -19,16 +21,24 @@ object ParseUtils {
     private val keySpec: SecretKeySpec = SecretKeySpec("parkyoonhosecret".toByteArray(), "AES")
 
     fun encode(type: String, data: String?): String {
-        ciphger.init(Cipher.ENCRYPT_MODE, keySpec)
-        var prefixedData = CommCode.findPrefix(type) + data
-        return Base64.encodeBase64(ciphger.doFinal(prefixedData.toByteArray()))
+        try{
+            ciphger.init(Cipher.ENCRYPT_MODE, keySpec)
+            var prefixedData = CommCode.findPrefix(type) + data
+            return Base64.encodeBase64(ciphger.doFinal(prefixedData.toByteArray()))
                 .toString(Charsets.UTF_8)
+        }catch (e: Exception) {
+            throw GraphQLBadRequestException()
+        }
     }
 
     fun decode(data: String?): String {
-        ciphger.init(Cipher.DECRYPT_MODE, keySpec)
-        return ciphger.doFinal(Base64.decodeBase64(data?.toByteArray()))
+        try{
+            ciphger.init(Cipher.DECRYPT_MODE, keySpec)
+            return ciphger.doFinal(Base64.decodeBase64(data?.toByteArray()))
                 .toString(Charsets.UTF_8)
+        }catch (e: Exception) {
+            throw GraphQLBadRequestException()
+        }
     }
 
     fun removePrefix(type: String, data: String): String {

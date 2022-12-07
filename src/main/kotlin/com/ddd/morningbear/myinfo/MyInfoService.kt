@@ -4,11 +4,7 @@ import com.ddd.morningbear.api.myinfo.dto.MyInfoInput
 import com.ddd.morningbear.badge.BadgeService
 import com.ddd.morningbear.category.CategoryService
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
-import com.ddd.morningbear.common.exception.GraphQLInternalServerException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
-import com.ddd.morningbear.feed.FeedService
-import com.ddd.morningbear.feed.entity.FiFeedInfo
-import com.ddd.morningbear.feed.repository.FiFeedInfoRepository
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
@@ -28,7 +24,6 @@ class MyInfoService(
     private val mpUserInfoRepositoryImp: MpUserInfoRepositoryImp,
     private val categoryService: CategoryService,
     private val badgeService: BadgeService,
-    private val feedService: FeedService
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -40,7 +35,7 @@ class MyInfoService(
      * @author yoonho
      * @since 2022.12.04
      */
-    fun findMyInfo(accountId: String): MpUserInfoDto {
+    fun findUserInfo(accountId: String): MpUserInfoDto {
         var myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
             throw GraphQLNotFoundException("내 정보 조회에 실패하였습니다.")
         }.toDto()
@@ -61,7 +56,7 @@ class MyInfoService(
      * @author yoonho
      * @since 2022.12.07
      */
-    fun findUserInfo(keyword: String): List<MpUserInfoDto> = mpUserInfoRepositoryImp.findUserInfoByNickName(keyword).map { it.toDto() }
+    fun searchUserInfo(keyword: String): List<MpUserInfoDto> = mpUserInfoRepositoryImp.findUserInfoByNickName(keyword).map { it.toDto() }
 
     /**
      * 내정보 저장
@@ -87,34 +82,20 @@ class MyInfoService(
                 if(input.photoLink.isNullOrBlank()) input.photoLink = myInfo.photoLink
                 if(input.memo.isNullOrBlank()) input.memo = myInfo.memo
                 if(input.wakeUpAt.isNullOrBlank()) input.wakeUpAt = myInfo.wakeUpAt
-
-                mpUserInfoRepository.save(
-                    MpUserInfo(
-                        accountId = accountId,
-                        nickName = input.nickName,
-                        photoLink = input.photoLink,
-                        memo = input.memo,
-                        wakeUpAt = input.wakeUpAt,
-                        updatedAt = LocalDateTime.now()
-                    )
-                ).toDto()
-            }else{
-                /* 신규회원 저장 */
-                mpUserInfoRepository.save(
-                    MpUserInfo(
-                        accountId = accountId,
-                        nickName = input.nickName,
-                        photoLink = input.photoLink,
-                        memo = input.memo,
-                        wakeUpAt = input.wakeUpAt,
-                        updatedAt = LocalDateTime.now()
-                    )
-                ).toDto()
-
-                feedService.saveMyFeed(accountId)
             }
 
-            return this.findMyInfo(accountId)
+            mpUserInfoRepository.save(
+                MpUserInfo(
+                    accountId = accountId,
+                    nickName = input.nickName,
+                    photoLink = input.photoLink,
+                    memo = input.memo,
+                    wakeUpAt = input.wakeUpAt,
+                    updatedAt = LocalDateTime.now()
+                )
+            ).toDto()
+
+            return this.findUserInfo(accountId)
         }catch (ne: GraphQLNotFoundException){
             throw ne
         }catch (be: GraphQLBadRequestException){

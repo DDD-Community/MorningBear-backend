@@ -4,7 +4,7 @@ import com.ddd.morningbear.api.photo.dto.PhotoInput
 import com.ddd.morningbear.category.repository.MdCategoryInfoRepository
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
-import com.ddd.morningbear.feed.repository.FiFeedInfoRepository
+import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import com.ddd.morningbear.photo.repository.FiPhotoInfoRepository
@@ -21,8 +21,8 @@ import java.util.*
 @Service
 class PhotoService(
     private val fiPhotoInfoRepository: FiPhotoInfoRepository,
-    private val fiFeedInfoRepository: FiFeedInfoRepository,
-    private val mdCategoryInfoRepository: MdCategoryInfoRepository
+    private val mdCategoryInfoRepository: MdCategoryInfoRepository,
+    private val mpUserInfoRepository: MpUserInfoRepository
 ) {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -41,7 +41,7 @@ class PhotoService(
             throw GraphQLBadRequestException()
         }
 
-        return fiPhotoInfoRepository.findByPhotoIdAndFeedInfoAccountId(photoId, accountId).orElseThrow {
+        return fiPhotoInfoRepository.findByPhotoIdAndUserInfoAccountId(photoId, accountId).orElseThrow {
             throw GraphQLNotFoundException("사진 조회에 실패하였습니다.")
         }.toDto()
     }
@@ -61,12 +61,12 @@ class PhotoService(
         }
 
         if(categoryId.equals("ALL")){
-            return fiPhotoInfoRepository.findAllByFeedInfoAccountId(accountId).orElseThrow {
+            return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseThrow {
                 throw GraphQLNotFoundException("전체 카테고리에 대한 사진 조회에 실패하였습니다.")
             }.map { it.toDto() }
         }
 
-        return fiPhotoInfoRepository.findAllByCategoryInfoCategoryIdAndFeedInfoAccountId(categoryId, accountId).orElseThrow {
+        return fiPhotoInfoRepository.findAllByCategoryInfoCategoryIdAndUserInfoAccountId(categoryId, accountId).orElseThrow {
             throw GraphQLNotFoundException("카테고리별 사진 조회에 실패하였습니다.")
         }.map { it.toDto() }
     }
@@ -112,7 +112,7 @@ class PhotoService(
                     endAt = input.endAt!!,
                     updatedAt = LocalDateTime.now(),
 
-                    feedInfo = fiFeedInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("내 피드 조회에 실패하였습니다.") },
+                    userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자 조회에 실패하였습니다.") },
                     categoryInfo = mdCategoryInfoRepository.findById(input.categoryId!!).orElseThrow { throw GraphQLNotFoundException("카테고리 조회에 실패하였습니다.") }
                 )
             ).toDto()

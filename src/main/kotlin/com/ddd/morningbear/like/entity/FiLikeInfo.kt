@@ -1,8 +1,8 @@
 package com.ddd.morningbear.like.entity
 
-import com.ddd.morningbear.feed.entity.FiFeedInfo
 import com.ddd.morningbear.like.dto.FiLikeInfoDto
 import com.ddd.morningbear.like.entity.pk.FiLikeInfoPk
+import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
@@ -26,12 +26,12 @@ class FiLikeInfo(
     @ManyToOne
     @JoinColumn(name = "TAKEN_ACCOUNT_ID", insertable = false, updatable = false)
     @MapsId("takenAccountId")
-    val takenInfo: FiFeedInfo,
+    val takenInfo: MpUserInfo,
 
     @ManyToOne
     @JoinColumn(name = "GIVEN_ACCOUNT_ID", insertable = false, updatable = false)
     @MapsId("givenAccountId")
-    val givenInfo: FiFeedInfo,
+    val givenInfo: MpUserInfo,
 ) {
     fun toDto() = FiLikeInfoDto(
         likeCode = this.fiLikeInfoPk.likeCode,

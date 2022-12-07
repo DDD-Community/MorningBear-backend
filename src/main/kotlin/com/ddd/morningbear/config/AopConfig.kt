@@ -46,11 +46,12 @@ class AopConfig(
         if(authorization.uppercase().startsWith("AK")){
             var appKey = authorization.substring(3)
             var accountId = request.getHeader("accountId")
+            var decodedAccountId = ParseUtils.decode(accountId)
 
             var socialType = when {
-                accountId.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> CommCode.Social.KAKAO.code
-                accountId.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> CommCode.Social.NAVER.code
-                accountId.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> CommCode.Social.APPLE.code
+                decodedAccountId.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> CommCode.Social.KAKAO.code
+                decodedAccountId.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> CommCode.Social.NAVER.code
+                decodedAccountId.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> CommCode.Social.APPLE.code
                 else -> ""
             }
 
@@ -85,11 +86,11 @@ class AopConfig(
             when {
                 decodedToken.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> {
                     var token = ParseUtils.removePrefix(CommCode.Social.KAKAO.code, decodedToken)
-                    accountId = authService.kakaoAuth(token)!!
+                    accountId = ParseUtils.encode(CommCode.Social.KAKAO.code, authService.kakaoAuth(token)!!)
                 }
                 decodedToken.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> {
                     var token = ParseUtils.removePrefix(CommCode.Social.NAVER.code, decodedToken)
-                    accountId = authService.naverAuth(token)!!
+                    accountId = ParseUtils.encode(CommCode.Social.KAKAO.code, authService.naverAuth(token)!!)
                 }
                 decodedToken.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> {
 //                    var token = ParseUtils.removePrefix(CommCode.Social.APPLE.code, decodedToken)
