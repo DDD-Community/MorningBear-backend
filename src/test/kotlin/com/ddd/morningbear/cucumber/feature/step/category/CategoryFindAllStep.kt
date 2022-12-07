@@ -4,7 +4,7 @@ import com.ddd.morningbear.auth.AuthService
 import com.ddd.morningbear.common.Constants
 import com.ddd.morningbear.common.context.AuthenticationContext
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
-import com.ddd.morningbear.common.utils.TokenUtils
+import com.ddd.morningbear.common.utils.ParseUtils
 import io.cucumber.java.Before
 import io.cucumber.java.ko.그러면
 import io.cucumber.java.ko.만약
@@ -31,8 +31,9 @@ class CategoryFindAllStep {
 
     @Before(value = "@category-findAll")
     fun setup() {
-        var token = TokenUtils.decodeToken(Constants.token, Constants.state)
-        var accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), Constants.state)
+        var token = ParseUtils.decode(Constants.token)
+        token = ParseUtils.removePrefix(Constants.state, token)
+        var accountId = authService.kakaoAuth(token)!!
 
         var context = AuthenticationContext
         context.setAccountId(accountId)

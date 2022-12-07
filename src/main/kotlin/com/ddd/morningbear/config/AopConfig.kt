@@ -6,7 +6,7 @@ import com.ddd.morningbear.common.context.AuthenticationContext
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.common.exception.*
 import com.ddd.morningbear.common.utils.AppPropsUtils
-import com.ddd.morningbear.common.utils.TokenUtils
+import com.ddd.morningbear.common.utils.ParseUtils
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -48,9 +48,9 @@ class AopConfig(
             var accountId = request.getHeader("accountId")
 
             var socialType = when {
-                accountId.uppercase().startsWith("K::") -> CommCode.Social.KAKAO.code
-                accountId.uppercase().startsWith("N::") -> CommCode.Social.NAVER.code
-                accountId.uppercase().startsWith("A::") -> CommCode.Social.APPLE.code
+                accountId.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> CommCode.Social.KAKAO.code
+                accountId.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> CommCode.Social.NAVER.code
+                accountId.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> CommCode.Social.APPLE.code
                 else -> ""
             }
 
@@ -81,14 +81,19 @@ class AopConfig(
         lateinit var accountId: String
         try{
             var accessToken = authorization.substring(7)
+            var decodedToken = ParseUtils.decode(accessToken)
             when {
-                accessToken.uppercase().startsWith("K::") -> {
-                    var token = TokenUtils.decodeToken(accessToken, CommCode.Social.KAKAO.code)
-                    accountId = TokenUtils.encodeToken(authService.kakaoAuth(token), CommCode.Social.KAKAO.code)
+                decodedToken.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> {
+                    var token = ParseUtils.removePrefix(CommCode.Social.KAKAO.code, decodedToken)
+                    accountId = authService.kakaoAuth(token)!!
                 }
-                accessToken.uppercase().startsWith("N::") -> {
-                    var token = TokenUtils.decodeToken(accessToken, CommCode.Social.NAVER.code)
-                    accountId = TokenUtils.encodeToken(authService.naverAuth(token), CommCode.Social.NAVER.code)
+                decodedToken.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> {
+                    var token = ParseUtils.removePrefix(CommCode.Social.NAVER.code, decodedToken)
+                    accountId = authService.naverAuth(token)!!
+                }
+                decodedToken.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> {
+//                    var token = ParseUtils.removePrefix(CommCode.Social.APPLE.code, decodedToken)
+//                    accountId = authService.naverAuth(token)!!
                 }
                 else -> throw GraphQLTokenInvalidException("토큰정보가 유효하지 않습니다.")
             }

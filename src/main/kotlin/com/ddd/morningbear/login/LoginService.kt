@@ -4,7 +4,7 @@ import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.exception.ThirdPartyServerException
 import com.ddd.morningbear.common.exception.TokenInvalidException
 import com.ddd.morningbear.common.utils.AppPropsUtils
-import com.ddd.morningbear.common.utils.TokenUtils
+import com.ddd.morningbear.common.utils.ParseUtils
 import com.ddd.morningbear.login.dto.TokenInfo
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -69,7 +69,11 @@ class LoginService (
                 .block()
             logger.info(" >>> [kakaoToken] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            return TokenUtils.encodeToken(responseEntity?.body!!, type)
+            var tokenInfo = responseEntity?.body!!
+            tokenInfo.accessToken = ParseUtils.encode(type, tokenInfo.accessToken)
+            tokenInfo.refreshToken = ParseUtils.encode(type, tokenInfo.refreshToken)
+
+            return tokenInfo
         }catch(e: Throwable){
             throw e
         }
@@ -111,7 +115,11 @@ class LoginService (
                 .block()
             logger.info(" >>> [naverToken] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            return TokenUtils.encodeToken(responseEntity?.body!!, type)
+            var tokenInfo = responseEntity?.body!!
+            tokenInfo.accessToken = ParseUtils.encode(type, tokenInfo.accessToken)
+            tokenInfo.refreshToken = ParseUtils.encode(type, tokenInfo.refreshToken)
+
+            return tokenInfo
         }catch(e: Throwable){
             throw e
         }

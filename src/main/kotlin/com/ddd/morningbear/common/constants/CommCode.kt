@@ -5,11 +5,25 @@ package com.ddd.morningbear.common.constants
  * @since 2022.11.29
  */
 class CommCode {
-    enum class Social(val code: String){
-        KAKAO("kakao"),
-        NAVER("naver"),
-        APPLE("apple")
+
+    companion object {
+        fun findPrefix(type: String): String {
+            for(item in CommCode.Social.values()) {
+                if(item.code == type) {
+                    return item.prefix
+                }
+            }
+            return ""
+        }
     }
+
+    enum class Social(val code: String, val prefix: String){
+        KAKAO("kakao", "k::"),
+        NAVER("naver", "n::"),
+        APPLE("apple", "a::")
+    }
+
+
 
     enum class Result(val code: String, val message: String) {
         K000("K000", "잘못된 요청입니다."),

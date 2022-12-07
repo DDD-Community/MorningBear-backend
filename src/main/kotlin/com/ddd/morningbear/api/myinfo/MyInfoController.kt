@@ -24,11 +24,11 @@ class MyInfoController(
 
     /**
      * TODO:
-     *  - 다른 사용자 검색기능
+     *  - (O) 다른 사용자 검색기능
+     *  - (O) 애플로그인 (API호출할수 있게만 짜놓을 것) -> 어차피 목요일날 영빈이한테 물어봐야 됨
+     *  - (O) Cipher알고리즘써서 accountId, accessToken 인코딩, 디코딩
      *  - MP_USER_INFO랑 FI_FEED_INFO 테이블 합치기(나눌 필요 없을듯) -> 노션도 수정
      *  - 사용자 리포트 기능 (기능 나열 먼저할 것)
-     *  - 애플로그인 (API호출할수 있게만 짜놓을 것) -> 어차피 목요일날 영빈이한테 물어봐야 됨
-     *  - Cipher알고리즘써서 accountId, accessToken 인코딩, 디코딩
      *  - input 파라미터 명칭 및 포함데이터 수정 (필요한 데이터만 포함하도록)
      */
 
