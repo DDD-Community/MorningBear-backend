@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class LoginInput(
     var state: String?,
     var code: String?,
+    var identityToken: String?,
     var error: String?,
     @JsonProperty("error_description")
     var errorDescription: String?

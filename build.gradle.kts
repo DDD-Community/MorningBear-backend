@@ -51,6 +51,12 @@ dependencies {
     testImplementation("org.springframework.graphql:spring-graphql-test")
     implementation("com.graphql-java:graphql-java-tools:5.2.4")
 
+    // JWT
+    implementation("com.nimbusds:nimbus-jose-jwt:9.25.6")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 }

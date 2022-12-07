@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties(prefix = "login")
 data class AppProps(
+    val keys: Map<String, String>,
     val apis: Map<String, String>,
     val appconfigs: List<Map<String, String>>
 )
