@@ -1,4 +1,3 @@
-application-deploy.yaml
 HELP.md
 .gradle
 build/
@@ -19,6 +18,9 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+application-deploy.yaml
+application-deploy.properties
+
 .idea
 *.iws
 *.iml

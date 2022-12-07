@@ -1,5 +1,7 @@
 
 type Query {
+    """ 토큰정보 인코딩 """
+    encode(state: String, token: String): String
     """ 로그인 기본정보 조회 """
     findLoginInfo: [LoginBaseInfo]
     """ 내정보 조회 """
@@ -31,4 +33,6 @@ type Query {
     findMyBadgeMapping: [Badge]
     """ (개발자용) 내가 차단한 사용자목록 조회 """
     findBlock: [Block]
+    """ (개발자용) 토큰정보 디코딩 """
+    decode(token: String): String
 }
