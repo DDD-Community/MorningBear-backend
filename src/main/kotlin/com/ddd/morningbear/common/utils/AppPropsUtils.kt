@@ -57,4 +57,8 @@ object AppPropsUtils {
         }
         return null
     }
+
+    fun findSecretKey(type: String): String {
+        return appProps.keys.get(type)!!
+    }
 }

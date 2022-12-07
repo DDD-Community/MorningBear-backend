@@ -18,7 +18,7 @@ object ParseUtils {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     private val ciphger: Cipher = Cipher.getInstance("AES")
-    private val keySpec: SecretKeySpec = SecretKeySpec("parkyoonhosecret".toByteArray(), "AES")
+    private val keySpec: SecretKeySpec = SecretKeySpec(AppPropsUtils.findSecretKey("cipher").toByteArray(), "AES")
 
     fun encode(type: String, data: String?): String {
         try{

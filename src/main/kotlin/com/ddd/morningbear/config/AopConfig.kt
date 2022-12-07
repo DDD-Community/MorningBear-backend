@@ -6,6 +6,7 @@ import com.ddd.morningbear.common.context.AuthenticationContext
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.common.exception.*
 import com.ddd.morningbear.common.utils.AppPropsUtils
+import com.ddd.morningbear.common.utils.AppleLoginUtils
 import com.ddd.morningbear.common.utils.ParseUtils
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -81,20 +82,20 @@ class AopConfig(
 
         lateinit var accountId: String
         try{
-            var accessToken = authorization.substring(7)
-            var decodedToken = ParseUtils.decode(accessToken)
+            val accessToken = authorization.substring(7)
+            val decodedToken = ParseUtils.decode(accessToken)
             when {
                 decodedToken.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> {
-                    var token = ParseUtils.removePrefix(CommCode.Social.KAKAO.code, decodedToken)
+                    val token = ParseUtils.removePrefix(CommCode.Social.KAKAO.code, decodedToken)
                     accountId = ParseUtils.encode(CommCode.Social.KAKAO.code, authService.kakaoAuth(token)!!)
                 }
                 decodedToken.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> {
-                    var token = ParseUtils.removePrefix(CommCode.Social.NAVER.code, decodedToken)
-                    accountId = ParseUtils.encode(CommCode.Social.KAKAO.code, authService.naverAuth(token)!!)
+                    val token = ParseUtils.removePrefix(CommCode.Social.NAVER.code, decodedToken)
+                    accountId = ParseUtils.encode(CommCode.Social.NAVER.code, authService.naverAuth(token)!!)
                 }
                 decodedToken.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> {
-//                    var token = ParseUtils.removePrefix(CommCode.Social.APPLE.code, decodedToken)
-//                    accountId = authService.naverAuth(token)!!
+                    val token = ParseUtils.removePrefix(CommCode.Social.APPLE.code, decodedToken)
+                    accountId = ParseUtils.encode(CommCode.Social.APPLE.code, AppleLoginUtils.parseToken(token))
                 }
                 else -> throw GraphQLTokenInvalidException("토큰정보가 유효하지 않습니다.")
             }

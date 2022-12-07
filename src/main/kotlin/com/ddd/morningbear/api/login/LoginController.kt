@@ -4,7 +4,9 @@ import com.ddd.morningbear.api.login.dto.LoginInput
 import com.ddd.morningbear.common.annotation.SkipTokenCheck
 import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.dto.BaseResponse
+import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.utils.AppPropsUtils
+import com.ddd.morningbear.login.AppleService
 import com.ddd.morningbear.login.LoginService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
@@ -18,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView
  */
 @Controller
 class LoginController(
-    private val loginService: LoginService
+    private val loginService: LoginService,
+    private val appleService: AppleService
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -57,7 +60,12 @@ class LoginController(
         when(socialName) {
             CommCode.Social.KAKAO.code -> tokenInfo = loginService.kakaoToken(input.code, socialName)
             CommCode.Social.NAVER.code -> tokenInfo = loginService.naverToken(input.code, socialName)
-            CommCode.Social.APPLE.code -> logger.info(" >>> [token] apple login")
+            CommCode.Social.APPLE.code -> {
+                if(input.identityToken.isNullOrEmpty()){
+                    throw GraphQLBadRequestException("애플로그인을 위한 토큰정보가 없습니다.")
+                }
+                tokenInfo = appleService.appleToken(input.identityToken!!)
+            }
         }
 
         return BaseResponse().success(tokenInfo)
