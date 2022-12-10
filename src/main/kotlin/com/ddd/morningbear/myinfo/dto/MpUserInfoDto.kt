@@ -4,6 +4,7 @@ import com.ddd.morningbear.badge.dto.MdBadgeInfoDto
 import com.ddd.morningbear.category.dto.MdCategoryInfoDto
 import com.ddd.morningbear.like.dto.FiLikeInfoDto
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
+import com.ddd.morningbear.report.dto.ReportDto
 import java.io.Serializable
 import java.time.LocalDateTime
 
@@ -24,6 +25,7 @@ data class MpUserInfoDto (
     val givenLike: List<FiLikeInfoDto>?,
     val givenLikeCnt: Int?,
     val photoInfo: List<FiPhotoInfoDto>?,
+    var reportInfo: ReportDto? = null,
     var updatedAt: LocalDateTime? = null,
     var createdAt: LocalDateTime? = null
 ): Serializable

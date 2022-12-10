@@ -4,6 +4,7 @@ import com.ddd.morningbear.api.photo.dto.PhotoInput
 import com.ddd.morningbear.category.repository.MdCategoryInfoRepository
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
+import com.ddd.morningbear.common.utils.DateUtils
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
@@ -103,6 +104,12 @@ class PhotoService(
                 if(input.categoryId.isNullOrBlank()) input.categoryId = myPhoto.categoryId
             }
 
+            val startTime = DateUtils.setStringToTime(input.startAt!!)
+            val endTime = DateUtils.setStringToTime(input.endAt!!)
+            if(startTime.isAfter(endTime)) {
+                throw GraphQLBadRequestException("올바른 시작 및 종료시간이 아닙니다.")
+            }
+
             return fiPhotoInfoRepository.save(
                 FiPhotoInfo(
                     photoId = photoId,
@@ -116,6 +123,8 @@ class PhotoService(
                     categoryInfo = mdCategoryInfoRepository.findById(input.categoryId!!).orElseThrow { throw GraphQLNotFoundException("카테고리 조회에 실패하였습니다.") }
                 )
             ).toDto()
+        }catch (be: GraphQLBadRequestException){
+            throw be
         }catch (ne: GraphQLNotFoundException){
             throw ne
         }catch (e: Exception) {

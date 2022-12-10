@@ -24,6 +24,8 @@ type User {
     givenLikeCnt: Int
     """ 사진 리스트 """
     photoInfo: [Photo]
+    """ 리포트정보 """
+    reportInfo: Report
 }
 
 input UserInput {

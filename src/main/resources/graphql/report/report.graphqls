@@ -1,0 +1,20 @@
+
+type Report {
+    """ 전체 누적시간(분 단위) """
+    totalTime: Int
+    """ 카테고리별 누적시간(분 단위) """
+    totalTimeByCategory: [CategoryReport]
+    """ 평균 시작시간(format: HHmm) """
+    avgStartDt: String
+    """ 성공횟수 """
+    countSucc: Int
+}
+
+type CategoryReport {
+    """ 카테고리 ID """
+    categoryId: String
+    """ 카테고리 명칭 """
+    categoryDesc: String
+    """ 누적시간(분 단위) """
+    totalTime: Int
+}

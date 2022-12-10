@@ -18,9 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-application-deploy.yaml
-application-deploy.properties
-
+*.yaml
 .idea
 *.iws
 *.iml

@@ -9,6 +9,7 @@ import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepositoryImp
+import com.ddd.morningbear.report.ReportService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,6 +25,7 @@ class MyInfoService(
     private val mpUserInfoRepositoryImp: MpUserInfoRepositoryImp,
     private val categoryService: CategoryService,
     private val badgeService: BadgeService,
+    private val reportService: ReportService
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -44,6 +46,10 @@ class MyInfoService(
         myInfo.badgeList = badgeService.findMyBadge(accountId)
         // 카테고리리스트 조회
         myInfo.categoryList = categoryService.findMyCategory(accountId)
+        // 리포트 조회
+        if(myInfo.photoInfo != null){
+            myInfo.reportInfo = reportService.createReport(accountId)
+        }
 
         return myInfo
     }

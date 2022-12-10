@@ -38,7 +38,7 @@ class FiPhotoInfo(
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now(),
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {
     fun toDto() = FiPhotoInfoDto(
         photoId = this.photoId,
