@@ -18,19 +18,16 @@ class MdBadgeInfo(
     @Id
     @Column(name = "BADGE_ID", nullable = false)
     val badgeId: String,
+    @Column(name = "BADGE_TITLE", nullable = false)
+    val badgeTitle: String,
     @Column(name = "BADGE_DESC", nullable = false)
     val badgeDesc: String,
-    @Size(max = 10, message = "Wrong BadgeTier Size")
-    @Column(name = "BADGE_TIER", nullable = false)
-    val badgeTier: Int,
-    @Column(name = "UPDATED_AT", nullable = true)
-    val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now()
 ) {
     fun toDto() = MdBadgeInfoDto(
         badgeId = this.badgeId,
-        badgeDesc = this.badgeDesc,
-        badgeTier = this.badgeTier
+        badgeTitle = this.badgeTitle,
+        badgeDesc = this.badgeDesc
     )
 }

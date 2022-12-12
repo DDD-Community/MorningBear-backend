@@ -43,11 +43,7 @@ class BlockService(
     fun saveBlock(accountId: String, blockAccountId: String): List<MiBlockMappingDto> {
         miBlockMappingRepository.save(
             MiBlockMapping(
-                miBlockMappingPk = MiBlockMappingPk(
-                                        accountId = accountId,
-                                        blockAccountId = blockAccountId
-                                    ),
-                updatedAt = LocalDateTime.now()
+                miBlockMappingPk = MiBlockMappingPk(accountId = accountId, blockAccountId = blockAccountId)
             )
         )
 

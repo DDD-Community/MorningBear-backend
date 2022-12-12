@@ -18,10 +18,8 @@ class FiLikeInfo(
     @EmbeddedId
     val fiLikeInfoPk: FiLikeInfoPk,
 
-    @Column(name = "UPDATED_AT", nullable = true)
-    val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now(),
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @ManyToOne
     @JoinColumn(name = "TAKEN_ACCOUNT_ID", insertable = false, updatable = false)
@@ -37,6 +35,6 @@ class FiLikeInfo(
         likeCode = this.fiLikeInfoPk.likeCode,
         givenAccountId = this.fiLikeInfoPk.givenAccountId,
         takenAccountId = this.fiLikeInfoPk.takenAccountId,
-        updatedAt = this.updatedAt.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+        createdAt = this.createdAt.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
     )
 }

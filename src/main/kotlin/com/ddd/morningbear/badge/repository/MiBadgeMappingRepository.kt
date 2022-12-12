@@ -9,7 +9,7 @@ import java.util.*
  * @author yoonho
  * @since 2022.11.19
  */
-interface MiBadgeMappingRepository : JpaRepository<MiBadgeMapping, String> {
+interface MiBadgeMappingRepository : JpaRepository<MiBadgeMapping, MiBadgeMappingPk> {
     fun findAllByMiBadgeMappingPkAccountId(accountId: String): List<MiBadgeMapping>
     fun deleteAllByMiBadgeMappingPk(miBadgeMappingPk: MiBadgeMappingPk)
 }

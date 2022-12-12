@@ -15,8 +15,6 @@ import javax.persistence.*
 class MiBadgeMapping(
     @EmbeddedId
     val miBadgeMappingPk: MiBadgeMappingPk,
-    @Column(name = "UPDATED_AT", nullable = true)
-    val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now(),
 

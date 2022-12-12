@@ -1,5 +1,6 @@
 package com.ddd.morningbear.like.dto
 
+import com.ddd.morningbear.badge.dto.MdBadgeInfoDto
 import java.io.Serializable
 import java.time.LocalDateTime
 
@@ -11,6 +12,6 @@ data class FiLikeInfoDto(
     val likeCode: String,
     val takenAccountId: String,
     val givenAccountId: String,
-    var updatedAt: String,
-    var createdAt: LocalDateTime? = null
+    var createdAt: String,
+    var updatedBadge: List<MdBadgeInfoDto>? = null,
 ): Serializable

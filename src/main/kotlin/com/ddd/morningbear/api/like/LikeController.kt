@@ -27,7 +27,7 @@ class LikeController(
      * @since 2022.12.05
      */
     @MutationMapping
-    fun saveLike(@Argument likeInput: LikeInput): Boolean {
+    fun saveLike(@Argument likeInput: LikeInput): FiLikeInfoDto {
         val accountId = getAuthenticationContextAccountId()
         return likeService.saveLike(accountId, likeInput)
     }

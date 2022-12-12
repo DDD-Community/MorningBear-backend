@@ -17,8 +17,6 @@ class MdCategoryInfo(
     val categoryId: String,
     @Column(name = "CATEGORY_DESC", nullable = false)
     val categoryDesc: String,
-    @Column(name = "UPDATED_AT", nullable = true)
-    val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now(),
 

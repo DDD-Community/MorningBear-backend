@@ -9,8 +9,6 @@ import java.time.LocalDateTime
  */
 data class MdBadgeInfoDto(
     val badgeId: String,
-    val badgeDesc: String,
-    val badgeTier: Int?,
-    val updatedAt: LocalDateTime? = null,
-    val createdAt: LocalDateTime? = null
+    val badgeTitle: String,
+    val badgeDesc: String
 ): Serializable

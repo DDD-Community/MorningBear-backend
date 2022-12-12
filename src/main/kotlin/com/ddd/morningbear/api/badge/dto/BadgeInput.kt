@@ -8,6 +8,6 @@ import java.io.Serializable
  */
 data class BadgeInput(
     var badgeId: String,
-    var badgeDesc: String,
-    var badgeTier: Int
+    var badgeTitle: String,
+    var badgeDesc: String
 ): Serializable

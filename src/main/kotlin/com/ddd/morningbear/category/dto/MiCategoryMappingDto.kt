@@ -10,7 +10,5 @@ import javax.persistence.Column
  */
 data class MiCategoryMappingDto(
     val accountId: String,
-    val categoryId: String,
-    val updatedAt: LocalDateTime? = null,
-    val createdAt: LocalDateTime? = null
+    val categoryId: String
 ): Serializable

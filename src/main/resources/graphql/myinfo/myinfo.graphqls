@@ -12,8 +12,8 @@ type User {
     wakeUpAt: String
     """ 획득 뱃지 리스트 """
     badgeList: [Badge]
-    """ 설정한 카테고리 리스트 """
-    categoryList: [Category]
+#    """ 설정한 카테고리 리스트 """
+#    categoryList: [Category]
     """ 받은 응원하기 리스트 """
     takenLike: [Like]
     """ 받은 응원하기 리스트 Count """
@@ -26,6 +26,8 @@ type User {
     photoInfo: [Photo]
     """ 리포트정보 """
     reportInfo: Report
+    """ 신규 획득 뱃지 """
+    updatedBadge: [Badge]
 }
 
 input UserInput {

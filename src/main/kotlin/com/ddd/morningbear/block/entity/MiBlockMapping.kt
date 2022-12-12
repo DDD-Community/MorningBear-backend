@@ -17,8 +17,6 @@ import javax.persistence.Table
 class MiBlockMapping(
     @EmbeddedId
     val miBlockMappingPk: MiBlockMappingPk,
-    @Column(name = "UPDATED_AT", nullable = true)
-    val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now()
 ) {

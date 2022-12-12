@@ -1,9 +1,7 @@
 package com.ddd.morningbear.common.utils
 
 import org.slf4j.LoggerFactory
-import java.time.Duration
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 
 /**
@@ -21,7 +19,7 @@ object DateUtils {
      * @since 2022.12.10
      */
     fun findSunday(): LocalDate {
-        var week = LocalDate.now().dayOfWeek.value
+        val week = LocalDate.now().dayOfWeek.value
         return LocalDate.now().minusDays(week.toLong())
     }
 
@@ -35,10 +33,26 @@ object DateUtils {
      * @since 2022.12.10
      */
     fun findDuration(startDt: String, endDt: String): Duration {
-        var startTime = this.setStringToTime(startDt)
-        var endTime = this.setStringToTime(endDt)
+        val startTime = this.setStringToTime(startDt)
+        val endTime = this.setStringToTime(endDt)
 
         return Duration.between(startTime, endTime)
+    }
+
+    /**
+     * 두 날짜간 Period 계산
+     *
+     * @param startDt [String]
+     * @param endDt [String]
+     * @return result [Period]
+     * @author yoonho
+     * @since 2022.12.12
+     */
+    fun findPeriod(startDt: String, endDt: String): Period {
+        val startDate = this.setStringToDate(startDt)
+        val endDate = this.setStringToDate(endDt)
+
+        return Period.between(startDate, endDate)
     }
 
     /**
@@ -49,10 +63,26 @@ object DateUtils {
      * @author yoonho
      * @since 2022.12.10
      */
-    fun setStringToMap(paramDt: String): Map<String, Int> {
+    fun setStringToTimeMap(paramDt: String): Map<String, Int> {
         return mapOf(
             "hour" to paramDt.substring(0,2).toInt(),
             "min" to paramDt.substring(2,4).toInt()
+        )
+    }
+
+    /**
+     * 문자열 날짜형식(yyyyMMdd)을 연도,월,일 단위로 절삭
+     *
+     * @param paramDt [String]
+     * @return result [Map]
+     * @author yoonho
+     * @since 2022.12.12
+     */
+    fun setStringToDateMap(paramDt: String): Map<String, Int> {
+        return mapOf(
+            "year" to paramDt.substring(0,4).toInt(),
+            "month" to paramDt.substring(4,6).toInt(),
+            "day" to paramDt.substring(6,8).toInt(),
         )
     }
 
@@ -77,7 +107,20 @@ object DateUtils {
      * @since 2022.12.10
      */
     fun setStringToTime(time: String): LocalTime {
-        var timeMap = this.setStringToMap(time)
+        val timeMap = this.setStringToTimeMap(time)
         return LocalTime.of(timeMap.getOrDefault("hour", 0), timeMap.getOrDefault("min", 0), 0)
+    }
+
+    /**
+     * 문자열 날짜형식(yyyyMMdd)을 LocalDate로 파싱
+     *
+     * @param date [String]
+     * @return result [LocalTime]
+     * @author yoonho
+     * @since 2022.12.12
+     */
+    fun setStringToDate(date: String): LocalDate {
+        val dateMap = this.setStringToDateMap(date)
+        return LocalDate.of(dateMap.getOrDefault("year", 0), dateMap.getOrDefault("month", 0), dateMap.getOrDefault("day", 0))
     }
 }

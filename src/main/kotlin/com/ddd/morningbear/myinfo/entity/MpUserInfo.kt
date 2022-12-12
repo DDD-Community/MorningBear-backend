@@ -27,9 +27,9 @@ class MpUserInfo(
     @Column(name = "WAKE_UP_AT", nullable = true)
     val wakeUpAt: String?,
     @Column(name = "UPDATED_AT", nullable = true)
-    val updatedAt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
-    val createdAt: LocalDateTime? = LocalDateTime.now(),
+    val createdAt: LocalDateTime,
 
     @OneToMany(mappedBy = "takenInfo", cascade = [CascadeType.REMOVE])
     val takenInfo: List<FiLikeInfo>? = null,

@@ -9,7 +9,5 @@ import java.time.LocalDateTime
  */
 data class MiBlockMappingDto(
     val accountId: String,
-    val blockAccountId: String,
-    val updatedAt: LocalDateTime? = null,
-    val createdAt: LocalDateTime? = null
+    val blockAccountId: String
 ): Serializable

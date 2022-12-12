@@ -49,47 +49,47 @@ class BadgeService(
     fun findMyBadgeMapping(accountId: String): List<MiBadgeMappingDto> = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId).map { it.toDto() }
 
     /**
-     * 내 뱃지 조회
+     * 내 뱃지 전체 조회
      *
      * @param accountId [String]
      * @return List [MdBadgeInfoDto]
      * @author yoonho
      * @since 2022.12.04
      */
-    fun findMyBadge(accountId: String): List<MdBadgeInfoDto> {
+    fun findMyAllBadge(accountId: String): MutableList<MdBadgeInfoDto> {
         var badgeIdList = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId).map { it.miBadgeMappingPk.badgeId }.stream().collect(Collectors.toList())
-        return mdBadgeInfoRepository.findAllById(badgeIdList).map { it.toDto() }
+        return mdBadgeInfoRepository.findAllById(badgeIdList).map { it.toDto() }.toMutableList()
     }
 
     /**
      * 내 뱃지 저장
      *
      * @param accountId [String]
-     * @param input [List][String]
+     * @param badgeId [String]
      * @return List [MdBadgeInfoDto]
      * @author yoonho
      * @since 2022.12.04
      */
-    fun saveMyBadge(accountId: String, input: List<String>): List<MdBadgeInfoDto> {
-        var badgeList = mdBadgeInfoRepository.findAllById(input)
-        if(input.size != badgeList.size){
-            throw GraphQLBadRequestException("존재하지 않은 카테고리ID 입니다.")
+    fun saveMyBadge(accountId: String, badgeId: String): MdBadgeInfoDto? {
+        if(!mdBadgeInfoRepository.existsById(badgeId)){
+            throw GraphQLBadRequestException("존재하지 않은 뱃지ID 입니다.")
         }
 
-        badgeList.stream().forEach {
-            x -> miBadgeMappingRepository.save(
-                MiBadgeMapping(
-                    miBadgeMappingPk = MiBadgeMappingPk(
-                        accountId = accountId,
-                        badgeId = x.badgeId
-                    ),
-                    userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자정보를 조회할 수 없습니다.") },
-                    updatedAt = LocalDateTime.now()
-                )
-            )
+        if(miBadgeMappingRepository.existsById(MiBadgeMappingPk(accountId = accountId,badgeId = badgeId))) {
+            return null
         }
 
-        return this.findMyBadge(accountId)
+        val badgeMappingInfo = miBadgeMappingRepository.save(
+                                    MiBadgeMapping(
+                                        miBadgeMappingPk = MiBadgeMappingPk(
+                                            accountId = accountId,
+                                            badgeId = badgeId
+                                        ),
+                                        userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자정보를 조회할 수 없습니다.") }
+                                    )
+                                )
+
+        return mdBadgeInfoRepository.findById(badgeMappingInfo.miBadgeMappingPk.badgeId).orElseGet(null).toDto()
     }
 
     /**
@@ -105,9 +105,8 @@ class BadgeService(
             x -> mdBadgeInfoRepository.save(
                     MdBadgeInfo(
                         badgeId = x.badgeId,
-                        badgeDesc = x.badgeDesc,
-                        badgeTier = x.badgeTier,
-                        updatedAt = LocalDateTime.now()
+                        badgeTitle = x.badgeTitle,
+                        badgeDesc = x.badgeDesc
                     )
                 )
         }

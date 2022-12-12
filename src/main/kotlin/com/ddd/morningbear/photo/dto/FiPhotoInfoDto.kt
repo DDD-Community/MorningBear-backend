@@ -1,5 +1,6 @@
 package com.ddd.morningbear.photo.dto
 
+import com.ddd.morningbear.badge.dto.MdBadgeInfoDto
 import java.io.Serializable
 
 /**
@@ -14,5 +15,7 @@ data class FiPhotoInfoDto(
     val categoryId: String?,
     val endAt: String?,
     val startAt: String?,
-    val updatedAt: String?
+    var updatedBadge: List<MdBadgeInfoDto>? = null,
+    val updatedAt: String?,
+    var createdAt: String?
 ): Serializable

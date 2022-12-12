@@ -39,13 +39,11 @@ class MyInfoService(
      */
     fun findUserInfo(accountId: String): MpUserInfoDto {
         var myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
-            throw GraphQLNotFoundException("내 정보 조회에 실패하였습니다.")
+            throw GraphQLNotFoundException("사용자정보 조회에 실패하였습니다.")
         }.toDto()
 
         // 뱃지리스트 조회
-        myInfo.badgeList = badgeService.findMyBadge(accountId)
-        // 카테고리리스트 조회
-        myInfo.categoryList = categoryService.findMyCategory(accountId)
+        myInfo.badgeList = badgeService.findMyAllBadge(accountId)
         // 리포트 조회
         if(myInfo.photoInfo != null){
             myInfo.reportInfo = reportService.createReport(accountId)
@@ -79,15 +77,22 @@ class MyInfoService(
             throw GraphQLBadRequestException("로그인정보가 존재하지 않습니다.")
         }
 
+        var isRegisteredUser = false
+        lateinit var createdAt: LocalDateTime
+
         try{
             if(mpUserInfoRepository.existsById(accountId)) {
                 /* 회원정보 업데이트 */
-                val myInfo = mpUserInfoRepository.findById(accountId).orElseGet(null).toDto()
+                val myInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLBadRequestException() }
                 // Patch방식으로 이미 저장된 사용자정보에서 input으로 전달받은 데이터만 update
                 if(input.nickName.isNullOrBlank()) input.nickName = myInfo.nickName
                 if(input.photoLink.isNullOrBlank()) input.photoLink = myInfo.photoLink
                 if(input.memo.isNullOrBlank()) input.memo = myInfo.memo
                 if(input.wakeUpAt.isNullOrBlank()) input.wakeUpAt = myInfo.wakeUpAt
+                createdAt = myInfo.createdAt
+            }else{
+                isRegisteredUser = true
+                createdAt = LocalDateTime.now()
             }
 
             mpUserInfoRepository.save(
@@ -97,10 +102,17 @@ class MyInfoService(
                     photoLink = input.photoLink,
                     memo = input.memo,
                     wakeUpAt = input.wakeUpAt,
-                    updatedAt = LocalDateTime.now()
+                    updatedAt = LocalDateTime.now(),
+                    createdAt = createdAt
                 )
             ).toDto()
 
+            // 신규 회원가입시
+            if(isRegisteredUser){
+                categoryService.saveAllCategory(accountId)
+                badgeService.saveMyBadge(accountId, "B1")
+            }
+            //
             return this.findUserInfo(accountId)
         }catch (ne: GraphQLNotFoundException){
             throw ne

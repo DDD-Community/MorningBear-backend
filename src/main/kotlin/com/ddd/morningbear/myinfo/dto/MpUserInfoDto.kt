@@ -18,14 +18,15 @@ data class MpUserInfoDto (
     var photoLink: String?,
     var memo: String?,
     var wakeUpAt: String?,
-    var badgeList: List<MdBadgeInfoDto>? = null,
-    var categoryList: List<MdCategoryInfoDto>? = null,
+    var badgeList: MutableList<MdBadgeInfoDto>? = null,
+//    var categoryList: List<MdCategoryInfoDto>? = null,
     val takenLike: List<FiLikeInfoDto>?,
     val takenLikeCnt: Int?,
     val givenLike: List<FiLikeInfoDto>?,
     val givenLikeCnt: Int?,
     val photoInfo: List<FiPhotoInfoDto>?,
     var reportInfo: ReportDto? = null,
+    var updatedBadge: List<MdBadgeInfoDto>? = null,
     var updatedAt: LocalDateTime? = null,
     var createdAt: LocalDateTime? = null
 ): Serializable

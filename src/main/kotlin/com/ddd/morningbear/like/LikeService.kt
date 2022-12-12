@@ -26,6 +26,30 @@ class LikeService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     /**
+     * 내가 받은 좋아요 목록
+     *
+     * @param accountId [String]
+     * @return List [FiLikeInfoDto]
+     * @author yoonho
+     * @since 2022.12.12
+     */
+    fun findTakenInfo(accountId: String): List<FiLikeInfoDto>? {
+        return fiLikeInfoRepository.findAllByFiLikeInfoPkTakenAccountId(accountId).orElseGet(null).map { it.toDto() }
+    }
+
+    /**
+     * 내가 좋아요 준 목록
+     *
+     * @param accountId [String]
+     * @return List [FiLikeInfoDto]
+     * @author yoonho
+     * @since 2022.12.12
+     */
+    fun findGivenInfo(accountId: String): List<FiLikeInfoDto>? {
+        return fiLikeInfoRepository.findAllByFiLikeInfoPkGivenAccountId(accountId).orElseGet(null).map { it.toDto() }
+    }
+
+    /**
      * 좋아요 등록
      *
      * @param givenAccountId [String]
@@ -35,35 +59,29 @@ class LikeService(
      * @since 2022.12.05
      */
     @Transactional(rollbackFor = [Exception::class])
-    fun saveLike(givenAccountId: String, input: LikeInput): Boolean  {
+    fun saveLike(givenAccountId: String, input: LikeInput): FiLikeInfoDto  {
         try{
             // 좋아요시 나의피드와 상대방피드 데이터가 모두 존재해야 한다
             if(!mpUserInfoRepository.existsById(givenAccountId) || !mpUserInfoRepository.existsById(input.takenAccountId)){
                 throw GraphQLNotFoundException("피드정보를 찾을 수 없습니다.")
             }
 
-            fiLikeInfoRepository.save(
-                FiLikeInfo(
-                    fiLikeInfoPk = FiLikeInfoPk(
-                        likeCode = input.likeCode,
-                        takenAccountId = input.takenAccountId,
-                        givenAccountId = givenAccountId
-                    ),
-                    takenInfo = mpUserInfoRepository.findById(input.takenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
-                    givenInfo = mpUserInfoRepository.findById(givenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
-                    updatedAt = LocalDateTime.now()
-                )
-            )
-
-            logger.info(" >>> [saveLike] likeCode: {}, takenAccountId: {}, givenAccountId: {}", input.likeCode, input.takenAccountId, givenAccountId)
+            return fiLikeInfoRepository.save(
+                        FiLikeInfo(
+                            fiLikeInfoPk = FiLikeInfoPk(
+                                likeCode = input.likeCode,
+                                takenAccountId = input.takenAccountId,
+                                givenAccountId = givenAccountId
+                            ),
+                            takenInfo = mpUserInfoRepository.findById(input.takenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
+                            givenInfo = mpUserInfoRepository.findById(givenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
+                        )
+                    ).toDto()
         }catch (nfe: GraphQLNotFoundException) {
             throw nfe
         }catch (e: Exception){
-            logger.error(" >>> [saveLike] msg: {}", e.message)
             throw GraphQLBadRequestException()
         }
-
-        return true
     }
 
     /**

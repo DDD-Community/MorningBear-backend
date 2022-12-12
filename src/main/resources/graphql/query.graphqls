@@ -4,9 +4,9 @@ type Query {
     encode(state: String, token: String): String
     """ 로그인 기본정보 조회 """
     findLoginInfo: [Login]
-    """ 내정보 조회 """
+    """ 내정보 조회 (뱃지이벤트 발생) """
     findMyInfo: User
-    """ 사용자정보 조회 """
+    """ 사용자정보 조회 (뱃지이벤트 발생) """
     findUserInfo(accountId: String): User
     """ 전체 카테고리 조회 """
     findAllCategory: [Category]

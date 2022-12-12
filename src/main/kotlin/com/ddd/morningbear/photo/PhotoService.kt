@@ -9,6 +9,7 @@ import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import com.ddd.morningbear.photo.repository.FiPhotoInfoRepository
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -73,6 +74,18 @@ class PhotoService(
     }
 
     /**
+     * 사진 전체 조회
+     *
+     * @param accountId [String]
+     * @return List [FiPhotoInfoDto]
+     * @author yoonho
+     * @since 2022.12.12
+     */
+    fun findAllPhoto(accountId: String): List<FiPhotoInfoDto>? {
+        return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseGet(null).map { it.toDto() }
+    }
+
+    /**
      * 사진 저장
      *
      * @param accountId [String]
@@ -85,23 +98,22 @@ class PhotoService(
     fun saveMyPhoto(accountId: String, input: PhotoInput): FiPhotoInfoDto {
         try{
             lateinit var photoId: String
-            if(!input.photoId.isNullOrBlank()){
+            lateinit var createdAt: LocalDateTime
+            if(input.photoId.isNullOrBlank()){
+                photoId = UUID.randomUUID().toString()
+                createdAt = LocalDateTime.now()
+            }else{
                 photoId = input.photoId!!
-                if(!fiPhotoInfoRepository.existsById(photoId)){
+                val myPhoto = fiPhotoInfoRepository.findById(photoId).orElseThrow {
                     throw GraphQLNotFoundException("사진ID에 해당하는 사진정보를 찾을 수 없습니다.")
                 }
-            }else{
-                photoId = UUID.randomUUID().toString()
-            }
-
-            if(fiPhotoInfoRepository.existsById(photoId)){
-                val myPhoto = fiPhotoInfoRepository.findById(photoId).orElseGet(null).toDto()
 
                 if(input.photoLink.isNullOrBlank()) input.photoLink = myPhoto.photoLink
                 if(input.photoDesc.isNullOrBlank()) input.photoDesc = myPhoto.photoDesc
                 if(input.startAt.isNullOrBlank()) input.startAt = myPhoto.startAt
                 if(input.endAt.isNullOrBlank()) input.endAt = myPhoto.endAt
-                if(input.categoryId.isNullOrBlank()) input.categoryId = myPhoto.categoryId
+                if(input.categoryId.isNullOrBlank()) input.categoryId = myPhoto.categoryInfo.categoryId
+                createdAt = myPhoto.createdAt
             }
 
             val startTime = DateUtils.setStringToTime(input.startAt!!)
@@ -118,6 +130,7 @@ class PhotoService(
                     startAt = input.startAt!!,
                     endAt = input.endAt!!,
                     updatedAt = LocalDateTime.now(),
+                    createdAt = createdAt,
 
                     userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자 조회에 실패하였습니다.") },
                     categoryInfo = mdCategoryInfoRepository.findById(input.categoryId!!).orElseThrow { throw GraphQLNotFoundException("카테고리 조회에 실패하였습니다.") }

@@ -6,8 +6,10 @@ type Like {
     takenAccountId: String
     """ 응원하기 대상 사용자ID """
     givenAccountId: String
-    """ 업데이트 일자 """
-    updatedAt: String
+    """ 생성 일자 """
+    createdAt: String
+    """ 신규 획득 뱃지 """
+    updatedBadge: [Badge]
 }
 
 input LikeInput {

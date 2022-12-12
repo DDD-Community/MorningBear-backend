@@ -14,8 +14,12 @@ type Photo {
     startAt: String
     """ 종료시간(format: HHmm) """
     endAt: String
+    """ 신규 획득 뱃지 """
+    updatedBadge: [Badge]
     """ 업데이트 일자 """
     updatedAt: String
+    """ 생성 일자 """
+    createdAt: String
 }
 
 input PhotoInput {
