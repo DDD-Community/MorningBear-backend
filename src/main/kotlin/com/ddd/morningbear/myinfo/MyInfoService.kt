@@ -6,9 +6,11 @@ import com.ddd.morningbear.category.CategoryService
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
+import com.ddd.morningbear.myinfo.dto.SearchUserDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepositoryImp
+import com.ddd.morningbear.photo.PhotoService
 import com.ddd.morningbear.report.ReportService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -25,7 +27,8 @@ class MyInfoService(
     private val mpUserInfoRepositoryImp: MpUserInfoRepositoryImp,
     private val categoryService: CategoryService,
     private val badgeService: BadgeService,
-    private val reportService: ReportService
+    private val reportService: ReportService,
+    private val photoService: PhotoService
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -38,15 +41,26 @@ class MyInfoService(
      * @since 2022.12.04
      */
     fun findUserInfo(accountId: String): MpUserInfoDto {
-        var myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
+        val myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
             throw GraphQLNotFoundException("사용자정보 조회에 실패하였습니다.")
         }.toDto()
 
         // 뱃지리스트 조회
         myInfo.badgeList = badgeService.findMyAllBadge(accountId)
-        // 리포트 조회
         if(myInfo.photoInfo != null){
+            // 리포트 조회
             myInfo.reportInfo = reportService.createReport(accountId)
+            // 카테고리별 사진조회
+            val categoryList = categoryService.findAllCategory()
+            categoryList.forEach {
+                myInfo.photoInfoByCategory.add(
+                    MpUserInfoDto.PhotoInfoByCategory(
+                        categoryId = it.categoryId,
+                        categoryDesc = it.categoryDesc,
+                        photoInfo = photoService.findPhotoByCategory(accountId, it.categoryId)
+                    )
+                )
+            }
         }
 
         return myInfo
@@ -60,7 +74,9 @@ class MyInfoService(
      * @author yoonho
      * @since 2022.12.07
      */
-    fun searchUserInfo(keyword: String): List<MpUserInfoDto> = mpUserInfoRepositoryImp.findUserInfoByNickName(keyword).map { it.toDto() }
+    fun searchUserInfo(keyword: String): List<SearchUserDto> {
+        return mpUserInfoRepositoryImp.findUserInfoByNickName(keyword).map { it.toSearchDto() }
+    }
 
     /**
      * 내정보 저장

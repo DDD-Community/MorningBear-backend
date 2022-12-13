@@ -4,6 +4,7 @@ import com.ddd.morningbear.badge.entity.MiBadgeMapping
 import com.ddd.morningbear.category.entity.MiCategoryMapping
 import com.ddd.morningbear.like.entity.FiLikeInfo
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
+import com.ddd.morningbear.myinfo.dto.SearchUserDto
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -57,5 +58,13 @@ class MpUserInfo(
         givenLike = this.givenInfo?.map { it.toDto() },
         givenLikeCnt = this.givenInfo?.size,
         photoInfo = this.photoInfo?.map { it.toDto() }
+    )
+
+    fun toSearchDto() = SearchUserDto(
+        accountId = this.accountId,
+        nickName = this.nickName,
+        photoLink = this.photoLink,
+        memo = this.memo,
+        wakeUpAt = this.wakeUpAt,
     )
 }

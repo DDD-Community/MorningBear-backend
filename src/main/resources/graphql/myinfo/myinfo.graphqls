@@ -1,4 +1,5 @@
 
+""" 사용자 정보 """
 type User {
     """ 사용자ID """
     accountId: String
@@ -24,12 +25,29 @@ type User {
     givenLikeCnt: Int
     """ 사진 리스트 """
     photoInfo: [Photo]
+    """  사진 리스트 (카테고리별) """
+    photoInfoByCategory: [PhotoByCategory]
     """ 리포트정보 """
     reportInfo: Report
     """ 신규 획득 뱃지 """
     updatedBadge: [Badge]
 }
 
+""" 사용자 검색정보 """
+type SearchUser {
+    """ 사용자ID """
+    accountId: String
+    """ 닉네임 """
+    nickName: String
+    """ 프로필사진 링크 """
+    photoLink: String
+    """ 자기소개글 """
+    memo: String
+    """ 기상시간(format: HHmm) """
+    wakeUpAt: String
+}
+
+""" 내정보 저장을 위한 입력데이터 """
 input UserInput {
     """ 닉네임 """
     nickName: String

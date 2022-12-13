@@ -24,7 +24,7 @@ class PhotoController(
     /**
      * 내사진 조회 (특정사진)
      *
-     * @param input [String]
+     * @param photoId [String]
      * @return result [FiPhotoInfoDto]
      * @author yoonho
      * @since 2022.12.06
@@ -38,7 +38,7 @@ class PhotoController(
     /**
      * 사용자 사진 조회 (특정사진)
      *
-     * @param input [PhotoInput]
+     * @param photoUserInput [PhotoInput]
      * @return result [FiPhotoInfoDto]
      * @author yoonho
      * @since 2022.12.06
@@ -51,7 +51,7 @@ class PhotoController(
     /**
      * 내사진 조회 (카테고리별)
      *
-     * @param input [String]
+     * @param photoId [String]
      * @return List [FiPhotoInfoDto]
      * @author yoonho
      * @since 2022.12.06
@@ -65,7 +65,7 @@ class PhotoController(
     /**
      * 사용자 사진 조회 (카테고리별)
      *
-     * @param input [PhotoInput]
+     * @param photoCategoryInput [PhotoInput]
      * @return List [FiPhotoInfoDto]
      * @author yoonho
      * @since 2022.12.06
@@ -78,7 +78,7 @@ class PhotoController(
     /**
      * 사진 저장
      *
-     * @param input [PhotoInput]
+     * @param photoInput [PhotoInput]
      * @return result [FiPhotoInfoDto]
      * @author yoonho
      * @since 2022.12.06

@@ -34,18 +34,18 @@ class CategoryController(
         return categoryService.findAllCategory()
     }
 
-    /**
-     * 내 카테고리 조회(매핑테이블) - 개발자용
-     *
-     * @return List [MiCategoryMappingDto]
-     * @author yoonho
-     * @since 2022.12.04
-     */
-    @QueryMapping
-    fun findMyCategoryMapping(): List<MiCategoryMappingDto> {
-        val accountId = getAuthenticationContextAccountId()
-        return categoryService.findMyCategoryMapping(accountId)
-    }
+//    /**
+//     * 내 카테고리 조회(매핑테이블) - 개발자용
+//     *
+//     * @return List [MiCategoryMappingDto]
+//     * @author yoonho
+//     * @since 2022.12.04
+//     */
+//    @QueryMapping
+//    fun findMyCategoryMapping(): List<MiCategoryMappingDto> {
+//        val accountId = getAuthenticationContextAccountId()
+//        return categoryService.findMyCategoryMapping(accountId)
+//    }
 
 //    /**
 //     * 내 카테고리 저장
@@ -64,7 +64,7 @@ class CategoryController(
     /**
      * 카테고리 메타정보 저장 - 개발자용
      *
-     * @param input [List][CategoryInput]
+     * @param categoryInputList [List][CategoryInput]
      * @return List [MdCategoryInfoDto]
      * @author yoonho
      * @since 2022.12.04

@@ -25,8 +25,15 @@ data class MpUserInfoDto (
     val givenLike: List<FiLikeInfoDto>?,
     val givenLikeCnt: Int?,
     val photoInfo: List<FiPhotoInfoDto>?,
+    var photoInfoByCategory: MutableList<PhotoInfoByCategory> = mutableListOf(),
     var reportInfo: ReportDto? = null,
     var updatedBadge: List<MdBadgeInfoDto>? = null,
     var updatedAt: LocalDateTime? = null,
     var createdAt: LocalDateTime? = null
-): Serializable
+): Serializable {
+    data class PhotoInfoByCategory(
+        val categoryId: String,
+        val categoryDesc: String,
+        val photoInfo: List<FiPhotoInfoDto>
+    ): Serializable
+}

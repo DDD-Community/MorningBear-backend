@@ -19,9 +19,9 @@ class LikeController(
 ): BaseController() {
 
     /**
-     * 좋아요 등록
+     * 응원하기 등록
      *
-     * @param input [LikeInput]
+     * @param likeInput [LikeInput]
      * @return result [Boolean]
      * @author yoonho
      * @since 2022.12.05
@@ -33,9 +33,9 @@ class LikeController(
     }
 
     /**
-     * 좋아요 취소
+     * 응원하기 취소
      *
-     * @param input [LikeInput]
+     * @param likeInput [LikeInput]
      * @return result [Boolean]
      * @author yoonho
      * @since 2022.12.05

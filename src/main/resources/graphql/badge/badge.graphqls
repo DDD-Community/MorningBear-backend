@@ -1,4 +1,5 @@
 
+""" 뱃지 정보 """
 type Badge {
     """ 뱃지 ID """
     badgeId: String
@@ -8,6 +9,7 @@ type Badge {
     badgeDesc: String
 }
 
+""" 뱃지 메타정보 저장을 위한 입력데이터 """
 input BadgeInput {
     """ 뱃지 ID """
     badgeId: String

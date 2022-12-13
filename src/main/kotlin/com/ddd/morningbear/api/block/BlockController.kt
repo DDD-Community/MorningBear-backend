@@ -36,7 +36,7 @@ class BlockController(
     /**
      * 사용자 차단하기
      *
-     * @param input [String]
+     * @param blockAccountId [String]
      * @return List [MiBlockMappingDto]
      * @author yoonho
      * @since 2022.12.04

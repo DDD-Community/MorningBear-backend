@@ -1,4 +1,5 @@
 
+""" 사용자 차단정보 """
 type Block {
     """ 사용자ID """
     accountId: String

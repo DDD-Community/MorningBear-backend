@@ -5,6 +5,7 @@ import com.ddd.morningbear.common.BaseController
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.myinfo.MyInfoService
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
+import com.ddd.morningbear.myinfo.dto.SearchUserDto
 import org.slf4j.LoggerFactory
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
@@ -51,13 +52,13 @@ class MyInfoController(
     /**
      * 사용자 검색
      *
-     * @param input [String]
+     * @param keyword [String]
      * @return List [MpUserInfoDto]
      * @author yoonho
      * @since 2022.12.07
      */
     @QueryMapping
-    fun searchUserInfo(@Argument keyword: String): List<MpUserInfoDto> {
+    fun searchUserInfo(@Argument keyword: String): List<SearchUserDto> {
         return myInfoService.searchUserInfo(keyword)
     }
 

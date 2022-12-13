@@ -1,6 +1,6 @@
 
 type Mutation {
-    """ 내정보 저장 """
+    """ 내정보 저장 (회원가입, 정보수정) """
     saveMyInfo(userInput: UserInput): User
 #    """ 내 카테고리 저장 """
 #    saveMyCategory(categoryIdList: [String]): [Category]

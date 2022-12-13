@@ -34,18 +34,18 @@ class BadgeController(
         return badgeService.findAllBadge()
     }
 
-    /**
-     * 내 뱃지 조회(매핑테이블) - 개발자용
-     *
-     * @return List [MiBadgeMappingDto]
-     * @author yoonho
-     * @since 2022.12.04
-     */
-    @QueryMapping
-    fun findMyBadgeMapping(): List<MiBadgeMappingDto> {
-        val accountId = getAuthenticationContextAccountId()
-        return badgeService.findMyBadgeMapping(accountId)
-    }
+//    /**
+//     * 내 뱃지 조회(매핑테이블) - 개발자용
+//     *
+//     * @return List [MiBadgeMappingDto]
+//     * @author yoonho
+//     * @since 2022.12.04
+//     */
+//    @QueryMapping
+//    fun findMyBadgeMapping(): List<MiBadgeMappingDto> {
+//        val accountId = getAuthenticationContextAccountId()
+//        return badgeService.findMyBadgeMapping(accountId)
+//    }
 
 //    /**
 //     * 내 뱃지 저장
@@ -64,7 +64,7 @@ class BadgeController(
     /**
      * 뱃지 메타정보 저장 - 개발자용
      *
-     * @param input [List][BadgeInput]
+     * @param badgeInputList [List][BadgeInput]
      * @return List [MdBadgeInfoDto]
      * @author yoonho
      * @since 2022.12.04
