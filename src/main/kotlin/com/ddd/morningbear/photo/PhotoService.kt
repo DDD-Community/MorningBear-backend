@@ -2,14 +2,17 @@ package com.ddd.morningbear.photo
 
 import com.ddd.morningbear.api.photo.dto.PhotoInput
 import com.ddd.morningbear.category.repository.MdCategoryInfoRepository
+import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.common.utils.DateUtils
+import com.ddd.morningbear.like.LikeService
+import com.ddd.morningbear.like.repository.FiLikeInfoRepository
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import com.ddd.morningbear.photo.repository.FiPhotoInfoRepository
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.ddd.morningbear.photo.repository.FiPhotoInfoRepositoryImpl
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,7 +26,9 @@ import java.util.*
 @Service
 class PhotoService(
     private val fiPhotoInfoRepository: FiPhotoInfoRepository,
+    private val fiPhotoInfoRepositoryImpl: FiPhotoInfoRepositoryImpl,
     private val mdCategoryInfoRepository: MdCategoryInfoRepository,
+    private val fiLikeInfoRepository: FiLikeInfoRepository,
     private val mpUserInfoRepository: MpUserInfoRepository
 ) {
 
@@ -65,12 +70,12 @@ class PhotoService(
         if(categoryId.equals("ALL")){
             return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseThrow {
                 throw GraphQLNotFoundException("전체 카테고리에 대한 사진 조회에 실패하였습니다.")
-            }.map { it.toDto() }
+            }.sortedByDescending { it.createdAt }.map { it.toDto() }
         }
 
         return fiPhotoInfoRepository.findAllByCategoryInfoCategoryIdAndUserInfoAccountId(categoryId, accountId).orElseThrow {
             throw GraphQLNotFoundException("카테고리별 사진 조회에 실패하였습니다.")
-        }.map { it.toDto() }
+        }.sortedByDescending { it.createdAt }.map { it.toDto() }
     }
 
     /**
@@ -83,6 +88,40 @@ class PhotoService(
      */
     fun findAllPhoto(accountId: String): List<FiPhotoInfoDto>? {
         return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseGet(null).map { it.toDto() }
+    }
+
+    /**
+     * 순서별 사진리스트 조회
+     *
+     * @param size [Int]
+     * @param orderType [String]
+     * @param order [String]
+     * @return List [FiPhotoInfoDto]
+     * @author yoonho
+     * @since 2022.12.13
+     */
+    fun findPhotoByOrderType(size: Int, orderType: String): List<FiPhotoInfoDto> {
+        if(fiPhotoInfoRepository.count() < size){
+            throw GraphQLBadRequestException("요청하신 size보다 저장된 사진의 개수가 적습니다.")
+        }
+
+        when(orderType) {
+            CommCode.OrderType.CREATE_ORDER_ASC.code -> return fiPhotoInfoRepositoryImpl.findPhotoByOrderType(size, orderType).map { it.toDto() }
+            CommCode.OrderType.CREATE_ORDER_DESC.code -> return fiPhotoInfoRepositoryImpl.findPhotoByOrderType(size, orderType).map { it.toDto() }
+            CommCode.OrderType.LIKE_ORDER_ASC.code -> {
+                if(fiLikeInfoRepository.count() < size){
+                    throw GraphQLBadRequestException("요청하신 size보다 저장된 응원하기의 개수가 적습니다.")
+                }
+                return fiPhotoInfoRepositoryImpl.findPhotoByAccountIdList(size, orderType).map { it.toDto() }
+            }
+            CommCode.OrderType.LIKE_ORDER_DESC.code -> {
+                if(fiLikeInfoRepository.count() < size){
+                    throw GraphQLBadRequestException("요청하신 size보다 저장된 응원하기의 개수가 적습니다.")
+                }
+                return fiPhotoInfoRepositoryImpl.findPhotoByAccountIdList(size, orderType).map { it.toDto() }
+            }
+            else -> return fiPhotoInfoRepositoryImpl.findPhotoByOrderType(size, CommCode.OrderType.CREATE_ORDER_DESC.code).map { it.toDto() }
+        }
     }
 
     /**

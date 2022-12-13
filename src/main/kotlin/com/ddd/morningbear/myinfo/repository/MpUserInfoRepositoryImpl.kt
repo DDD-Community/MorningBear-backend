@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
  * @since 2022.12.07
  */
 @Repository
-class MpUserInfoRepositoryImp(
+class MpUserInfoRepositoryImpl(
     private val jpaQuery: JPAQueryFactory
 ): MpUserInfoRepositoryDsl {
 

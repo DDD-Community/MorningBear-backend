@@ -21,21 +21,18 @@ class ExceptionHandler {
     @ExceptionHandler(TokenInvalidException::class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     fun tokenInvalidException(e: TokenInvalidException): BaseResponse {
-        logger.error(e.message, e)
         return BaseResponse(e.message, HttpStatus.UNAUTHORIZED)
     }
 
     @ExceptionHandler(ThirdPartyServerException::class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     fun kakaoServerException(e: ThirdPartyServerException): BaseResponse{
-        logger.error(e.message, e)
         return BaseResponse(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(BadRequestException::class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     fun badRequestException(e: BadRequestException): BaseResponse{
-        logger.error(e.message, e)
         return BaseResponse(e.message, HttpStatus.BAD_REQUEST)
     }
 }

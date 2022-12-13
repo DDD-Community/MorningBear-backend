@@ -1,5 +1,6 @@
 package com.ddd.morningbear.api.photo
 
+import com.ddd.morningbear.api.photo.dto.OrderInput
 import com.ddd.morningbear.api.photo.dto.PhotoInput
 import com.ddd.morningbear.common.BaseController
 import com.ddd.morningbear.photo.PhotoService
@@ -73,6 +74,19 @@ class PhotoController(
     @QueryMapping
     fun findUserPhotoByCategory(@Argument photoCategoryInput: PhotoInput): List<FiPhotoInfoDto> {
         return photoService.findPhotoByCategory(photoCategoryInput.accountId, photoCategoryInput.categoryId)
+    }
+
+    /**
+     * 순서별 사진리스트 조회
+     *
+     * @param orderInput [OrderInput]
+     * @return List [FiPhotoInfoDto]
+     * @author yoonho
+     * @since 2022.12.13
+     */
+    @QueryMapping
+    fun findPhotoByOrderType(@Argument orderInput: OrderInput): List<FiPhotoInfoDto> {
+        return photoService.findPhotoByOrderType(orderInput.size, orderInput.orderType)
     }
 
     /**

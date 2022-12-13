@@ -46,7 +46,7 @@ class LoginService (
      */
     fun kakaoToken(code: String?, type: String): TokenInfo {
         try{
-            var appconfig = AppPropsUtils.findClientInfoByType(type)
+            val appconfig = AppPropsUtils.findClientInfoByType(type)
 
             val params: MultiValueMap<String, String> = LinkedMultiValueMap()
             params.add("grant_type", "authorization_code")
@@ -59,8 +59,7 @@ class LoginService (
                 .queryParams(params)
                 .build(false)
 
-            logger.info(" >>> [kakaoToken] request - url: {}", uriComponents.toString())
-            var responseEntity = webClient.get()
+            val responseEntity = webClient.get()
                 .uri(uriComponents.toUri())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -68,9 +67,8 @@ class LoginService (
                 .onStatus(HttpStatus::is5xxServerError) { Mono.error(ThirdPartyServerException("kauth internal server error")) }
                 .toEntity(TokenInfo::class.java)
                 .block()
-            logger.info(" >>> [kakaoToken] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            var tokenInfo = responseEntity?.body!!
+            val tokenInfo = responseEntity?.body!!
             tokenInfo.accessToken = ParseUtils.encode(type, tokenInfo.accessToken)
             tokenInfo.refreshToken = ParseUtils.encode(type, tokenInfo.refreshToken)
 
@@ -91,7 +89,7 @@ class LoginService (
      */
     fun naverToken(code: String?, type: String): TokenInfo {
         try{
-            var appconfig = AppPropsUtils.findClientInfoByType(type)
+            val appconfig = AppPropsUtils.findClientInfoByType(type)
 
             val params: MultiValueMap<String, String> = LinkedMultiValueMap()
             params.add("grant_type", "authorization_code")
@@ -105,8 +103,7 @@ class LoginService (
                 .queryParams(params)
                 .build(false)
 
-            logger.info(" >>> [naverToken] request - url: {}", uriComponents.toString())
-            var responseEntity = webClient.get()
+            val responseEntity = webClient.get()
                 .uri(uriComponents.toUri())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -114,9 +111,8 @@ class LoginService (
                 .onStatus(HttpStatus::is5xxServerError) { Mono.error(ThirdPartyServerException("nauth internal server error")) }
                 .toEntity(TokenInfo::class.java)
                 .block()
-            logger.info(" >>> [naverToken] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
-            var tokenInfo = responseEntity?.body!!
+            val tokenInfo = responseEntity?.body!!
             tokenInfo.accessToken = ParseUtils.encode(type, tokenInfo.accessToken)
             tokenInfo.refreshToken = ParseUtils.encode(type, tokenInfo.refreshToken)
 

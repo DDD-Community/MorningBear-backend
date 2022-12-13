@@ -44,8 +44,7 @@ class AuthService(
                 .fromHttpUrl(AppPropsUtils.findUrl("kapi") + "/v1/user/access_token_info")
                 .build(false)
 
-            logger.info(" >>> [kakaoAuth] request - url: {}", uriComponents.toString())
-            var responseEntity = webClient.get()
+            val responseEntity = webClient.get()
                 .uri(uriComponents.toUri())
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
@@ -54,7 +53,6 @@ class AuthService(
                 .onStatus(HttpStatus::is5xxServerError) { Mono.error(ThirdPartyServerException("kapi internal server error")) }
                 .toEntity(KakaoTokenInfo::class.java)
                 .block()
-            logger.info(" >>> [kakaoAuth] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
             return responseEntity?.body?.id.toString()
         }catch (e: Throwable){
@@ -76,8 +74,7 @@ class AuthService(
                 .fromHttpUrl(AppPropsUtils.findUrl("napi") + "/v1/nid/me")
                 .build(false)
 
-            logger.info(" >>> [naverAuth] request - url: {}", uriComponents.toString())
-            var responseEntity = webClient.get()
+            val responseEntity = webClient.get()
                 .uri(uriComponents.toUri())
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
@@ -86,7 +83,6 @@ class AuthService(
                 .onStatus(HttpStatus::is5xxServerError) { Mono.error(ThirdPartyServerException("napi internal server error")) }
                 .toEntity(NaverTokenInfo::class.java)
                 .block()
-            logger.info(" >>> [naverAuth] response - statusCode: {}, body: {}", responseEntity?.statusCodeValue, responseEntity?.body)
 
             return responseEntity?.body?.response?.id
         }catch (e: Throwable){

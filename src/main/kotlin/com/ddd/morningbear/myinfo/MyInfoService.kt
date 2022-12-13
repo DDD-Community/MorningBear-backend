@@ -5,11 +5,13 @@ import com.ddd.morningbear.badge.BadgeService
 import com.ddd.morningbear.category.CategoryService
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
+import com.ddd.morningbear.like.LikeService
+import com.ddd.morningbear.like.repository.FiLikeInfoRepositoryImpl
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.dto.SearchUserDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
-import com.ddd.morningbear.myinfo.repository.MpUserInfoRepositoryImp
+import com.ddd.morningbear.myinfo.repository.MpUserInfoRepositoryImpl
 import com.ddd.morningbear.photo.PhotoService
 import com.ddd.morningbear.report.ReportService
 import org.slf4j.LoggerFactory
@@ -24,11 +26,12 @@ import java.time.LocalDateTime
 @Service
 class MyInfoService(
     private val mpUserInfoRepository: MpUserInfoRepository,
-    private val mpUserInfoRepositoryImp: MpUserInfoRepositoryImp,
+    private val mpUserInfoRepositoryImp: MpUserInfoRepositoryImpl,
     private val categoryService: CategoryService,
     private val badgeService: BadgeService,
     private val reportService: ReportService,
-    private val photoService: PhotoService
+    private val photoService: PhotoService,
+    private val likeService: LikeService
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -76,6 +79,18 @@ class MyInfoService(
      */
     fun searchUserInfo(keyword: String): List<SearchUserDto> {
         return mpUserInfoRepositoryImp.findUserInfoByNickName(keyword).map { it.toSearchDto() }
+    }
+
+    /**
+     * 가장 인기있는 사용자 조회
+     *
+     * @return result [MpUserInfoDto]
+     * @author yoonho
+     * @since 2022.12.13
+     */
+    fun findMostPopularUserInfo(): MpUserInfoDto {
+        val accountId = likeService.findMostPopularInfo()
+        return this.findUserInfo(accountId)
     }
 
     /**

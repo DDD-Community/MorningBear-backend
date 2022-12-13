@@ -22,6 +22,10 @@ type Query {
     findUserPhotoByCategory(photoCategoryInput: PhotoCategoryInput): [Photo]
     """ 사용자 검색하기 """
     searchUserInfo(keyword: String): [SearchUser]
+    """ 가장 인기있는 사용자 조회 """
+    findMostPopularUserInfo: User
+    """ 순서별 사진 조회 """
+    findPhotoByOrderType(orderInput: OrderInput): [Photo]
 
 #    """ (개발자용) 내 카테고리 매핑정보 조회 """
 #    findMyCategoryMapping: [Category]

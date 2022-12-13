@@ -64,3 +64,10 @@ input PhotoCategoryInput {
     """ 카테고리ID """
     categoryId: String
 }
+
+input OrderInput {
+    """ 조회할 사진 갯수 """
+    size: Int
+    """ 순서타입 (1:생성일자asc, 2:생성일자:desc, 3:응원하기asc, 4:응원하기desc) """
+    orderType: String
+}

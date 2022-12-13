@@ -63,6 +63,18 @@ class MyInfoController(
     }
 
     /**
+     * 가장 인기있는 사용자 조회
+     *
+     * @return result [MpUserInfoDto]
+     * @author yoonho
+     * @since 2022.12.13
+     */
+    @QueryMapping
+    fun findMostPopularUserInfo(): MpUserInfoDto {
+        return myInfoService.findMostPopularUserInfo()
+    }
+
+    /**
      * 내정보 저장
      *
      * @param input [MyInfoInput]

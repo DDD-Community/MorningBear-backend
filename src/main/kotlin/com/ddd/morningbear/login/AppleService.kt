@@ -2,6 +2,7 @@ package com.ddd.morningbear.login
 
 import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.exception.BadRequestException
+import com.ddd.morningbear.common.exception.GraphQLTokenInvalidException
 import com.ddd.morningbear.common.exception.ThirdPartyServerException
 import com.ddd.morningbear.common.utils.AppPropsUtils
 import com.ddd.morningbear.common.utils.AppleLoginUtils
@@ -19,7 +20,6 @@ import reactor.core.publisher.Mono
 import java.math.BigInteger
 import java.security.KeyFactory
 import java.security.spec.RSAPublicKeySpec
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
@@ -60,36 +60,40 @@ class AppleService (
     }
 
     fun appleToken(idToken: String): String {
-        val keys = this.findAppleKeys()
-        val key = AppleLoginUtils.findMatchedKey(keys, idToken)
-        val expiredDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant())
+        try {
+            val keys = this.findAppleKeys()
+            val key = AppleLoginUtils.findMatchedKey(keys, idToken)
+            val expiredDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant())
 
-        var authId = Jwts.parser()
-            .setSigningKey(
-                KeyFactory.getInstance("RSA")
-                    .generatePublic(
-                        RSAPublicKeySpec(
-                            BigInteger(1, Base64.getUrlDecoder().decode(key?.n)),
-                            BigInteger(1, Base64.getUrlDecoder().decode(key?.e))
+            var authId = Jwts.parser()
+                .setSigningKey(
+                    KeyFactory.getInstance("RSA")
+                        .generatePublic(
+                            RSAPublicKeySpec(
+                                BigInteger(1, Base64.getUrlDecoder().decode(key?.n)),
+                                BigInteger(1, Base64.getUrlDecoder().decode(key?.e))
+                            )
                         )
-                    )
-            )
-            .parseClaimsJws(idToken).body.subject
+                )
+                .parseClaimsJws(idToken).body.subject
 
-        val token = Jwts.builder()
-            .setHeaderParams(mapOf(
-                "kid" to key?.kid,
-                "alg" to key?.alg
-            ))
-            .setIssuer("morning-bear")
-            .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(expiredDate)
-            .setAudience("https://appleid.apple.com")
-            .setSubject("auth")
-            .setClaims(mapOf("accountId" to authId))
-            .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(AppPropsUtils.findSecretKey("jwt").toByteArray()))
-            .compact()
+            val token = Jwts.builder()
+                .setHeaderParams(mapOf(
+                    "kid" to key?.kid,
+                    "alg" to key?.alg
+                ))
+                .setIssuer("morning-bear")
+                .setIssuedAt(Date(System.currentTimeMillis()))
+                .setExpiration(expiredDate)
+                .setAudience("https://appleid.apple.com")
+                .setSubject("auth")
+                .setClaims(mapOf("accountId" to authId))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(AppPropsUtils.findSecretKey("jwt").toByteArray()))
+                .compact()
 
-        return ParseUtils.encode(CommCode.Social.APPLE.code, token)
+            return ParseUtils.encode(CommCode.Social.APPLE.code, token)
+        }catch (e: Exception){
+            throw GraphQLTokenInvalidException()
+        }
     }
 }
