@@ -5,21 +5,21 @@ type Query {
     """ 로그인 기본정보 조회 """
     findLoginInfo: [Login]
     """ 내정보 조회 (뱃지이벤트 발생) """
-    findMyInfo: User
+    findMyInfo(sizeInput: PhotoSizeInput): User
     """ 사용자정보 조회 (뱃지이벤트 발생) """
-    findUserInfo(accountId: String): User
+    findUserInfo(accountId: String, sizeInput: PhotoSizeInput): User
     """ 전체 카테고리 조회 """
     findAllCategory: [Category]
     """ 전체 뱃지 조회 """
     findAllBadge: [Badge]
-    """ 내 사진 조회(특정 사진) """
-    findMyPhoto(photoId: String): Photo
-    """ 내 사진 조회(카테고리별) (ALL:전체 카테고리) """
-    findMyPhotoByCategory(photoId: String): [Photo]
-    """ 다른사용자 사진 조회(특정 사진) """
-    findUserPhoto(photoUserInput: PhotoUserInput): Photo
-    """ 다른사용자 사진조회(카테고리별) (ALL:전체 카테고리) """
-    findUserPhotoByCategory(photoCategoryInput: PhotoCategoryInput): [Photo]
+#    """ 내 사진 조회(특정 사진) """
+#    findMyPhoto(photoId: String): Photo
+#    """ 내 사진 조회(카테고리별) (ALL:전체 카테고리) """
+#    findMyPhotoByCategory(categoryId: String): [Photo]
+#    """ 다른사용자 사진 조회(특정 사진) """
+#    findUserPhoto(photoUserInput: PhotoUserInput): Photo
+#    """ 다른사용자 사진조회(카테고리별) (ALL:전체 카테고리) """
+#    findUserPhotoByCategory(photoCategoryInput: PhotoCategoryInput): [Photo]
     """ 사용자 검색하기 """
     searchUserInfo(keyword: String): [SearchUser]
     """ 가장 인기있는 사용자 조회 """

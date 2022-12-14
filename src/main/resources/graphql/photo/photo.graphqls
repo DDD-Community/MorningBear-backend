@@ -49,25 +49,35 @@ input PhotoInput {
     endAt: String
 }
 
-""" 다른사용자 사진조회(특정사진)를 위한 입력데이터 """
-input PhotoUserInput {
-    """ 사용자ID """
-    accountId: String
-    """ 사진ID """
-    photoId: String
-}
+#""" 다른사용자 사진조회(특정사진)를 위한 입력데이터 """
+#input PhotoUserInput {
+#    """ 사용자ID """
+#    accountId: String
+#    """ 사진ID """
+#    photoId: String
+#}
 
-""" 다른사용자 사진조회(카테고리별)를 위한 입력데이터 """
-input PhotoCategoryInput {
-    """ 사용자ID """
-    accountId: String
-    """ 카테고리ID """
-    categoryId: String
-}
+#""" 다른사용자 사진조회(카테고리별)를 위한 입력데이터 """
+#input PhotoCategoryInput {
+#    """ 사용자ID """
+#    accountId: String
+#    """ 카테고리ID """
+#    categoryId: String
+#}
 
+""" 순서별 사진조회를 위한 입력데이터 """
 input OrderInput {
     """ 조회할 사진 갯수 """
     size: Int
     """ 순서타입 (1:생성일자asc, 2:생성일자:desc, 3:응원하기asc, 4:응원하기desc) """
     orderType: String
 }
+
+""" 사진리스트 갯수를 위한 입력데이터 """
+input PhotoSizeInput {
+    """ 전체 사진 갯수(기본값: 5) """
+    totalSize: Int
+    """ 카테고리별 사진 갯수(기본값: 5) """
+    categorySize: Int
+}
+

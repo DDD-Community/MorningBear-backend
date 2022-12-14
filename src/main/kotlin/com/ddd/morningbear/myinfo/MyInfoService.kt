@@ -3,10 +3,10 @@ package com.ddd.morningbear.myinfo
 import com.ddd.morningbear.api.myinfo.dto.MyInfoInput
 import com.ddd.morningbear.badge.BadgeService
 import com.ddd.morningbear.category.CategoryService
+import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.like.LikeService
-import com.ddd.morningbear.like.repository.FiLikeInfoRepositoryImpl
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.dto.SearchUserDto
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.stream.Collectors
 
 /**
  * @author yoonho
@@ -43,27 +44,31 @@ class MyInfoService(
      * @author yoonho
      * @since 2022.12.04
      */
-    fun findUserInfo(accountId: String): MpUserInfoDto {
+    fun findUserInfo(accountId: String, totalSize: Int, categorySize: Int): MpUserInfoDto {
         val myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
             throw GraphQLNotFoundException("사용자정보 조회에 실패하였습니다.")
         }.toDto()
 
         // 뱃지리스트 조회
         myInfo.badgeList = badgeService.findMyAllBadge(accountId)
-        if(myInfo.photoInfo != null){
+        if(!myInfo.photoInfo.isNullOrEmpty()){
             // 리포트 조회
             myInfo.reportInfo = reportService.createReport(accountId)
             // 카테고리별 사진조회
             val categoryList = categoryService.findAllCategory()
-            categoryList.forEach {
-                myInfo.photoInfoByCategory.add(
-                    MpUserInfoDto.PhotoInfoByCategory(
-                        categoryId = it.categoryId,
-                        categoryDesc = it.categoryDesc,
-                        photoInfo = photoService.findPhotoByCategory(accountId, it.categoryId)
+            categoryList
+                .forEach {
+                    myInfo.photoInfoByCategory.add(
+                        MpUserInfoDto.PhotoInfoByCategory(
+                            categoryId = it.categoryId,
+                            categoryDesc = it.categoryDesc,
+                            photoInfo = photoService.findPhotoByCategory(accountId, it.categoryId, categorySize)
+                        )
                     )
-                )
-            }
+                }
+
+            // 전체사진 리스트 size개수만큼만 조회
+            myInfo.photoInfo = myInfo.photoInfo!!.stream().limit(totalSize.toLong()).collect(Collectors.toList())
         }
 
         return myInfo
@@ -90,7 +95,7 @@ class MyInfoService(
      */
     fun findMostPopularUserInfo(): MpUserInfoDto {
         val accountId = likeService.findMostPopularInfo()
-        return this.findUserInfo(accountId)
+        return this.findUserInfo(accountId, CommCode.photoSize, CommCode.photoSize)
     }
 
     /**
@@ -136,7 +141,7 @@ class MyInfoService(
                     updatedAt = LocalDateTime.now(),
                     createdAt = createdAt
                 )
-            ).toDto()
+            )
 
             // 신규 회원가입시
             if(isRegisteredUser){
@@ -144,7 +149,7 @@ class MyInfoService(
                 badgeService.saveMyBadge(accountId, "B1")
             }
             //
-            return this.findUserInfo(accountId)
+            return this.findUserInfo(accountId, CommCode.photoSize, CommCode.photoSize)
         }catch (ne: GraphQLNotFoundException){
             throw ne
         }catch (be: GraphQLBadRequestException){

@@ -7,6 +7,8 @@ package com.ddd.morningbear.common.constants
 class CommCode {
 
     companion object {
+        val photoSize: Int = 5
+
         fun findPrefix(type: String): String {
             for(item in CommCode.Social.values()) {
                 if(item.code == type) {

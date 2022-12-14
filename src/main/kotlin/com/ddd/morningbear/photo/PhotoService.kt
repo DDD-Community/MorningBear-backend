@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.streams.toList
 
 /**
  * @author yoonho
@@ -58,11 +59,12 @@ class PhotoService(
      *
      * @param accountId [String]
      * @param categoryId [String]
+     * @param size [Int]
      * @return List [FiPhotoInfoDto]
      * @author yoonho
      * @since 2022.12.06
      */
-    fun findPhotoByCategory(accountId: String?, categoryId: String?): List<FiPhotoInfoDto> {
+    fun findPhotoByCategory(accountId: String?, categoryId: String?, size: Int): List<FiPhotoInfoDto> {
         if(accountId.isNullOrBlank() || categoryId.isNullOrBlank()){
             throw GraphQLBadRequestException()
         }
@@ -70,12 +72,12 @@ class PhotoService(
         if(categoryId.equals("ALL")){
             return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseThrow {
                 throw GraphQLNotFoundException("전체 카테고리에 대한 사진 조회에 실패하였습니다.")
-            }.sortedByDescending { it.createdAt }.map { it.toDto() }
+            }.sortedByDescending { it.createdAt }.map { it.toDto() }.stream().limit(size.toLong()).toList()
         }
 
         return fiPhotoInfoRepository.findAllByCategoryInfoCategoryIdAndUserInfoAccountId(categoryId, accountId).orElseThrow {
             throw GraphQLNotFoundException("카테고리별 사진 조회에 실패하였습니다.")
-        }.sortedByDescending { it.createdAt }.map { it.toDto() }
+        }.sortedByDescending { it.createdAt }.map { it.toDto() }.stream().limit(size.toLong()).toList()
     }
 
     /**

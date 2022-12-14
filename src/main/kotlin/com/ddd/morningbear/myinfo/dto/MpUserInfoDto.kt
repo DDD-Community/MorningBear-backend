@@ -24,7 +24,7 @@ data class MpUserInfoDto (
     val takenLikeCnt: Int?,
     val givenLike: List<FiLikeInfoDto>?,
     val givenLikeCnt: Int?,
-    val photoInfo: List<FiPhotoInfoDto>?,
+    var photoInfo: MutableList<FiPhotoInfoDto>? = mutableListOf(),
     var photoInfoByCategory: MutableList<PhotoInfoByCategory> = mutableListOf(),
     var reportInfo: ReportDto? = null,
     var updatedBadge: List<MdBadgeInfoDto>? = null,

@@ -22,59 +22,59 @@ class PhotoController(
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    /**
-     * 내사진 조회 (특정사진)
-     *
-     * @param photoId [String]
-     * @return result [FiPhotoInfoDto]
-     * @author yoonho
-     * @since 2022.12.06
-     */
-    @QueryMapping
-    fun findMyPhoto(@Argument photoId: String): FiPhotoInfoDto {
-        val accountId = getAuthenticationContextAccountId()
-        return photoService.findPhoto(accountId, photoId)
-    }
-
-    /**
-     * 사용자 사진 조회 (특정사진)
-     *
-     * @param photoUserInput [PhotoInput]
-     * @return result [FiPhotoInfoDto]
-     * @author yoonho
-     * @since 2022.12.06
-     */
-    @QueryMapping
-    fun findUserPhoto(@Argument photoUserInput: PhotoInput): FiPhotoInfoDto {
-        return photoService.findPhoto(photoUserInput.accountId, photoUserInput.photoId)
-    }
-
-    /**
-     * 내사진 조회 (카테고리별)
-     *
-     * @param photoId [String]
-     * @return List [FiPhotoInfoDto]
-     * @author yoonho
-     * @since 2022.12.06
-     */
-    @QueryMapping
-    fun findMyPhotoByCategory(@Argument photoId: String): List<FiPhotoInfoDto> {
-        val accountId = getAuthenticationContextAccountId()
-        return photoService.findPhotoByCategory(accountId, photoId)
-    }
-
-    /**
-     * 사용자 사진 조회 (카테고리별)
-     *
-     * @param photoCategoryInput [PhotoInput]
-     * @return List [FiPhotoInfoDto]
-     * @author yoonho
-     * @since 2022.12.06
-     */
-    @QueryMapping
-    fun findUserPhotoByCategory(@Argument photoCategoryInput: PhotoInput): List<FiPhotoInfoDto> {
-        return photoService.findPhotoByCategory(photoCategoryInput.accountId, photoCategoryInput.categoryId)
-    }
+//    /**
+//     * 내사진 조회 (특정사진)
+//     *
+//     * @param photoId [String]
+//     * @return result [FiPhotoInfoDto]
+//     * @author yoonho
+//     * @since 2022.12.06
+//     */
+//    @QueryMapping
+//    fun findMyPhoto(@Argument photoId: String): FiPhotoInfoDto {
+//        val accountId = getAuthenticationContextAccountId()
+//        return photoService.findPhoto(accountId, photoId)
+//    }
+//
+//    /**
+//     * 사용자 사진 조회 (특정사진)
+//     *
+//     * @param photoUserInput [PhotoInput]
+//     * @return result [FiPhotoInfoDto]
+//     * @author yoonho
+//     * @since 2022.12.06
+//     */
+//    @QueryMapping
+//    fun findUserPhoto(@Argument photoUserInput: PhotoInput): FiPhotoInfoDto {
+//        return photoService.findPhoto(photoUserInput.accountId, photoUserInput.photoId)
+//    }
+//
+//    /**
+//     * 내사진 조회 (카테고리별)
+//     *
+//     * @param photoId [String]
+//     * @return List [FiPhotoInfoDto]
+//     * @author yoonho
+//     * @since 2022.12.06
+//     */
+//    @QueryMapping
+//    fun findMyPhotoByCategory(@Argument categoryId: String): List<FiPhotoInfoDto> {
+//        val accountId = getAuthenticationContextAccountId()
+//        return photoService.findPhotoByCategory(accountId, categoryId)
+//    }
+//
+//    /**
+//     * 사용자 사진 조회 (카테고리별)
+//     *
+//     * @param photoCategoryInput [PhotoInput]
+//     * @return List [FiPhotoInfoDto]
+//     * @author yoonho
+//     * @since 2022.12.06
+//     */
+//    @QueryMapping
+//    fun findUserPhotoByCategory(@Argument photoCategoryInput: PhotoInput): List<FiPhotoInfoDto> {
+//        return photoService.findPhotoByCategory(photoCategoryInput.accountId, photoCategoryInput.categoryId)
+//    }
 
     /**
      * 순서별 사진리스트 조회

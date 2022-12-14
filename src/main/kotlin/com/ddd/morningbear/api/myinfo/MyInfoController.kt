@@ -1,8 +1,8 @@
 package com.ddd.morningbear.api.myinfo
 
 import com.ddd.morningbear.api.myinfo.dto.MyInfoInput
+import com.ddd.morningbear.api.myinfo.dto.PhotoSizeInput
 import com.ddd.morningbear.common.BaseController
-import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.myinfo.MyInfoService
 import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.dto.SearchUserDto
@@ -11,6 +11,7 @@ import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 /**
  * @author yoonho
@@ -26,27 +27,31 @@ class MyInfoController(
     /**
      * 내정보 조회
      *
+     * @param sizeInput [PhotoSizeInput]
      * @return result [MpUserInfoDto]
      * @author yoonho
      * @since 2022.12.04
      */
     @QueryMapping
-    fun findMyInfo(): MpUserInfoDto {
+    fun findMyInfo(@Argument sizeInput: Optional<PhotoSizeInput>): MpUserInfoDto {
+        val size = findPhotoSize(sizeInput)
         val accountId = getAuthenticationContextAccountId()
-        return myInfoService.findUserInfo(accountId)
+        return myInfoService.findUserInfo(accountId, size.totalSize, size.categorySize)
     }
 
     /**
      * 사용자정보 조회
      *
      * @param accountId [String]
+     * @param sizeInput [PhotoSizeInput]
      * @return result [MpUserInfoDto]
      * @author yoonho
      * @since 2022.12.10
      */
     @QueryMapping
-    fun findUserInfo(@Argument accountId: String): MpUserInfoDto {
-        return myInfoService.findUserInfo(accountId)
+    fun findUserInfo(@Argument accountId: String, @Argument sizeInput: Optional<PhotoSizeInput>): MpUserInfoDto {
+        val size = findPhotoSize(sizeInput)
+        return myInfoService.findUserInfo(accountId, size.totalSize, size.categorySize)
     }
 
     /**
