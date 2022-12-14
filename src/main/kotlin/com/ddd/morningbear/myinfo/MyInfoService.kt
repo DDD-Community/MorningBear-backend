@@ -93,9 +93,16 @@ class MyInfoService(
      * @author yoonho
      * @since 2022.12.13
      */
-    fun findMostPopularUserInfo(): MpUserInfoDto {
-        val accountId = likeService.findMostPopularInfo()
-        return this.findUserInfo(accountId, CommCode.photoSize, CommCode.photoSize)
+    fun findPopularUserInfo(size: Int): List<MpUserInfoDto> {
+        val popularList = likeService.findPopularInfo(size)
+        val result: MutableList<MpUserInfoDto> = mutableListOf()
+        popularList.forEach {
+            result.add(
+                this.findUserInfo(it.accountId, CommCode.photoSize, CommCode.photoSize)
+            )
+        }
+
+        return result
     }
 
     /**

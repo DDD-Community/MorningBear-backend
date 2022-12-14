@@ -70,13 +70,14 @@ class MyInfoController(
     /**
      * 가장 인기있는 사용자 조회
      *
-     * @return result [MpUserInfoDto]
+     * @return List [MpUserInfoDto]
      * @author yoonho
      * @since 2022.12.13
      */
     @QueryMapping
-    fun findMostPopularUserInfo(): MpUserInfoDto {
-        return myInfoService.findMostPopularUserInfo()
+    fun findPopularUserInfo(@Argument sizeInput: Optional<Int>): List<MpUserInfoDto> {
+        val size = findSize(sizeInput)
+        return myInfoService.findPopularUserInfo(size)
     }
 
     /**

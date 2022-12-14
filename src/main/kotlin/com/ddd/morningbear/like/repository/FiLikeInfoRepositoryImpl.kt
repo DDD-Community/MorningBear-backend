@@ -15,34 +15,34 @@ class FiLikeInfoRepositoryImpl(
     private val jpaQuery: JPAQueryFactory
 ): FiLikeInfoRepositoryDsl {
 
-    override fun findMostPopularUser(): String {
-        return  jpaQuery
-                    .select(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.`as`("accountId"))
-                    .from(QFiLikeInfo.fiLikeInfo)
-                    .groupBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId)
-                    .orderBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.count().desc())
-                    .fetchFirst()
-    }
-
-//    override fun findPopularUser(size: Int): List<PopularLikeDto> {
-//        val likeInfo = jpaQuery
-//                        .select(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.`as`("accountId"), QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.count().`as`("likeCnt"))
-//                        .from(QFiLikeInfo.fiLikeInfo)
-//                        .groupBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId)
-//                        .orderBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.count().desc())
-//                        .limit(size.toLong())
-//                        .fetch()
-//
-//        val result: MutableList<PopularLikeDto> = mutableListOf()
-//        likeInfo.map {
-//            result.add(
-//                PopularLikeDto(
-//                    accountId = it.get(0, String::class.java)!!,
-//                    likeCnt = it.get(1, Int::class.java)!!
-//                )
-//            )
-//        }
-//
-//        return result
+//    override fun findMostPopularUser(): List<String> {
+//        return  jpaQuery
+//                    .select(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.`as`("accountId"))
+//                    .from(QFiLikeInfo.fiLikeInfo)
+//                    .groupBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId)
+//                    .orderBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.count().desc())
+//                    .fetch()
 //    }
+
+    override fun findPopularUser(size: Int): List<PopularLikeDto> {
+        val likeInfo = jpaQuery
+                        .select(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.`as`("accountId"), QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.count().`as`("likeCnt"))
+                        .from(QFiLikeInfo.fiLikeInfo)
+                        .groupBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId)
+                        .orderBy(QFiLikeInfoPk.fiLikeInfoPk.takenAccountId.count().desc())
+                        .limit(size.toLong())
+                        .fetch()
+
+        val result: MutableList<PopularLikeDto> = mutableListOf()
+        likeInfo.map {
+            result.add(
+                PopularLikeDto(
+                    accountId = it.get(0, String::class.java)!!,
+                    likeCnt = it.get(1, Long::class.java)!!.toInt()
+                )
+            )
+        }
+
+        return result
+    }
 }

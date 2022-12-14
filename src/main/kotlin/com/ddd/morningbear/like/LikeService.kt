@@ -4,6 +4,7 @@ import com.ddd.morningbear.api.like.dto.LikeInput
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.like.dto.FiLikeInfoDto
+import com.ddd.morningbear.like.dto.PopularLikeDto
 import com.ddd.morningbear.like.entity.FiLikeInfo
 import com.ddd.morningbear.like.entity.pk.FiLikeInfoPk
 import com.ddd.morningbear.like.repository.FiLikeInfoRepository
@@ -50,31 +51,34 @@ class LikeService(
         return fiLikeInfoRepository.findAllByFiLikeInfoPkGivenAccountId(accountId).orElseGet(null).map { it.toDto() }
     }
 
-    /**
-     * 가장 좋아요를 많이 받은 사용자 조회
-     *
-     * @return result [String]
-     * @author yoonho
-     * @since 2022.12.13
-     */
-    fun findMostPopularInfo(): String {
-        if(fiLikeInfoRepository.count() <= 0){
-            throw GraphQLNotFoundException("응원하기 데이터가 존재하지 않아 인기있는 사용자를 조회할 수 없습니다.")
-        }
-        return fiLikeInfoRepositoryImpl.findMostPopularUser()
-    }
-
 //    /**
-//     * 좋아요를 많이 순서대로 사용자리스트 조회
+//     * 가장 좋아요를 많이 받은 사용자 조회
 //     *
-//     * @param size [Int]
-//     * @return List [String]
+//     * @return result [String]
 //     * @author yoonho
 //     * @since 2022.12.13
 //     */
-//    fun findPopularInfo(size: Int): List<PopularLikeDto> {
-//        return fiLikeInfoRepositoryImpl.findPopularUser(size)
+//    fun findMostPopularInfo(): String {
+//        if(fiLikeInfoRepository.count() <= 0){
+//            throw GraphQLNotFoundException("응원하기 데이터가 존재하지 않아 인기있는 사용자를 조회할 수 없습니다.")
+//        }
+//        return fiLikeInfoRepositoryImpl.findMostPopularUser()
 //    }
+
+    /**
+     * 좋아요를 많이 순서대로 사용자리스트 조회
+     *
+     * @param size [Int]
+     * @return List [String]
+     * @author yoonho
+     * @since 2022.12.13
+     */
+    fun findPopularInfo(size: Int): List<PopularLikeDto> {
+        if(fiLikeInfoRepository.count() <= 0){
+            throw GraphQLNotFoundException("응원하기 데이터가 존재하지 않아 인기있는 사용자를 조회할 수 없습니다.")
+        }
+        return fiLikeInfoRepositoryImpl.findPopularUser(size)
+    }
 
     /**
      * 좋아요 등록

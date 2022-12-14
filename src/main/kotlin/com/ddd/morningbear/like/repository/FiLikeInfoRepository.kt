@@ -16,6 +16,6 @@ interface FiLikeInfoRepository: JpaRepository<FiLikeInfo, FiLikeInfoPk>, FiLikeI
 }
 
 interface FiLikeInfoRepositoryDsl {
-    fun findMostPopularUser(): String
-//    fun findPopularUser(size: Int): List<PopularLikeDto>
+//    fun findMostPopularUser(): List<String>
+    fun findPopularUser(size: Int): List<PopularLikeDto>
 }
