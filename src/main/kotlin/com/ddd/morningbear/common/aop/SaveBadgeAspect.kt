@@ -2,6 +2,7 @@ package com.ddd.morningbear.common.aop
 
 import com.ddd.morningbear.badge.BadgeService
 import com.ddd.morningbear.badge.dto.MdBadgeInfoDto
+import com.ddd.morningbear.badge.dto.UserBadgeDetailDto
 import com.ddd.morningbear.common.context.AuthenticationContextHolder
 import com.ddd.morningbear.common.utils.DateUtils
 import com.ddd.morningbear.like.LikeService
@@ -74,8 +75,8 @@ class SaveBadgeAspect(
 
             if(photoInfo.size >= 10) {
                 // 미라클모닝 10일 연속
-                var period = DateUtils.findPeriod(photoInfo[9].createdAt!!, photoInfo.first().createdAt!!)
-                if(period.days == 9){
+                val period = DateUtils.findPhotoSequenceDays(photoInfo)
+                if(period == 9) {
                     val badgeInfo = badgeService.saveMyBadge(accountId, "B3")
                     if(badgeInfo != null){
                         updatedBadgeList.add(badgeInfo)
@@ -83,8 +84,8 @@ class SaveBadgeAspect(
                 }
             }else if(photoInfo.size >= 3) {
                 // 미라클모닝 3일 연속
-                val period = DateUtils.findPeriod(photoInfo[2].createdAt!!, photoInfo.first().createdAt!!)
-                if(period.days == 2){
+                val period = DateUtils.findPhotoSequenceDays(photoInfo)
+                if(period == 2) {
                     val badgeInfo = badgeService.saveMyBadge(accountId, "B2")
                     if(badgeInfo != null){
                         updatedBadgeList.add(badgeInfo)
@@ -136,7 +137,7 @@ class SaveBadgeAspect(
         }
     }
 
-    @AfterReturning("onSaveLike()", returning = "response")
+    @AfterReturning(pointcut = "onSaveLike()", returning = "response")
     fun checkLikeBadge(joinPoint: JoinPoint, response: FiLikeInfoDto) {
 
         val updatedBadgeList = mutableListOf<MdBadgeInfoDto>()
@@ -155,26 +156,33 @@ class SaveBadgeAspect(
         }
     }
 
-    @AfterReturning("onFindUserInfo()", returning = "response")
+    @AfterReturning(pointcut = "onFindUserInfo()", returning = "response")
     fun checkTakenLikeBadge(joinPoint: JoinPoint, response: MpUserInfoDto){
-
         val updatedBadgeList = mutableListOf<MdBadgeInfoDto>()
         val accountId = AuthenticationContextHolder.getAuthenticationContext().getAccountId()
-
         val likeInfo = likeService.findTakenInfo(accountId)
 
         if(likeInfo.isNullOrEmpty()) {
+            // 응원받기 1회(최초) 삭제 - 피드조회시 응원받기 뱃지이벤트를 polling하므로 삭제도 같은 메서드에서 처리
             badgeService.deleteMyBadge(accountId, "B7")
+            response.badgeList?.filter { it.badgeId.equals("B7") }?.map {
+                it.isAcquired = false
+                it.acquirePercent = 0
+            }
+            //
         }else {
             // 응원받기 1회(최초)
             if(likeInfo.size == 1){
                 val badgeInfo = badgeService.saveMyBadge(accountId, "B7")
                 if(badgeInfo != null){
                     updatedBadgeList.add(badgeInfo)
+                    response.badgeList?.filter { it.badgeId.equals("B7") }?.map {
+                        it.isAcquired = true
+                        it.acquirePercent = 100
+                    }
                 }
             }
             response.updatedBadge = updatedBadgeList
-            response.badgeList?.addAll(updatedBadgeList)
         }
     }
 

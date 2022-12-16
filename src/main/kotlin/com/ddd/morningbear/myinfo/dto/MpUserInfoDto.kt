@@ -1,6 +1,7 @@
 package com.ddd.morningbear.myinfo.dto
 
 import com.ddd.morningbear.badge.dto.MdBadgeInfoDto
+import com.ddd.morningbear.badge.dto.UserBadgeDetailDto
 import com.ddd.morningbear.category.dto.MdCategoryInfoDto
 import com.ddd.morningbear.like.dto.FiLikeInfoDto
 import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
@@ -18,7 +19,7 @@ data class MpUserInfoDto (
     var photoLink: String?,
     var memo: String?,
     var wakeUpAt: String?,
-    var badgeList: MutableList<MdBadgeInfoDto>? = null,
+    var badgeList: MutableList<UserBadgeDetailDto>? = null,
     var categoryList: List<MdCategoryInfoDto>? = null,
     val takenLike: List<FiLikeInfoDto>?,
     val takenLikeCnt: Int?,

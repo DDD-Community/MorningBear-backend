@@ -3,6 +3,7 @@ package com.ddd.morningbear.badge
 import com.ddd.morningbear.api.badge.dto.BadgeInput
 import com.ddd.morningbear.badge.dto.MdBadgeInfoDto
 import com.ddd.morningbear.badge.dto.MiBadgeMappingDto
+import com.ddd.morningbear.badge.dto.UserBadgeDetailDto
 import com.ddd.morningbear.badge.entity.MdBadgeInfo
 import com.ddd.morningbear.badge.entity.MiBadgeMapping
 import com.ddd.morningbear.badge.entity.pk.MiBadgeMappingPk
@@ -56,9 +57,24 @@ class BadgeService(
      * @author yoonho
      * @since 2022.12.04
      */
-    fun findMyAllBadge(accountId: String): MutableList<MdBadgeInfoDto> {
-        var badgeIdList = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId).map { it.miBadgeMappingPk.badgeId }.stream().collect(Collectors.toList())
-        return mdBadgeInfoRepository.findAllById(badgeIdList).map { it.toDto() }.toMutableList()
+    fun findMyAllBadge(accountId: String): MutableList<UserBadgeDetailDto> {
+        val badgeIdList = miBadgeMappingRepository.findAllByMiBadgeMappingPkAccountId(accountId).map { it.miBadgeMappingPk.badgeId }.stream().collect(Collectors.toList())
+        val allBadges = this.findAllBadge()
+
+        val result: MutableList<UserBadgeDetailDto> = mutableListOf()
+        allBadges.forEach {
+            result.add(
+                UserBadgeDetailDto(
+                    badgeId = it.badgeId,
+                    badgeTitle = it.badgeTitle,
+                    badgeDesc = it.badgeDesc,
+                    isAcquired = badgeIdList.contains(it.badgeId),
+                    acquirePercent = if(badgeIdList.contains(it.badgeId)) 100 else 0
+                )
+            )
+        }
+
+        return result
     }
 
     /**

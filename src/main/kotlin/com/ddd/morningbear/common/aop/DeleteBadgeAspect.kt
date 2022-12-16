@@ -63,14 +63,14 @@ class DeleteBadgeAspect(
             val period = DateUtils.findPeriod(photoInfo.first().createdAt!!, response.createdAt!!)
             if(photoInfo.size >= 9 && period.days == 1) {
                 // 미라클모닝 10일 연속
-                val period = DateUtils.findPeriod(photoInfo[8].createdAt!!, photoInfo.first().createdAt!!)
-                if(period.days == 8){
+                val period = DateUtils.findPhotoSequenceDays(photoInfo)
+                if(period == 8){
                     badgeService.deleteMyBadge(accountId, "B3")
                 }
             }else if(photoInfo.size >= 2 && period.days == 1) {
                 // 미라클모닝 3일 연속
-                val period = DateUtils.findPeriod(photoInfo[1].createdAt!!, photoInfo.first().createdAt!!)
-                if(period.days == 1){
+                val period = DateUtils.findPhotoSequenceDays(photoInfo)
+                if(period == 1){
                     badgeService.deleteMyBadge(accountId, "B2")
                 }
             }

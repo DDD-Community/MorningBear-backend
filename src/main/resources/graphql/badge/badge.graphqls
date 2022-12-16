@@ -9,6 +9,20 @@ type Badge {
     badgeDesc: String
 }
 
+""" 사용자 뱃지 상세정보 """
+type BadgeDetail {
+    """ 뱃지 ID """
+    badgeId: String
+    """ 뱃지 타이틀 """
+    badgeTitle: String
+    """ 뱃지 설명 """
+    badgeDesc: String
+    """ 뱃지 획득여부 """
+    isAcquired: Boolean
+    """ 뱃지 획득까지 남은 비율 """
+    acquirePercent: Int
+}
+
 """ 뱃지 메타정보 저장을 위한 입력데이터 """
 input BadgeInput {
     """ 뱃지 ID """

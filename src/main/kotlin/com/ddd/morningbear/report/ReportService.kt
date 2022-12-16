@@ -32,18 +32,13 @@ class ReportService(
      * @author yoonho
      * @since 2022.12.10
      */
-    fun createReport(accountId: String): ReportDto{
-        var photoInfoList = mpUserInfoRepository.findById(accountId)
-            .map { it.photoInfo }
-            .orElseGet(null)
-
-        if(!photoInfoList.isNullOrEmpty()){
-            this.photoInfoList = photoInfoList.filter { it.createdAt.toLocalDate().isAfter(sunday) }
-        }
-
+    fun createReport(accountId: String): ReportDto {
+        val photoInfoList = mpUserInfoRepository.findById(accountId).orElseGet(null).photoInfo
         if(photoInfoList.isNullOrEmpty()){
             return ReportDto()
         }
+
+        this.photoInfoList = photoInfoList.filter { it.createdAt.toLocalDate().isAfter(sunday) }
 
         return ReportDto(
             totalTime = this.totalTime(),

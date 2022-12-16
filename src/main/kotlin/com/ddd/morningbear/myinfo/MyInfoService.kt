@@ -49,26 +49,28 @@ class MyInfoService(
             throw GraphQLNotFoundException("사용자정보 조회에 실패하였습니다.")
         }.toDto()
 
-        // 뱃지리스트 조회
+        // 내 뱃지리스트 조회
         myInfo.badgeList = badgeService.findMyAllBadge(accountId)
+        // 내 카테고리리스트 조회
         myInfo.categoryList = categoryService.findMyCategory(accountId)
-        if(!myInfo.photoInfo.isNullOrEmpty()){
-            // 리포트 조회
-            myInfo.reportInfo = reportService.createReport(accountId)
-            // 카테고리별 사진조회
-            val categoryList = categoryService.findAllCategory()
-            categoryList
-                .forEach {
-                    myInfo.photoInfoByCategory.add(
-                        MpUserInfoDto.PhotoInfoByCategory(
-                            categoryId = it.categoryId,
-                            categoryDesc = it.categoryDesc,
-                            photoInfo = photoService.findPhotoByCategory(accountId, it.categoryId, categorySize)
-                        )
-                    )
-                }
 
-            // 전체사진 리스트 size개수만큼만 조회
+        // 리포트 조회
+        myInfo.reportInfo = reportService.createReport(accountId)
+        // 카테고리별 사진조회
+        val categoryList = categoryService.findAllCategory()
+        categoryList
+            .forEach {
+                myInfo.photoInfoByCategory.add(
+                    MpUserInfoDto.PhotoInfoByCategory(
+                        categoryId = it.categoryId,
+                        categoryDesc = it.categoryDesc,
+                        photoInfo = photoService.findPhotoByCategory(accountId, it.categoryId, categorySize)
+                    )
+                )
+            }
+
+        // 전체사진 리스트 size개수만큼만 조회
+        if(!myInfo.photoInfo.isNullOrEmpty()) {
             myInfo.photoInfo = myInfo.photoInfo!!.stream().limit(totalSize.toLong()).collect(Collectors.toList())
         }
 

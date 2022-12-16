@@ -1,5 +1,6 @@
 package com.ddd.morningbear.common.utils
 
+import com.ddd.morningbear.photo.dto.FiPhotoInfoDto
 import org.slf4j.LoggerFactory
 import java.time.*
 import java.time.format.DateTimeFormatter
@@ -122,5 +123,27 @@ object DateUtils {
     fun setStringToDate(date: String): LocalDate {
         val dateMap = this.setStringToDateMap(date)
         return LocalDate.of(dateMap.getOrDefault("year", 0), dateMap.getOrDefault("month", 0), dateMap.getOrDefault("day", 0))
+    }
+
+    /**
+     * 사진리스트의 연속된 생성일자 갯수 조회
+     *
+     * @param photoInfos [FiPhotoInfoDto]
+     * @return result [Int]
+     * @author yoonho
+     * @since 2022.12.16
+     */
+    fun findPhotoSequenceDays(photoInfos: List<FiPhotoInfoDto>): Int {
+        var cnt = 0
+        for((idx) in photoInfos.withIndex()) {
+            if(idx+1 >= photoInfos.size) return cnt
+
+            if(this.findPeriod(photoInfos.get(idx+1).createdAt!!, photoInfos.get(idx).createdAt!!).days == 1) {
+                cnt++
+            }else{
+                return cnt
+            }
+        }
+        return cnt
     }
 }
