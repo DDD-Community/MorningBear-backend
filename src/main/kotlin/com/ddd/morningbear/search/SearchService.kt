@@ -2,6 +2,7 @@ package com.ddd.morningbear.search
 
 import com.ddd.morningbear.common.constants.CommCode
 import com.ddd.morningbear.common.exception.BadRequestException
+import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.ThirdPartyServerException
 import com.ddd.morningbear.common.utils.AppPropsUtils
 import com.ddd.morningbear.search.dto.SearchDto
@@ -33,15 +34,21 @@ class SearchService(
         this.webClient = webClientBuilder.build()
     }
 
-    fun search(): SearchDto {
+    /**
+     * 아티클 조회하기
+     *
+     * @param size [Int]
+     * @return List [SearchDto.SearchItem]
+     * @author yoonho
+     * @since 2022.12.16
+     */
+    fun searchArticle(size: Int): List<SearchDto.SearchItem>? {
         try{
             val appconfig = AppPropsUtils.findClientInfoByType(CommCode.Social.NAVER.code)
 
             val params: MultiValueMap<String, String> = LinkedMultiValueMap()
             params.add("query", "miraclemorning")
-//            params.add("display", "3")
-//            params.add("start", "1")
-//            params.add("sort", "sim")
+            params.add("display", size.toString())
 
             val header: MultiValueMap<String, String> = LinkedMultiValueMap()
             header.add("X-Naver-Client-Id", appconfig?.get("clientId"))
@@ -64,9 +71,25 @@ class SearchService(
                 .toEntity(SearchDto::class.java)
                 .block()
 
-            return responseEntity?.body!!
+            return this.removeTag(responseEntity?.body!!.items)
         }catch (e: Exception){
-            throw e
+            throw GraphQLBadRequestException()
         }
+    }
+
+    /**
+     * 불필요한 HTML태그 삭제
+     *
+     * @param params [SearchDto.SearchItem]
+     * @return List [SearchDto.SearchItem]
+     * @author yoonho
+     * @since 2022.12.16
+     */
+    private fun removeTag(params: List<SearchDto.SearchItem>?): List<SearchDto.SearchItem>? {
+        params?.map {
+            it.title = it.title?.replace("<b>", "")?.replace("</b>", "")
+            it.description = it.description?.replace("<b>", "")?.replace("</b>", "")
+        }
+        return params
     }
 }

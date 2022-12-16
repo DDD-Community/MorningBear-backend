@@ -22,6 +22,8 @@ type Query {
 #    findUserPhotoByCategory(photoCategoryInput: PhotoCategoryInput): [Photo]
     """ 사용자 검색하기 """
     searchUserInfo(keyword: String): [SearchUser]
+    """ 아티클 조회하기 """
+    searchArticle(sizeInput: Int): [Article]
 
     # :::::::::: 변경여지 높음 ::::::::::
     """ 가장 인기있는 사용자리스트 조회 """

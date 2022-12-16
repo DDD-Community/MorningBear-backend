@@ -1,10 +1,12 @@
 package com.ddd.morningbear.api.search
 
-import com.ddd.morningbear.common.annotation.SkipTokenCheck
+import com.ddd.morningbear.common.BaseController
 import com.ddd.morningbear.search.SearchService
 import com.ddd.morningbear.search.dto.SearchDto
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 /**
  * @author yoonho
@@ -13,16 +15,19 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SearchController(
     private val searchService: SearchService
-) {
+): BaseController() {
 
-    // TODO:
-    //  - (Search) graphql방식으로 변경
-    //  - (Search) 파라미터로 어떤 조건으로 검색할지(블로그,웹문서 등의 docsType / 결과갯수 : display)
-    //  - (Badge) 뱃지 달성을 위한 퍼센테이지 리턴
-
-    @SkipTokenCheck
-    @GetMapping("/search")
-    fun search(): SearchDto {
-        return searchService.search()
+    /**
+     * 아티클 조회하기
+     *
+     * @param sizeInput [Int]
+     * @return List [SearchDto.SearchItem]
+     * @author yoonho
+     * @since 2022.12.16
+     */
+    @QueryMapping
+    fun searchArticle(@Argument sizeInput: Optional<Int>): List<SearchDto.SearchItem>? {
+        val size = findSize(sizeInput)
+        return searchService.searchArticle(size)
     }
 }

@@ -14,9 +14,9 @@ data class SearchDto(
     val items: List<SearchItem>?,
 ): Serializable {
     data class SearchItem(
-        val title: String?,
+        var title: String?,
         val link: String?,
-        val description: String?,
+        var description: String?,
         val bloggername: String?,
         val bloggerlink: String?,
         val postdate: String?

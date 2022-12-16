@@ -1,0 +1,16 @@
+
+""" 아티클 정보 """
+type Article {
+    """ 제목 """
+    title: String,
+    """ 게시글 링크 """
+    link: String,
+    """ 설명 """
+    description: String,
+    """ 블로그명 """
+    bloggername: String,
+    """ 블로그 링크 """
+    bloggerlink: String,
+    """ 포스팅 날짜 """
+    postdate: String
+}
