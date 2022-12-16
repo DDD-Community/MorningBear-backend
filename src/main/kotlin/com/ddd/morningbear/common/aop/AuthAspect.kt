@@ -37,8 +37,8 @@ class AuthAspect(
         }
         //
 
-        var request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
-        var authorization = request.getHeader("Authorization")
+        val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
+        val authorization = request.getHeader("Authorization")
 
         if(authorization.isNullOrBlank()){
             throw GraphQLBadRequestException("필수 헤더정보를 입력해주세요")
@@ -46,11 +46,11 @@ class AuthAspect(
 
         // 비로그인 처리
         if(authorization.uppercase().startsWith("AK")){
-            var appKey = authorization.substring(3)
-            var accountId = request.getHeader("accountId")
-            var decodedAccountId = ParseUtils.decode(accountId)
+            val appKey = authorization.substring(3)
+            val accountId = request.getHeader("accountId")
+            val decodedAccountId = ParseUtils.decode(accountId)
 
-            var socialType = when {
+            val socialType = when {
                 decodedAccountId.lowercase().startsWith(CommCode.Social.KAKAO.prefix) -> CommCode.Social.KAKAO.code
                 decodedAccountId.lowercase().startsWith(CommCode.Social.NAVER.prefix) -> CommCode.Social.NAVER.code
                 decodedAccountId.lowercase().startsWith(CommCode.Social.APPLE.prefix) -> CommCode.Social.APPLE.code
@@ -59,12 +59,12 @@ class AuthAspect(
 
             if(AppPropsUtils.isExistRestKey(appKey, socialType)){
                 // Context 저장
-                var context = AuthenticationContext
+                val context = AuthenticationContext
                 context.setAccountId(accountId)
                 AuthenticationContextHolder.setAuthenticationContext(context)
 
                 // 타겟객체 실행
-                var result = joinPoint.proceed()
+                val result = joinPoint.proceed()
                 //
 
                 // Context 삭제
@@ -107,12 +107,12 @@ class AuthAspect(
         }
 
         // Context 저장
-        var context = AuthenticationContext
+        val context = AuthenticationContext
         context.setAccountId(accountId)
         AuthenticationContextHolder.setAuthenticationContext(context)
 
         // 타겟객체 실행
-        var result = joinPoint.proceed()
+        val result = joinPoint.proceed()
         //
 
         // Context 삭제

@@ -57,7 +57,7 @@ class MpUserInfo(
         takenLikeCnt = this.takenInfo?.size,
         givenLike = this.givenInfo?.map { it.toDto() },
         givenLikeCnt = this.givenInfo?.size,
-        photoInfo = this.photoInfo?.sortedByDescending { it.createdAt }?.map { it.toDto() }?.toMutableList()
+        photoInfo = this.photoInfo?.sortedByDescending { it.createdAt }?.map { it.toDto() }?.toMutableList(),
     )
 
     fun toSearchDto() = SearchUserDto(

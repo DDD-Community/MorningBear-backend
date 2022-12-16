@@ -47,19 +47,19 @@ class CategoryController(
 //        return categoryService.findMyCategoryMapping(accountId)
 //    }
 
-//    /**
-//     * 내 카테고리 저장
-//     *
-//     * @param input [List][String]
-//     * @return List [MdCategoryInfoDto]
-//     * @author yoonho
-//     * @since 2022.12.04
-//     */
-//    @MutationMapping
-//    fun saveMyCategory(@Argument categoryIdList: List<String>): List<MdCategoryInfoDto> {
-//        val accountId = getAuthenticationContextAccountId()
-//        return categoryService.saveMyCategory(accountId, categoryIdList)
-//    }
+    /**
+     * 내 카테고리 저장
+     *
+     * @param input [List][String]
+     * @return List [MdCategoryInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
+    @MutationMapping
+    fun saveMyCategory(@Argument categoryIdList: List<String>): List<MdCategoryInfoDto> {
+        val accountId = getAuthenticationContextAccountId()
+        return categoryService.saveMyCategory(accountId, categoryIdList)
+    }
 
     /**
      * 카테고리 메타정보 저장 - 개발자용

@@ -61,36 +61,36 @@ class CategoryService(
         return mdCategoryInfoRepository.findAllById(categoryIdList).map { it.toDto() }
     }
 
-//    /**
-//     * 내 카테고리 저장
-//     *
-//     * @param accountId [String]
-//     * @param input [List][String]
-//     * @return List [MdCategoryInfoDto]
-//     * @author yoonho
-//     * @since 2022.12.04
-//     */
-//    fun saveMyCategory(accountId: String, input: List<String>): List<MdCategoryInfoDto> {
-//        var categoryList = mdCategoryInfoRepository.findAllById(input)
-//        if(input.size != categoryList.size){
-//            throw GraphQLBadRequestException("존재하지 않은 카테고리ID 입니다.")
-//        }
-//
-//        categoryList.stream().forEach {
-//            x -> miCategoryMappingRepository.save(
-//                    MiCategoryMapping(
-//                        miCategoryMappingPk = MiCategoryMappingPk(
-//                            accountId = accountId,
-//                            categoryId = x.categoryId
-//                        ),
-//                        userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자 정보를 조회할 수 없습니다.") },
-//                        updatedAt = LocalDateTime.now()
-//                    )
-//                )
-//        }
-//
-//        return this.findMyCategory(accountId)
-//    }
+    /**
+     * 내 카테고리 저장
+     *
+     * @param accountId [String]
+     * @param input [List][String]
+     * @return List [MdCategoryInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
+    fun saveMyCategory(accountId: String, input: List<String>): List<MdCategoryInfoDto> {
+        val categoryList = mdCategoryInfoRepository.findAllById(input)
+        if(input.size != categoryList.size){
+            throw GraphQLBadRequestException("존재하지 않은 카테고리ID 입니다.")
+        }
+
+        categoryList.stream().forEach {
+            x -> miCategoryMappingRepository.save(
+                    MiCategoryMapping(
+                        miCategoryMappingPk = MiCategoryMappingPk(
+                            accountId = accountId,
+                            categoryId = x.categoryId
+                        ),
+                        userInfo = mpUserInfoRepository.findById(accountId).orElseThrow { throw GraphQLNotFoundException("사용자 정보를 조회할 수 없습니다.") },
+                        createdAt = LocalDateTime.now()
+                    )
+                )
+        }
+
+        return this.findMyCategory(accountId)
+    }
 
     /**
      * 전체 카테고리 저장

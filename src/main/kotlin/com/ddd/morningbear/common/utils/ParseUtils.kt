@@ -27,7 +27,7 @@ object ParseUtils {
             return Base64.encodeBase64(ciphger.doFinal(prefixedData.toByteArray()))
                 .toString(Charsets.UTF_8)
         }catch (e: Exception) {
-            throw GraphQLBadRequestException()
+            throw GraphQLBadRequestException("요청하신 정보를 암호화할 수 없습니다.")
         }
     }
 
@@ -37,7 +37,7 @@ object ParseUtils {
             return ciphger.doFinal(Base64.decodeBase64(data?.toByteArray()))
                 .toString(Charsets.UTF_8)
         }catch (e: Exception) {
-            throw GraphQLBadRequestException()
+            throw GraphQLBadRequestException("요청하신 정보를 복호화할 수 없습니다.")
         }
     }
 

@@ -2,8 +2,8 @@
 type Mutation {
     """ 내정보 저장 (회원가입, 정보수정) """
     saveMyInfo(userInput: UserInput): User
-#    """ 내 카테고리 저장 """
-#    saveMyCategory(categoryIdList: [String]): [Category]
+    """ 주로하는 카테고리 저장 """
+    saveMyCategory(categoryIdList: [String]): [Category]
 #    """ 내 뱃지 저장 """
 #    saveMyBadge(badgeIdList: [String]): [Badge]
     """ 탈퇴하기 """

@@ -51,6 +51,7 @@ class MyInfoService(
 
         // 뱃지리스트 조회
         myInfo.badgeList = badgeService.findMyAllBadge(accountId)
+        myInfo.categoryList = categoryService.findMyCategory(accountId)
         if(!myInfo.photoInfo.isNullOrEmpty()){
             // 리포트 조회
             myInfo.reportInfo = reportService.createReport(accountId)
