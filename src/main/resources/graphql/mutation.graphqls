@@ -16,6 +16,8 @@ type Mutation {
     deleteLike(likeInput: LikeInput): Boolean
     """ 내 사진 저장 (뱃지이벤트 발생) """
     saveMyPhoto(photoInput: PhotoInput): Photo
+    """ 내 사진 삭제 """
+    deleteMyPhoto(photoId: String): Photo
 
     """ (개발자용) 뱃지 메타정보 저장 """
     saveBadge(badgeInputList: [BadgeInput]): [Badge]

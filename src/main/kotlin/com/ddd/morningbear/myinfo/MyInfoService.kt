@@ -150,12 +150,12 @@ class MyInfoService(
                 )
             )
 
-            // 신규 회원가입시
-            if(isRegisteredUser){
-                categoryService.saveAllCategory(accountId)
-                badgeService.saveMyBadge(accountId, "B1")
-            }
-            //
+//            // 신규 회원가입시
+//            if(isRegisteredUser){
+//                categoryService.saveAllCategory(accountId)
+//                badgeService.saveMyBadge(accountId, "B1")
+//            }
+//            //
             return this.findUserInfo(accountId, CommCode.photoSize, CommCode.photoSize)
         }catch (ne: GraphQLNotFoundException){
             throw ne

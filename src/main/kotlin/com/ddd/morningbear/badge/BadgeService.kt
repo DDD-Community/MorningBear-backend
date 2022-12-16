@@ -93,6 +93,40 @@ class BadgeService(
     }
 
     /**
+     * 내 뱃지 삭제
+     *
+     * @param accountId [String]
+     * @param badgeId [String]
+     * @return result [MdBadgeInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
+    fun deleteMyBadge(accountId: String, badgeId: String): Boolean {
+        try{
+            val deleteBadge = mdBadgeInfoRepository.findById(badgeId).orElseThrow {
+                throw GraphQLBadRequestException("존재하지 않은 뱃지ID 입니다.")
+            }.toDto()
+
+            if(!miBadgeMappingRepository.existsById(MiBadgeMappingPk(accountId = accountId,badgeId = badgeId))) {
+                return false
+            }
+
+            miBadgeMappingRepository.deleteById(
+                MiBadgeMappingPk(
+                    accountId = accountId,
+                    badgeId = badgeId
+                )
+            )
+        }catch(be: GraphQLBadRequestException) {
+            throw be
+        }catch (e: Exception){
+            throw GraphQLBadRequestException()
+        }
+
+        return true
+    }
+
+    /**
      * 뱃지 메타정보 저장 - 개발자용
      *
      * @param input [List][BadgeInput]

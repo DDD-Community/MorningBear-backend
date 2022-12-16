@@ -102,4 +102,18 @@ class PhotoController(
         val accountId = getAuthenticationContextAccountId()
         return photoService.saveMyPhoto(accountId, photoInput)
     }
+
+    /**
+     * 사진 삭제
+     *
+     * @param photoId [String]
+     * @return result [Boolean]
+     * @author yoonho
+     * @since 2022.12.16
+     */
+    @MutationMapping
+    fun deleteMyPhoto(@Argument photoId: String): FiPhotoInfoDto {
+        val accountId = getAuthenticationContextAccountId()
+        return photoService.deleteMyPhoto(photoId)
+    }
 }

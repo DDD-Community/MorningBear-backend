@@ -89,7 +89,7 @@ class PhotoService(
      * @since 2022.12.12
      */
     fun findAllPhoto(accountId: String): List<FiPhotoInfoDto>? {
-        return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseGet(null).map { it.toDto() }
+        return fiPhotoInfoRepository.findAllByUserInfoAccountId(accountId).orElseGet(null).sortedByDescending { it.createdAt }.map { it.toDto() }
     }
 
     /**
@@ -182,6 +182,30 @@ class PhotoService(
         }catch (ne: GraphQLNotFoundException){
             throw ne
         }catch (e: Exception) {
+            throw GraphQLBadRequestException()
+        }
+    }
+
+    /**
+     * 사진 삭제
+     *
+     * @param photoId [String]
+     * @return result [Boolean]
+     * @author yoonho
+     * @since 2022.12.16
+     */
+    fun deleteMyPhoto(photoId: String): FiPhotoInfoDto {
+        try{
+            val deletePhotoInfo = fiPhotoInfoRepository.findById(photoId).orElseThrow {
+                throw GraphQLBadRequestException("사진정보가 존재하지 않습니다.")
+            }.toDto()
+
+            fiPhotoInfoRepository.deleteById(photoId)
+
+            return deletePhotoInfo
+        }catch(be: GraphQLBadRequestException) {
+            throw be
+        }catch (e: Exception){
             throw GraphQLBadRequestException()
         }
     }
