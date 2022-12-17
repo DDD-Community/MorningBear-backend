@@ -28,7 +28,6 @@ class SaveBadgeAspect(
     private val photoService: PhotoService,
     private val likeService: LikeService
 ) {
-
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Pointcut("execution(* com.ddd.morningbear.photo.*Service.saveMyPhoto(..))")
@@ -36,10 +35,6 @@ class SaveBadgeAspect(
 
     @Pointcut("execution(* com.ddd.morningbear.like.*Service.saveLike(..))")
     fun onSaveLike() {}
-
-    @Pointcut("execution(* com.ddd.morningbear.myinfo.*Service.findUserInfo(..))")
-    fun onFindUserInfo() {}
-
 
     @AfterReturning(pointcut = "onSavePhoto()", returning = "response")
     fun checkPhotoBadge(joinPoint: JoinPoint, response: FiPhotoInfoDto) {
@@ -155,35 +150,4 @@ class SaveBadgeAspect(
             response.updatedBadge = updatedBadgeList
         }
     }
-
-    @AfterReturning(pointcut = "onFindUserInfo()", returning = "response")
-    fun checkTakenLikeBadge(joinPoint: JoinPoint, response: MpUserInfoDto){
-        val updatedBadgeList = mutableListOf<MdBadgeInfoDto>()
-        val accountId = AuthenticationContextHolder.getAuthenticationContext().getAccountId()
-        val likeInfo = likeService.findTakenInfo(accountId)
-
-        if(likeInfo.isNullOrEmpty()) {
-            // 응원받기 1회(최초) 삭제 - 피드조회시 응원받기 뱃지이벤트를 polling하므로 삭제도 같은 메서드에서 처리
-            badgeService.deleteMyBadge(accountId, "B7")
-            response.badgeList?.filter { it.badgeId.equals("B7") }?.map {
-                it.isAcquired = false
-                it.acquirePercent = 0
-            }
-            //
-        }else {
-            // 응원받기 1회(최초)
-            if(likeInfo.size == 1){
-                val badgeInfo = badgeService.saveMyBadge(accountId, "B7")
-                if(badgeInfo != null){
-                    updatedBadgeList.add(badgeInfo)
-                    response.badgeList?.filter { it.badgeId.equals("B7") }?.map {
-                        it.isAcquired = true
-                        it.acquirePercent = 100
-                    }
-                }
-            }
-            response.updatedBadge = updatedBadgeList
-        }
-    }
-
 }

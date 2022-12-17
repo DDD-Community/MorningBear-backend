@@ -2,6 +2,7 @@ package com.ddd.morningbear.myinfo.repository
 
 import com.ddd.morningbear.myinfo.entity.MpUserInfo
 import org.springframework.data.jpa.repository.JpaRepository
+import java.util.*
 
 /**
  * @author yoonho
@@ -11,4 +12,5 @@ interface MpUserInfoRepository: JpaRepository<MpUserInfo, String>, MpUserInfoRep
 
 interface MpUserInfoRepositoryDsl {
     fun findUserInfoByNickName(nickName: String): List<MpUserInfo>
+    fun findByIdNotInBlockUser(accountId: String): Optional<MpUserInfo>
 }

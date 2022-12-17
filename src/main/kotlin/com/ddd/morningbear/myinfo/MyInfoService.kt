@@ -37,7 +37,7 @@ class MyInfoService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     /**
-     * 내정보 조회
+     * 사용자 정보 조회
      *
      * @param accountId [String]
      * @return result [MpUserInfoDto]
@@ -45,7 +45,7 @@ class MyInfoService(
      * @since 2022.12.04
      */
     fun findUserInfo(accountId: String, totalSize: Int, categorySize: Int): MpUserInfoDto {
-        val myInfo = mpUserInfoRepository.findById(accountId).orElseThrow {
+        val myInfo = mpUserInfoRepositoryImp.findByIdNotInBlockUser(accountId).orElseThrow {
             throw GraphQLNotFoundException("사용자정보 조회에 실패하였습니다.")
         }.toDto()
 
@@ -53,6 +53,12 @@ class MyInfoService(
         myInfo.badgeList = badgeService.findMyAllBadge(accountId)
         // 내 카테고리리스트 조회
         myInfo.categoryList = categoryService.findMyCategory(accountId)
+
+        // 좋아요 정보 조회
+        myInfo.givenLike = likeService.findGivenInfo(accountId)?.toMutableList()
+        myInfo.givenLikeCnt = myInfo.givenLike?.size
+        myInfo.takenLike = likeService.findTakenInfo(accountId)?.toMutableList()
+        myInfo.takenLikeCnt = myInfo.takenLike?.size
 
         // 리포트 조회
         myInfo.reportInfo = reportService.createReport(accountId)

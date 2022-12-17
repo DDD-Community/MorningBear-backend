@@ -56,10 +56,6 @@ class MpUserInfo(
         memo = this.memo,
         wakeUpAt = this.wakeUpAt,
         goal = this.goal,
-        takenLike = this.takenInfo?.map { it.toDto() },
-        takenLikeCnt = this.takenInfo?.size,
-        givenLike = this.givenInfo?.map { it.toDto() },
-        givenLikeCnt = this.givenInfo?.size,
         photoInfo = this.photoInfo?.sortedByDescending { it.createdAt }?.map { it.toDto() }?.toMutableList(),
     )
 

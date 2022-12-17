@@ -10,6 +10,7 @@ import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Pointcut
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 /**
@@ -23,6 +24,7 @@ class DeleteBadgeAspect(
     private val photoService: PhotoService,
     private val likeService: LikeService
 ) {
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Pointcut("execution(* com.ddd.morningbear.photo.*Service.deleteMyPhoto(..))")
     fun onDeletePhoto() {}

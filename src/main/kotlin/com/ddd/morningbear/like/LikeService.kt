@@ -36,7 +36,7 @@ class LikeService(
      * @since 2022.12.12
      */
     fun findTakenInfo(accountId: String): List<FiLikeInfoDto>? {
-        return fiLikeInfoRepository.findAllByFiLikeInfoPkTakenAccountId(accountId).orElseGet(null).map { it.toDto() }
+        return fiLikeInfoRepository.findAllLikeInfoByTakenAccountId(accountId).orElseGet(null).map { it.toDto() }
     }
 
     /**
@@ -48,7 +48,7 @@ class LikeService(
      * @since 2022.12.12
      */
     fun findGivenInfo(accountId: String): List<FiLikeInfoDto>? {
-        return fiLikeInfoRepository.findAllByFiLikeInfoPkGivenAccountId(accountId).orElseGet(null).map { it.toDto() }
+        return fiLikeInfoRepository.findAllLikeInfoByGivenAccountId(accountId).orElseGet(null).map { it.toDto() }
     }
 
 //    /**

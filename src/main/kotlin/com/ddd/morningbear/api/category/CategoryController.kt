@@ -48,7 +48,7 @@ class CategoryController(
 //    }
 
     /**
-     * 내 카테고리 저장
+     * 주로하는 카테고리 저장
      *
      * @param input [List][String]
      * @return List [MdCategoryInfoDto]

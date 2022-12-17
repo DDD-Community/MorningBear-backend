@@ -10,12 +10,11 @@ import java.util.*
  * @author yoonho
  * @since 2022.12.04
  */
-interface FiLikeInfoRepository: JpaRepository<FiLikeInfo, FiLikeInfoPk>, FiLikeInfoRepositoryDsl {
-    fun findAllByFiLikeInfoPkTakenAccountId(accountId: String): Optional<List<FiLikeInfo>>
-    fun findAllByFiLikeInfoPkGivenAccountId(accountId: String): Optional<List<FiLikeInfo>>
-}
+interface FiLikeInfoRepository: JpaRepository<FiLikeInfo, FiLikeInfoPk>, FiLikeInfoRepositoryDsl
 
 interface FiLikeInfoRepositoryDsl {
 //    fun findMostPopularUser(): List<String>
     fun findPopularUser(size: Int): List<PopularLikeDto>
+    fun findAllLikeInfoByTakenAccountId(accountId: String): Optional<List<FiLikeInfo>>
+    fun findAllLikeInfoByGivenAccountId(accountId: String): Optional<List<FiLikeInfo>>
 }
