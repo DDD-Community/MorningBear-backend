@@ -10,5 +10,6 @@ data class MyInfoInput(
     var nickName: String?,
     var photoLink: String?,
     var memo: String?,
-    var wakeUpAt: String?
+    var wakeUpAt: String?,
+    var goal: String?
 ): Serializable

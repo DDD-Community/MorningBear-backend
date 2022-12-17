@@ -148,6 +148,7 @@ class MyInfoService(
                     photoLink = input.photoLink,
                     memo = input.memo,
                     wakeUpAt = input.wakeUpAt,
+                    goal = input.goal,
                     updatedAt = LocalDateTime.now(),
                     createdAt = createdAt
                 )

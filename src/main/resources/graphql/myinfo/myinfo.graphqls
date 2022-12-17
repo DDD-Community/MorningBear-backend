@@ -11,6 +11,8 @@ type User {
     memo: String
     """ 기상시간(format: HHmm) """
     wakeUpAt: String
+    """ 목표 """
+    goal: String
     """ 획득 뱃지 리스트 """
 #    badgeList: [Badge]
     badgeList: [BadgeDetail]
@@ -46,6 +48,8 @@ type SearchUser {
     memo: String
     """ 기상시간(format: HHmm) """
     wakeUpAt: String
+    """ 목표 """
+    goal: String
 }
 
 """ 내정보 저장을 위한 입력데이터 """
@@ -58,4 +62,6 @@ input UserInput {
     memo: String
     """ 기상시간(format: HHmm) """
     wakeUpAt: String
+    """ 목표 """
+    goal: String
 }

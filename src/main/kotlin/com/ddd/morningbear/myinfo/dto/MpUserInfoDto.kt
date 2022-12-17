@@ -19,6 +19,7 @@ data class MpUserInfoDto (
     var photoLink: String?,
     var memo: String?,
     var wakeUpAt: String?,
+    val goal: String?,
     var badgeList: MutableList<UserBadgeDetailDto>? = null,
     var categoryList: List<MdCategoryInfoDto>? = null,
     val takenLike: List<FiLikeInfoDto>?,

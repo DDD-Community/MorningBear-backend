@@ -27,6 +27,8 @@ class MpUserInfo(
     val memo: String?,
     @Column(name = "WAKE_UP_AT", nullable = true)
     val wakeUpAt: String?,
+    @Column(name = "GOAL", nullable = true)
+    val goal: String?,
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
@@ -53,6 +55,7 @@ class MpUserInfo(
         photoLink = this.photoLink,
         memo = this.memo,
         wakeUpAt = this.wakeUpAt,
+        goal = this.goal,
         takenLike = this.takenInfo?.map { it.toDto() },
         takenLikeCnt = this.takenInfo?.size,
         givenLike = this.givenInfo?.map { it.toDto() },
