@@ -209,4 +209,15 @@ class PhotoService(
             throw GraphQLBadRequestException()
         }
     }
+
+    /**
+     * 오늘의 미라클모닝러 조회
+     *
+     * @author yoonho
+     * @since 2023.01.16
+     */
+    fun findTodayPhoto(): FiPhotoInfoDto =
+        fiPhotoInfoRepositoryImpl.findPhotoByRandomOrder().orElseThrow {
+            throw GraphQLNotFoundException("사진 조회에 실패하였습니다.")
+        }.toDto()
 }

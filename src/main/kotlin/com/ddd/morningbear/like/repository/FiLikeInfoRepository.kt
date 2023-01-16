@@ -10,7 +10,9 @@ import java.util.*
  * @author yoonho
  * @since 2022.12.04
  */
-interface FiLikeInfoRepository: JpaRepository<FiLikeInfo, FiLikeInfoPk>, FiLikeInfoRepositoryDsl
+interface FiLikeInfoRepository: JpaRepository<FiLikeInfo, FiLikeInfoPk>, FiLikeInfoRepositoryDsl {
+    fun deleteByFiLikeInfoPkTakenAccountIdAndFiLikeInfoPkGivenAccountId(takenAccountId: String, givenAccountId: String)
+}
 
 interface FiLikeInfoRepositoryDsl {
 //    fun findMostPopularUser(): List<String>

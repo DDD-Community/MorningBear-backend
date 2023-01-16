@@ -18,4 +18,5 @@ interface FiPhotoInfoRepository: JpaRepository<FiPhotoInfo, String>, FiPhotoInfo
 interface FiPhotoInfoRepositoryDsl {
     fun findPhotoByOrderType(size: Int, orderType: String): List<FiPhotoInfo>
     fun findPhotoByAccountIdList(size: Int, orderType: String): MutableList<FiPhotoInfo>
+    fun findPhotoByRandomOrder(): Optional<FiPhotoInfo>
 }

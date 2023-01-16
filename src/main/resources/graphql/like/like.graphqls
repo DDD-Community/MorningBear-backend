@@ -13,10 +13,10 @@ type Like {
     updatedBadge: [Badge]
 }
 
-""" 응원하기를 위한 입력데이터 """
-input LikeInput {
-    """ 응원하기 코드 """
-    likeCode: String
-    """ 응원하기 대상 사용자ID """
-    takenAccountId: String
-}
+#""" 응원하기를 위한 입력데이터 """
+#input LikeInput {
+#    """ 응원하기 코드 """
+#    likeCode: String
+#    """ 응원하기 대상 사용자ID """
+#    takenAccountId: String
+#}

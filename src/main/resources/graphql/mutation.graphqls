@@ -11,9 +11,9 @@ type Mutation {
     """ 사용자 차단하기 """
     saveBlock(blockAccountId: String): [Block]
     """ 응원하기 (뱃지이벤트 발생) """
-    saveLike(likeInput: LikeInput): Like
+    saveLike(takenAccountId: String): Like
     """ 응원 취소하기 """
-    deleteLike(likeInput: LikeInput): Boolean
+    deleteLike(takenAccountId: String): Boolean
     """ 내 사진 저장 (뱃지이벤트 발생) """
     saveMyPhoto(photoInput: PhotoInput): Photo
     """ 내 사진 삭제 """

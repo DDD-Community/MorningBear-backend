@@ -1,6 +1,5 @@
 package com.ddd.morningbear.like
 
-import com.ddd.morningbear.api.like.dto.LikeInput
 import com.ddd.morningbear.common.exception.GraphQLBadRequestException
 import com.ddd.morningbear.common.exception.GraphQLNotFoundException
 import com.ddd.morningbear.like.dto.FiLikeInfoDto
@@ -13,6 +12,7 @@ import com.ddd.morningbear.myinfo.repository.MpUserInfoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 /**
  * @author yoonho
@@ -35,9 +35,8 @@ class LikeService(
      * @author yoonho
      * @since 2022.12.12
      */
-    fun findTakenInfo(accountId: String): List<FiLikeInfoDto>? {
-        return fiLikeInfoRepository.findAllLikeInfoByTakenAccountId(accountId).orElseGet(null).map { it.toDto() }
-    }
+    fun findTakenInfo(accountId: String): List<FiLikeInfoDto>? =
+        fiLikeInfoRepository.findAllLikeInfoByTakenAccountId(accountId).orElseGet(null).map { it.toDto() }
 
     /**
      * 내가 좋아요 준 목록
@@ -47,9 +46,8 @@ class LikeService(
      * @author yoonho
      * @since 2022.12.12
      */
-    fun findGivenInfo(accountId: String): List<FiLikeInfoDto>? {
-        return fiLikeInfoRepository.findAllLikeInfoByGivenAccountId(accountId).orElseGet(null).map { it.toDto() }
-    }
+    fun findGivenInfo(accountId: String): List<FiLikeInfoDto>? =
+        fiLikeInfoRepository.findAllLikeInfoByGivenAccountId(accountId).orElseGet(null).map { it.toDto() }
 
 //    /**
 //     * 가장 좋아요를 많이 받은 사용자 조회
@@ -84,27 +82,27 @@ class LikeService(
      * 좋아요 등록
      *
      * @param givenAccountId [String]
-     * @param input [LikeInput]
+     * @param takenAccountId [String]
      * @return result [Boolean]
      * @author yoonho
      * @since 2022.12.05
      */
     @Transactional(rollbackFor = [Exception::class])
-    fun saveLike(givenAccountId: String, input: LikeInput): FiLikeInfoDto  {
+    fun saveLike(givenAccountId: String, takenAccountId: String): FiLikeInfoDto  {
         try{
             // 좋아요시 나의피드와 상대방피드 데이터가 모두 존재해야 한다
-            if(!mpUserInfoRepository.existsById(givenAccountId) || !mpUserInfoRepository.existsById(input.takenAccountId)){
+            if(!mpUserInfoRepository.existsById(givenAccountId) || !mpUserInfoRepository.existsById(takenAccountId)){
                 throw GraphQLNotFoundException("피드정보를 찾을 수 없습니다.")
             }
 
             return fiLikeInfoRepository.save(
                         FiLikeInfo(
                             fiLikeInfoPk = FiLikeInfoPk(
-                                likeCode = input.likeCode,
-                                takenAccountId = input.takenAccountId,
+                                likeCode = UUID.randomUUID().toString(),
+                                takenAccountId = takenAccountId,
                                 givenAccountId = givenAccountId
                             ),
-                            takenInfo = mpUserInfoRepository.findById(input.takenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
+                            takenInfo = mpUserInfoRepository.findById(takenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
                             givenInfo = mpUserInfoRepository.findById(givenAccountId).orElseThrow { throw GraphQLNotFoundException("내가 좋아요한 피드목록을 찾을 수 없습니다.") },
                         )
                     ).toDto()
@@ -119,26 +117,27 @@ class LikeService(
      * 좋아요 취소
      *
      * @param givenAccountId [String]
-     * @param input [LikeInput]
+     * @param takenAccountId [String]
      * @return result [Boolean]
      * @author yoonho
      * @since 2022.12.05
      */
     @Transactional(rollbackFor = [Exception::class])
-    fun deleteLike(givenAccountId: String, input: LikeInput): Boolean {
+    fun deleteLike(givenAccountId: String, takenAccountId: String): Boolean {
         try {
             // 좋아요 취소시 나의피드와 상대방피드 데이터가 모두 존재해야 한다
-            if(!mpUserInfoRepository.existsById(givenAccountId) || !mpUserInfoRepository.existsById(input.takenAccountId)){
+            if(!mpUserInfoRepository.existsById(givenAccountId) || !mpUserInfoRepository.existsById(takenAccountId)){
                 throw GraphQLNotFoundException("피드정보를 찾을 수 없습니다.")
             }
 
-            fiLikeInfoRepository.deleteById(
-                FiLikeInfoPk(
-                    likeCode = input.likeCode,
-                    givenAccountId = givenAccountId,
-                    takenAccountId = input.takenAccountId
-                )
-            )
+            fiLikeInfoRepository.deleteByFiLikeInfoPkTakenAccountIdAndFiLikeInfoPkGivenAccountId(takenAccountId, givenAccountId)
+//            fiLikeInfoRepository.deleteById(
+//                FiLikeInfoPk(
+//                    likeCode = input.likeCode,
+//                    givenAccountId = givenAccountId,
+//                    takenAccountId = takenAccountId
+//                )
+//            )
         }catch (nfe: GraphQLNotFoundException) {
             throw nfe
         }catch (e: Exception){

@@ -5,8 +5,10 @@ import com.ddd.morningbear.like.entity.QFiLikeInfo
 import com.ddd.morningbear.like.entity.pk.QFiLikeInfoPk
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import com.ddd.morningbear.photo.entity.QFiPhotoInfo
+import com.querydsl.core.types.dsl.NumberExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
+import java.util.*
 
 /**
  * @author yoonho
@@ -17,8 +19,8 @@ class FiPhotoInfoRepositoryImpl(
     private val jpaQuery: JPAQueryFactory
 ): FiPhotoInfoRepositoryDsl {
 
-    override fun findPhotoByOrderType(size: Int, orderType: String): List<FiPhotoInfo> {
-        return jpaQuery
+    override fun findPhotoByOrderType(size: Int, orderType: String): List<FiPhotoInfo> =
+        jpaQuery
             .selectFrom(QFiPhotoInfo.fiPhotoInfo)
             .orderBy(
                 when(orderType) {
@@ -29,7 +31,6 @@ class FiPhotoInfoRepositoryImpl(
             )
             .limit(size.toLong())
             .fetch()
-    }
 
     override fun findPhotoByAccountIdList(size: Int, orderType: String): MutableList<FiPhotoInfo> {
 
@@ -61,4 +62,13 @@ class FiPhotoInfoRepositoryImpl(
 
         return result
     }
+
+    override fun findPhotoByRandomOrder(): Optional<FiPhotoInfo> =
+        Optional.ofNullable(
+            jpaQuery
+            .selectFrom(QFiPhotoInfo.fiPhotoInfo)
+            .orderBy(NumberExpression.random().asc())
+            .limit(1)
+            .fetchOne()
+        )
 }

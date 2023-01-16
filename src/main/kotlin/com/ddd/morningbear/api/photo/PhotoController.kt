@@ -77,6 +77,16 @@ class PhotoController(
 //    }
 
     /**
+     * 오늘의 미라클모닝러 조회
+     *
+     * @author yoonho
+     * @since 2023.01.16
+     */
+    @QueryMapping
+    fun findTodayPhoto(): FiPhotoInfoDto =
+        photoService.findTodayPhoto()
+
+    /**
      * 순서별 사진리스트 조회
      *
      * @param orderInput [OrderInput]
@@ -85,9 +95,8 @@ class PhotoController(
      * @since 2022.12.13
      */
     @QueryMapping
-    fun findPhotoByOrderType(@Argument orderInput: OrderInput): List<FiPhotoInfoDto> {
-        return photoService.findPhotoByOrderType(orderInput.size, orderInput.orderType)
-    }
+    fun findPhotoByOrderType(@Argument orderInput: OrderInput): List<FiPhotoInfoDto> =
+        photoService.findPhotoByOrderType(orderInput.size, orderInput.orderType)
 
     /**
      * 사진 저장
