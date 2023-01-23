@@ -1,6 +1,9 @@
 server:
   port: 8080
 spring:
+  config:
+    activate:
+      on-profile: default
   graphql:
     schema:
       locations: classpath:graphql/**/
