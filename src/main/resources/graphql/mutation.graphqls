@@ -4,8 +4,8 @@ type Mutation {
     saveMyInfo(userInput: UserInput): User
     """ 주로하는 카테고리 저장 """
     saveMyCategory(categoryIdList: [String]): [Category]
-#    """ 내 뱃지 저장 """
-#    saveMyBadge(badgeIdList: [String]): [Badge]
+    """ 내 뱃지 저장 """
+    saveMyBadge(badgeId: String): Badge
     """ 탈퇴하기 """
     deleteMyInfo: Boolean
     """ 사용자 차단하기 """

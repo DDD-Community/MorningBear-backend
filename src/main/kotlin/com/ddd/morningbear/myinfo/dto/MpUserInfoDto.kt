@@ -30,6 +30,7 @@ data class MpUserInfoDto (
     var photoInfoByCategory: MutableList<PhotoInfoByCategory> = mutableListOf(),
     var reportInfo: ReportDto? = null,
     var updatedBadge: List<MdBadgeInfoDto>? = null,
+    var goalUpdatedAt: String? = null,
     var updatedAt: LocalDateTime? = null,
     var createdAt: LocalDateTime? = null
 ): Serializable {

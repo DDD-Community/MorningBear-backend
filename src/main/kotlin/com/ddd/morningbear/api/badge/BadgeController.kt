@@ -47,19 +47,19 @@ class BadgeController(
 //        return badgeService.findMyBadgeMapping(accountId)
 //    }
 
-//    /**
-//     * 내 뱃지 저장
-//     *
-//     * @param input [List][String]
-//     * @return List [MdBadgeInfoDto]
-//     * @author yoonho
-//     * @since 2022.12.04
-//     */
-//    @MutationMapping
-//    fun saveMyBadge(@Argument badgeIdList: List<String>): List<MdBadgeInfoDto> {
-//        val accountId = getAuthenticationContextAccountId()
-//        return badgeService.saveMyBadge(accountId, badgeIdList)
-//    }
+    /**
+     * 내 뱃지 저장
+     *
+     * @param input [List][String]
+     * @return List [MdBadgeInfoDto]
+     * @author yoonho
+     * @since 2022.12.04
+     */
+    @MutationMapping
+    fun saveMyBadge(@Argument badgeId: String): MdBadgeInfoDto? {
+        val accountId = getAuthenticationContextAccountId()
+        return badgeService.saveMyBadge(accountId, badgeId)
+    }
 
     /**
      * 뱃지 메타정보 저장 - 개발자용

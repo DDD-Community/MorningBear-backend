@@ -7,6 +7,7 @@ import com.ddd.morningbear.myinfo.dto.MpUserInfoDto
 import com.ddd.morningbear.myinfo.dto.SearchUserDto
 import com.ddd.morningbear.photo.entity.FiPhotoInfo
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 /**
@@ -29,6 +30,8 @@ class MpUserInfo(
     val wakeUpAt: String?,
     @Column(name = "GOAL", nullable = true)
     val goal: String?,
+    @Column(name = "GOAL_UPDATED_AT", nullable = true)
+    val goalUpdatedAt: LocalDateTime,
     @Column(name = "UPDATED_AT", nullable = true)
     val updatedAt: LocalDateTime,
     @Column(name = "CREATED_AT", nullable = false)
@@ -57,6 +60,7 @@ class MpUserInfo(
         wakeUpAt = this.wakeUpAt,
         goal = this.goal,
         photoInfo = this.photoInfo?.sortedByDescending { it.createdAt }?.map { it.toDto() }?.toMutableList(),
+        goalUpdatedAt = this.goalUpdatedAt.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")),
     )
 
     fun toSearchDto() = SearchUserDto(

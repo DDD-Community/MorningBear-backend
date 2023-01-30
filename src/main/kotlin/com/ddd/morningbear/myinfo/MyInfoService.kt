@@ -129,8 +129,8 @@ class MyInfoService(
             throw GraphQLBadRequestException("로그인정보가 존재하지 않습니다.")
         }
 
-        var isRegisteredUser = false
-        lateinit var createdAt: LocalDateTime
+        var createdAt: LocalDateTime = LocalDateTime.now()
+        var goalUpdatedAt: LocalDateTime = LocalDateTime.now()
 
         try{
             if(mpUserInfoRepository.existsById(accountId)) {
@@ -141,10 +141,11 @@ class MyInfoService(
                 if(input.photoLink.isNullOrBlank()) input.photoLink = myInfo.photoLink
                 if(input.memo.isNullOrBlank()) input.memo = myInfo.memo
                 if(input.wakeUpAt.isNullOrBlank()) input.wakeUpAt = myInfo.wakeUpAt
+                if(input.goal.isNullOrBlank()) {
+                    input.goal = myInfo.goal
+                    goalUpdatedAt = myInfo.goalUpdatedAt
+                }
                 createdAt = myInfo.createdAt
-            }else{
-                isRegisteredUser = true
-                createdAt = LocalDateTime.now()
             }
 
             mpUserInfoRepository.save(
@@ -155,17 +156,11 @@ class MyInfoService(
                     memo = input.memo,
                     wakeUpAt = input.wakeUpAt,
                     goal = input.goal,
+                    goalUpdatedAt = goalUpdatedAt,
                     updatedAt = LocalDateTime.now(),
                     createdAt = createdAt
                 )
             )
-
-//            // 신규 회원가입시
-//            if(isRegisteredUser){
-//                categoryService.saveAllCategory(accountId)
-//                badgeService.saveMyBadge(accountId, "B1")
-//            }
-//            //
             return this.findUserInfo(accountId, CommCode.photoSize, CommCode.photoSize)
         }catch (ne: GraphQLNotFoundException){
             throw ne
